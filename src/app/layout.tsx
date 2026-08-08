@@ -1,0 +1,44 @@
+import type { Metadata } from 'next';
+import './globals.css';
+
+export const metadata: Metadata = {
+  title: 'OpenAnimalNet - Global Animal Data Platform',
+  description: 'Monitor, analyze, and explore comprehensive animal data from around the world. Track biological, behavioral, ecological, and conservation data for all species.',
+  keywords: ['animals', 'wildlife', 'conservation', 'monitoring', 'biodiversity', 'ecology', 'zoology'],
+  authors: [{ name: 'OpenAnimalNet Team' }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://openanimalnet.org',
+    siteName: 'OpenAnimalNet',
+    title: 'OpenAnimalNet - Global Animal Data Platform',
+    description: 'Monitor, analyze, and explore comprehensive animal data from around the world.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'OpenAnimalNet - Global Animal Data Platform',
+    description: 'Monitor, analyze, and explore comprehensive animal data from around the world.',
+  },
+  manifest: '/site.webmanifest',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#0ea5e9" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
+      <body className="antialiased">
+        {children}
+      </body>
+    </html>
+  );
+}
