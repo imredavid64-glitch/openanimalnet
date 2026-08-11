@@ -665,6 +665,11 @@ export const sampleAnimals: Animal[] = [
     },
     habitat: ['mountain', 'alpine'],
     populationEstimate: 7500,
+    populationHistory: [
+      { year: 2017, estimate: 4080 },
+      { year: 2024, estimate: 7500 },
+    ],
+    populationHistoryNote: 'Total individual estimates: 4,080–6,590 (IUCN 2017); 7,446–7,996 (latest IUCN CatSG)',
     isMonitored: true,
     lastUpdated: new Date('2026-08-11'),
     dataCategories: ['biological', 'behavioral', 'ecological', 'population', 'health'],
