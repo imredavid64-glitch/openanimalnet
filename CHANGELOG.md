@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.2.0] - 2026-08-11
+
+### Added
+- **Data Sources page** (`/sources`): a source index linking every species to
+  its Wikipedia article and official IUCN Red List assessment, with population
+  notes. IUCN assessment IDs were verified via Wikidata (P627) on 2026-08-11.
+- **Data freshness checker** (`npm run refresh:data`): re-verifies every
+  species' IUCN assessment ID and status against live Wikidata and checks each
+  Wikipedia article exists — no dependencies, Node-only.
+
+### Fixed
+- **Western honey bee** status corrected from Not Evaluated to **Data
+  Deficient** (it has a 2014 global IUCN assessment; Wikidata ID 42463639).
+
+### Changed
+- Methodology page now cites the bee's DD assessment and links to the sources
+  index; footer links to the new page.
+- Local git operations on this machine sped up from minutes to milliseconds by
+  packing all objects into a single pack file (the antivirus scanners were
+  blocking reads of loose objects); see `.freebuff/run.md`.
+
 ## [1.1.0] - 2026-08-10
 
 ### Added

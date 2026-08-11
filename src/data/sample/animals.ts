@@ -288,7 +288,7 @@ export const sampleAnimals: Animal[] = [
     category: 'insects',
     description: 'The western honey bee or European honey bee is the most widespread of the 48 known species of honey bee. It has been domesticated for honey production and crop pollination.',
     images: ['/images/animals/bee-001.jpg'],
-    conservationStatus: 'NE',
+    conservationStatus: 'DD',
     taxonomy: {
       kingdom: 'Animalia',
       phylum: 'Arthropoda',

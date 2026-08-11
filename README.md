@@ -114,8 +114,17 @@ point it elsewhere with `API_BASE_URL`:
 API_BASE_URL=http://localhost:3000 npm run test:api
 ```
 
-Continuous integration (lint, unit tests, build, API integration tests) runs on
-GitHub Actions for every push and pull request — see `.github/workflows/ci.yml`.
+Data freshness — re-verify every species' IUCN assessment ID, status, and
+Wikipedia article against live sources (Wikidata + Wikipedia, no API keys):
+
+```bash
+npm run refresh:data
+```
+
+Every species links to its primary sources on the
+[Data Sources page](/sources). Continuous integration (lint, unit tests, build,
+API integration tests) runs on GitHub Actions for every push and pull request —
+see `.github/workflows/ci.yml`.
 
 ## Project Structure
 

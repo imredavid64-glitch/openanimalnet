@@ -22,6 +22,7 @@ const footerLinks = {
   about: [
     { name: 'About Us', path: '/about' },
     { name: 'Methodology', path: '/methodology' },
+    { name: 'Data Sources', path: '/sources' },
     { name: 'Partners', path: '/partners' },
     { name: 'Careers', path: '/careers' },
   ],

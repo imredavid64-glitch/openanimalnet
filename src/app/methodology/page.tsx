@@ -53,9 +53,14 @@ export default function MethodologyPage() {
         <li>Mountain gorilla 1,063 (2018 census, still the reference figure; IUCN Endangered).</li>
         <li>Great white shark (IUCN 2018 assessment, Vulnerable — 30–49% decline).</li>
         <li>Bald eagle ~316,700 (USFWS 2020; IUCN Least Concern).</li>
-        <li>Domesticated species (Western honey bee, Holstein cattle) are not IUCN-assessed
-          and are listed as Not Evaluated.</li>
+        <li>Western honey bee (IUCN 2014 global assessment, Data Deficient — wild colonies not
+          quantified).</li>
+        <li>Holstein cattle are a domesticated breed with no IUCN assessment (Not Evaluated).</li>
       </ul>
+      <p>
+        Every species links to its primary sources — Wikipedia and its official IUCN assessment —
+        on our <PageLink href="/sources">data sources index</PageLink>.
+      </p>
 
       <Section>Open Publication</Section>
       <p>
