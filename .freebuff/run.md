@@ -128,6 +128,32 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
   See the copy procedure (per-file retries, skip `.freebuff/*.db*`, verify
   non-empty files) if a future push stalls the same way.
 
+## Round 3 (Aug 11 2026): sources page, freshness checker, git + Vercel fixes
+
+- **Git is fixed for good**: the culprit was two antivirus engines (Malwarebytes
+  + Avast) re-scanning every loose object read. All objects were consolidated
+  into ONE pack file (`git repack -ad` in the scratch repo, pack copied over,
+  `git prune-packed`) — `git log`/`git status` went from minutes to ~25ms.
+  Commits and pushes now work normally from the real worktree.
+- **Data Sources page** (`/sources`): Wikipedia + IUCN Red List links for all
+  11 species; IUCN IDs verified via Wikidata P627 (SPARQL). Added the bee's
+  real status: it IS assessed (2014, Data Deficient) — corrected NE -> DD.
+- **Freshness checker**: `npm run refresh:data` (`.freebuff/refresh-sources.mjs`)
+  re-verifies IUCN IDs/statuses/Wikipedia articles against live sources.
+- Committed as `b2f08b8` and pushed; version 1.2.0.
+- **Vercel deploy fixed**: the project had `framework: null` on Vercel's side,
+  so every deployment was uploaded as a STATIC site (public/ served, all routes
+  404). Fixed via API: `PATCH /v9/projects/{id}` `{"framework":"nextjs"}`.
+  Production: https://openanimalnet.vercel.app (all routes verified 200).
+- **Local build on this machine**: `next build`/`next dev` stall in module
+  loading when the scanner is busy. Reliable path: build in the scratch tree
+  `/tmp/oan-fresh` (freshly-written files read fast) with lint/typecheck
+  skipped in its config, then serve with
+  `node .freebuff/start-preview.js start /tmp/oan-fresh` (launcher accepts an
+  optional root arg). The preview currently serves that scratch build.
+  IMPORTANT: when copying new/changed files into the scratch tree, create
+  missing target directories first — `cp` to a missing dir fails silently.
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview
