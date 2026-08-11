@@ -122,9 +122,17 @@ npm run refresh:data
 ```
 
 Every species links to its primary sources on the
-[Data Sources page](/sources). Continuous integration (lint, unit tests, build,
-API integration tests) runs on GitHub Actions for every push and pull request —
-see `.github/workflows/ci.yml`.
+[Data Sources page](/sources) and on each animal's detail page. Continuous
+integration (lint, unit tests, build, API integration tests) runs on GitHub
+Actions for every push and pull request — see `.github/workflows/ci.yml`.
+
+## Deploy & data freshness
+
+- **Auto-deploy**: every push to `main` deploys production to Vercel via
+  GitHub Actions (`.github/workflows/deploy.yml`).
+- **Data drift watch**: a weekly scheduled check (`.github/workflows/data-drift.yml`)
+  re-verifies every species' IUCN ID/status and Wikipedia article against live
+  sources and fails if anything drifted.
 
 ## Project Structure
 

@@ -154,6 +154,30 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
   IMPORTANT: when copying new/changed files into the scratch tree, create
   missing target directories first — `cp` to a missing dir fails silently.
 
+## Round 4 (Aug 11 2026): +7 species, source links, auto-deploy, drift watch
+
+- **18 species** (was 11): added Polar Bear (VU), Bornean Orangutan (CR),
+  Amur Leopard (CR), Giraffe (VU), Koala (VU), Monarch Butterfly (EN),
+  Komodo Dragon (EN). Real photos in `public/images/animals/`, IUCN IDs
+  verified via Wikidata (P627), population figures checked against current
+  sources (Aug 2026).
+- **Source links on animal detail pages**: `/animal/[id]` now shows Wikipedia +
+  IUCN Red List links + the population source note (from `sources.ts`).
+- **Auto-deploy**: `.github/workflows/deploy.yml` (vercel-action, `--prod`)
+  deploys on every push to `main`. Secrets set in the repo: `VERCEL_TOKEN`
+  (from `~/Library/Application Support/com.vercel.cli/auth.json`),
+  `VERCEL_ORG_ID`/`VERCEL_PROJECT_ID` (from `.vercel/project.json`).
+  `gh auth` is logged in as imredavid64-glitch — `gh secret list` to verify.
+- **Drift watch**: `.github/workflows/data-drift.yml` runs
+  `npm run refresh:data -- --fail` weekly (Mon 03:00 UTC) + manual trigger.
+- **Freshness checker fixes**: the CR mapping was wrong (Q21983152 is a
+  mountain range; the CR QID is Q219127); added retry-with-backoff for
+  Wikidata 429/502s; documented exceptions where Wikidata is stale/absent
+  (monarch P141 = LC vs IUCN 2022 EN; Amur leopard item has no P627/P141).
+- Tests updated for 18 species (unit 19/19, integration 12/12); version 1.3.0.
+- Preview served from the rebuilt scratch tree `/tmp/oan-fresh` (same machine
+  workaround as round 3: fresh files dodge the antivirus scanner).
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview

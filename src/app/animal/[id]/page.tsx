@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { sampleAnimals, sampleAnimalData } from '@/data/sample/animals';
+import { speciesSources } from '@/data/sample/sources';
 import { Animal, AnimalData } from '@/types/animal/types';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -276,6 +277,42 @@ export default function AnimalDetailPage() {
                   ))}
                 </div>
               </div>
+
+              {/* Sources */}
+              {(() => {
+                const source = speciesSources.find(s => s.animalId === animal.id);
+                if (!source) return null;
+                const wikipediaUrl = `https://en.wikipedia.org/wiki/${source.wikipediaTitle.replace(/ /g, '_')}`;
+                const iucnUrl = source.iucnId ? `https://www.iucnredlist.org/species/${source.iucnId}/0` : null;
+                return (
+                  <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4 mt-4">
+                    <h3 className="font-semibold text-secondary-900 dark:text-white mb-2">Sources</h3>
+                    <p className="text-sm text-secondary-500 dark:text-secondary-400 mb-3">
+                      {source.populationNote}
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      <a
+                        href={wikipediaUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-2 rounded-xl bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 text-sm hover:bg-secondary-200 dark:hover:bg-secondary-600 transition-colors duration-300 flex items-center gap-2"
+                      >
+                        <span>📖</span> Wikipedia — {source.commonName}
+                      </a>
+                      {iucnUrl && (
+                        <a
+                          href={iucnUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-2 rounded-xl bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 text-sm hover:bg-secondary-200 dark:hover:bg-secondary-600 transition-colors duration-300 flex items-center gap-2"
+                        >
+                          <span>🟥</span> IUCN Red List assessment
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
             </motion.div>
           </div>
         </motion.div>

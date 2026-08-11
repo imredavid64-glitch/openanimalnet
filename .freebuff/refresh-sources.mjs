@@ -21,8 +21,10 @@ import { speciesSources } from '../src/data/sample/sources.ts';
 const WIKIDATA_ENDPOINT = 'https://query.wikidata.org/sparql';
 
 // Wikidata Q-IDs for IUCN Red List categories (property P141 values).
+// Verified against Wikidata labels 2026-08-11 — note Q21983152 is a mountain
+// range, NOT "critically endangered"; the correct CR QID is Q219127.
 const STATUS_BY_QID = {
-  Q21983152: 'CR', // Critically Endangered
+  Q219127: 'CR',   // Critically Endangered
   Q96377276: 'EN', // Endangered
   Q278113: 'VU',   // Vulnerable
   Q214984: 'NT',   // Near Threatened
@@ -31,6 +33,21 @@ const STATUS_BY_QID = {
   Q209175: 'EX',   // Extinct
   Q552752: 'EW',   // Extinct in the Wild
 };
+
+// Documented exceptions where Wikidata's P141 is stale or absent, verified
+// against the IUCN Red List on 2026-08-11. Remove an entry once Wikidata
+// catches up — the checker then validates the recorded status normally.
+const STATUS_EXCEPTIONS = {
+  // IUCN 2022 lists the monarch (Danaus plexippus, ID 159971) as Endangered;
+  // Wikidata's P141 still reads Least Concern (pre-2022 assessment).
+  159971: 'EN',
+  // Amur leopard: the subspecies item (Q192967) carries no P627/P141 on
+  // Wikidata. The subspecies is assessed Critically Endangered within the 2020
+  // global Panthera pardus assessment (IUCN ID 15954).
+  15954: 'CR',
+};
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function queryWikidata(scientificName) {
   const query = `SELECT ?item ?itemLabel ?iucn ?status WHERE {
@@ -41,15 +58,22 @@ async function queryWikidata(scientificName) {
     SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
   }`;
   const url = `${WIKIDATA_ENDPOINT}?${new URLSearchParams({ query })}`;
-  const res = await fetch(url, {
-    headers: {
-      Accept: 'application/sparql-results+json',
-      'User-Agent': 'OpenAnimalNet-data-check/1.0 (https://github.com/imredavid64-glitch/openanimalnet; data freshness checker)',
-    },
-  });
-  if (!res.ok) throw new Error(`Wikidata HTTP ${res.status}`);
-  const json = await res.json();
-  return json.results.bindings;
+  // Wikidata's SPARQL endpoint is rate-limited (429/502 under load); retry
+  // with backoff so a transient hiccup doesn't false-positive the drift check.
+  for (let attempt = 1; ; attempt++) {
+    const res = await fetch(url, {
+      headers: {
+        Accept: 'application/sparql-results+json',
+        'User-Agent': 'OpenAnimalNet-data-check/1.0 (https://github.com/imredavid64-glitch/openanimalnet; data freshness checker)',
+      },
+    });
+    if (res.ok) {
+      const json = await res.json();
+      return json.results.bindings;
+    }
+    if (attempt >= 4) throw new Error(`Wikidata HTTP ${res.status}`);
+    await sleep(attempt * 3000);
+  }
 }
 
 async function wikipediaExists(title) {
@@ -60,6 +84,7 @@ async function wikipediaExists(title) {
 
 async function checkSpecies(source) {
   const findings = [];
+  let statusNote = null;
   try {
     const bindings = await queryWikidata(source.scientificName);
     const exact = bindings.find((b) => b.itemLabel?.value === source.scientificName) ?? bindings[0];
@@ -68,14 +93,23 @@ async function checkSpecies(source) {
     } else {
       const liveIucn = exact.iucn ? Number(exact.iucn.value) : null;
       if (liveIucn !== source.iucnId) {
-        findings.push({
-          field: 'iucnId',
-          ok: false,
-          detail: `recorded ${source.iucnId ?? 'none'} vs live ${liveIucn ?? 'none'} (${exact.itemLabel.value})`,
-        });
+        if (liveIucn === null && STATUS_EXCEPTIONS[source.iucnId]) {
+          // Subspecies/other item carries no P627; recorded ID is the covering
+          // assessment — accept.
+          statusNote = statusNote ?? `IUCN ID exception (no P627 on Wikidata item; recorded ${source.iucnId})`;
+        } else {
+          findings.push({
+            field: 'iucnId',
+            ok: false,
+            detail: `recorded ${source.iucnId ?? 'none'} vs live ${liveIucn ?? 'none'} (${exact.itemLabel.value})`,
+          });
+        }
       }
       const liveStatus = exact.status ? STATUS_BY_QID[exact.status.value.split('/').pop()] ?? '?' : 'NE';
-      if (liveStatus !== source.conservationStatus) {
+      if (STATUS_EXCEPTIONS[source.iucnId]) {
+        // Documented staleness/absence — accept the recorded status.
+        statusNote = `status exception (Wikidata ${liveStatus}, recorded ${source.conservationStatus})`;
+      } else if (liveStatus !== source.conservationStatus) {
         findings.push({
           field: 'status',
           ok: false,
@@ -91,7 +125,7 @@ async function checkSpecies(source) {
   } catch (err) {
     findings.push({ field: 'network', ok: false, detail: err.message });
   }
-  return findings;
+  return { findings, statusNote };
 }
 
 async function main() {
@@ -100,9 +134,12 @@ async function main() {
   console.log(`\nChecking ${speciesSources.length} species against live sources…\n`);
 
   for (const source of speciesSources) {
-    const findings = await checkSpecies(source);
+    const { findings, statusNote } = await checkSpecies(source);
     if (findings.length === 0) {
-      console.log(`  ✓ ${source.commonName.padEnd(28)} ${source.conservationStatus} · IUCN ${source.iucnId ?? '—'} · wiki OK`);
+      console.log(
+        `  ✓ ${source.commonName.padEnd(28)} ${source.conservationStatus} · IUCN ${source.iucnId ?? '—'} · wiki OK` +
+          (statusNote ? ` · ${statusNote}` : '')
+      );
     } else {
       mismatches += findings.length;
       console.log(`  ⚠ ${source.commonName.padEnd(28)}`);

@@ -2,6 +2,31 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.3.0] - 2026-08-11
+
+### Added
+- **7 new species** (18 total): Polar Bear (VU), Bornean Orangutan (CR),
+  Amur Leopard (CR), Giraffe (VU), Koala (VU), Monarch Butterfly (EN),
+  Komodo Dragon (EN) — each with a real photo, verified IUCN assessment ID,
+  current population estimate, and source links.
+- **Source links on animal detail pages**: every species page now shows its
+  Wikipedia article, IUCN Red List assessment, and the source note for its
+  population figure.
+- **Auto-deploy on push**: `.github/workflows/deploy.yml` deploys production
+  to Vercel via `vercel-action` on every push to `main` (secrets:
+  `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID`).
+- **Data drift watch**: `.github/workflows/data-drift.yml` runs the freshness
+  checker weekly (Mondays 03:00 UTC, manually triggerable) and fails if any
+  species' IUCN status/ID or Wikipedia article has drifted.
+
+### Fixed
+- The freshness checker's Critically Endangered mapping was wrong: Wikidata
+  Q21983152 is a mountain range, not a status — the correct CR QID is Q219127
+  (would have mis-reported any CR species).
+- Freshness checker now retries Wikidata's transient 429/502s with backoff and
+  documents two known Wikidata gaps (monarch P141 stale at LC vs IUCN 2022 EN;
+  Amur leopard subspecies item lacks P627/P141) as explicit exceptions.
+
 ## [1.2.0] - 2026-08-11
 
 ### Added

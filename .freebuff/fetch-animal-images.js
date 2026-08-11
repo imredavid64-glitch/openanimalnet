@@ -15,6 +15,13 @@ const species = [
   { id: 'dolphin-001', title: 'Common_bottlenose_dolphin' },
   { id: 'bee-001', title: 'Western_honey_bee' },
   { id: 'cow-001', title: 'Holstein_Friesian_cattle' },
+  { id: 'polar-bear-001', title: 'Polar_bear' },
+  { id: 'orangutan-001', title: 'Bornean_orangutan' },
+  { id: 'leopard-001', title: 'Amur_leopard' },
+  { id: 'giraffe-001', title: 'Giraffe' },
+  { id: 'koala-001', title: 'Koala' },
+  { id: 'monarch-001', title: 'Monarch_butterfly' },
+  { id: 'komodo-001', title: 'Komodo_dragon' },
 ];
 
 const outDir = path.join(__dirname, '..', 'public', 'images', 'animals');

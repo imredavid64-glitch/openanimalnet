@@ -56,6 +56,16 @@ export default function MethodologyPage() {
         <li>Western honey bee (IUCN 2014 global assessment, Data Deficient — wild colonies not
           quantified).</li>
         <li>Holstein cattle are a domesticated breed with no IUCN assessment (Not Evaluated).</li>
+        <li>Polar bear ~26,000 (IUCN 2015 estimate; Vulnerable).</li>
+        <li>Bornean orangutan ~104,700 (IUCN 2016 assessment; Critically Endangered).</li>
+        <li>Amur leopard ~130 adults (2023 Russia–China census; Critically Endangered under the
+          2020 global leopard assessment).</li>
+        <li>Giraffe ~117,000 (Giraffe Conservation Foundation 2021; Vulnerable).</li>
+        <li>Koala ~57,000 est. (AKF 2023, wide estimate range; IUCN Vulnerable, Endangered under
+          Australian law).</li>
+        <li>Monarch butterfly (IUCN 2022 assessment, Endangered — western overwintering count
+          ~233,000 in 2023-24, down from millions).</li>
+        <li>Komodo dragon ~3,500 incl. juveniles, ~1,383 mature (IUCN 2021; Endangered).</li>
       </ul>
       <p>
         Every species links to its primary sources — Wikipedia and its official IUCN assessment —
