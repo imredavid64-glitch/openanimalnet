@@ -9,9 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Node 22.6+ required: the unit/integration tests import .ts files
+    # directly (type stripping), and the build runs on the same runtime.
     strategy:
       matrix:
-        node-version: [20]
+        node-version: [22]
 
     steps:
       - name: Checkout
