@@ -87,7 +87,7 @@ export default function AnimalCategories() {
                   </span>
                 </div>
                 <p className="text-white/80 text-sm line-clamp-2">
-                  {category.description || `Comprehensive data on ${category.name.toLowerCase()}`}
+                  {`Comprehensive data on ${category.name.toLowerCase()}`}
                 </p>
               </div>
               

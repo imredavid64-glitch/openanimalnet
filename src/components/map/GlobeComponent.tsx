@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 
 interface GlobeData {
@@ -61,7 +61,7 @@ export default forwardRef(function GlobeComponent(
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const globeRef = useRef<THREE.Mesh | null>(null);
-  const pointsRef = useRef<THREE.Points | null>(null);
+  const pointsRef = useRef<THREE.Points | THREE.Group | null>(null);
   const raycasterRef = useRef<THREE.Raycaster | null>(null);
   const mouseRef = useRef<THREE.Vector2 | null>(null);
   
@@ -72,6 +72,7 @@ export default forwardRef(function GlobeComponent(
   // Initialize Three.js
   useEffect(() => {
     if (!containerRef.current) return;
+    const container = containerRef.current;
     
     // Scene
     const scene = new THREE.Scene();
@@ -80,7 +81,7 @@ export default forwardRef(function GlobeComponent(
     // Camera
     const camera = new THREE.PerspectiveCamera(
       75,
-      containerRef.current.clientWidth / containerRef.current.clientHeight,
+      container.clientWidth / container.clientHeight,
       0.1,
       1000
     );
@@ -92,10 +93,10 @@ export default forwardRef(function GlobeComponent(
       antialias: true, 
       alpha: true 
     });
-    renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+    renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     rendererRef.current = renderer;
-    containerRef.current.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
     
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -126,11 +127,11 @@ export default forwardRef(function GlobeComponent(
     
     // Handle resize
     const handleResize = () => {
-      if (!containerRef.current || !camera || !renderer) return;
+      if (!container || !camera || !renderer) return;
       
-      camera.aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
+      camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+      renderer.setSize(container.clientWidth, container.clientHeight);
     };
     
     window.addEventListener('resize', handleResize);
@@ -158,9 +159,7 @@ export default forwardRef(function GlobeComponent(
     
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (containerRef.current) {
-        containerRef.current.removeChild(renderer.domElement);
-      }
+      container.removeChild(renderer.domElement);
       // Clean up Three.js objects
       if (sceneRef.current) {
         while (sceneRef.current.children.length > 0) {
@@ -168,6 +167,9 @@ export default forwardRef(function GlobeComponent(
         }
       }
     };
+    // One-time scene setup: createGlobe/createPoints are intentionally
+    // captured once; data changes are handled by the dedicated effect below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   // Update points when data changes
@@ -175,7 +177,7 @@ export default forwardRef(function GlobeComponent(
     if (!sceneRef.current) return;
     
     // Remove existing points
-    if (pointsRef.current) {
+    if (pointsRef.current && 'geometry' in pointsRef.current) {
       sceneRef.current.remove(pointsRef.current);
       pointsRef.current.geometry.dispose();
       (pointsRef.current.material as THREE.Material).dispose();
@@ -183,15 +185,19 @@ export default forwardRef(function GlobeComponent(
     
     // Create new points
     createPoints(sceneRef.current, data);
+    // createPoints is a component-scope helper; its only input is `data`,
+    // which is already the dependency.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   
   // Handle mouse events for hover
   useEffect(() => {
-    if (!containerRef.current || !cameraRef.current || !raycasterRef.current || !mouseRef.current) return;
+    const container = containerRef.current;
+    if (!container || !cameraRef.current || !raycasterRef.current || !mouseRef.current) return;
     
     const handleMouseMove = (event: MouseEvent) => {
       // Calculate mouse position in normalized device coordinates
-      const rect = containerRef.current!.getBoundingClientRect();
+      const rect = container.getBoundingClientRect();
       mouseRef.current!.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       mouseRef.current!.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
       
@@ -214,10 +220,10 @@ export default forwardRef(function GlobeComponent(
       }
     };
     
-    containerRef.current.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mousemove', handleMouseMove);
     
     return () => {
-      containerRef.current?.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('mousemove', handleMouseMove);
     };
   }, [data, onAnimalHover]);
   
@@ -243,7 +249,7 @@ export default forwardRef(function GlobeComponent(
       }
     },
     toggleRotation: () => {
-      setIsRotating(!isRotating);
+      setIsRotating((prev) => !prev);
     },
   }));
   

@@ -78,8 +78,44 @@ npm run dev
 - **UI**: Tailwind CSS, Framer Motion
 - **3D Visualization**: Three.js, React Three Fiber
 - **Mapping**: Leaflet, React Leaflet
-- **State Management**: Zustand
 - **Charts**: Recharts
+
+## API
+
+The platform ships a public JSON API under `/api/v1/*` (all endpoints are rate
+limited to 60 req/min per IP and send cache headers):
+
+| Endpoint | Description |
+| --- | --- |
+| `GET /api/v1/animals` | List species — filters: `category`, `conservationStatus`, `dataCategories`, `isMonitored`, `search`; pagination: `page`, `limit` |
+| `GET /api/v1/animals/:id` | Full profile for one species, including all five data categories |
+| `GET /api/v1/populations` | Population estimates and conservation metrics |
+| `GET /api/v1/monitoring/alerts` | Active alerts, filterable by `type` (`critical` \| `warning` \| `info`) |
+| `GET /api/v1/monitoring/stats` | Aggregated dashboard statistics and population trends |
+| `GET /api/v1/locations` | Recent telemetry locations for monitored animals |
+
+Example:
+
+```bash
+curl "http://localhost:3000/api/v1/animals?category=mammals&limit=5"
+```
+
+## Testing
+
+```bash
+npm test        # unit tests (filtering, rate limiter) — no server needed
+npm run test:api  # API integration tests — requires a running server
+```
+
+The integration suite hits the server at `http://localhost:3100` by default;
+point it elsewhere with `API_BASE_URL`:
+
+```bash
+API_BASE_URL=http://localhost:3000 npm run test:api
+```
+
+Continuous integration (lint, unit tests, build, API integration tests) runs on
+GitHub Actions for every push and pull request — see `.github/workflows/ci.yml`.
 
 ## Project Structure
 

@@ -121,8 +121,9 @@ export default function InteractiveGlobe() {
           </div>
         </div>
 
-        {/* Info Panel */}
-        <div className="absolute top-6 right-6 z-20 bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-lg min-w-[300px]">
+        {/* Info Panel — hover info is a desktop affordance; hidden on small
+            screens (no hover on touch) where its min-width would clip the globe */}
+        <div className="hidden sm:block absolute top-6 right-6 z-20 bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-lg min-w-[300px]">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-semibold">Animal Data</h3>
             <div className="flex space-x-2">

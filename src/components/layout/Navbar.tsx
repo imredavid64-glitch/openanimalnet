@@ -18,6 +18,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +28,19 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('theme');
+    const isDark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(isDark ? 'dark' : 'light');
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    document.documentElement.classList.toggle('dark', next === 'dark');
+    localStorage.setItem('theme', next);
+  };
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -107,6 +121,13 @@ export default function Navbar() {
             <button className="p-2 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300">
               <span className="text-xl">🔍</span>
             </button>
+            <button
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              className="p-2 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300"
+            >
+              <span className="text-xl">{theme === 'dark' ? '☀️' : '🌙'}</span>
+            </button>
             <Link
               href="/dashboard"
               className="btn-primary text-sm"
@@ -167,6 +188,13 @@ export default function Navbar() {
                   <button className="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300">
                     <span className="text-xl">🔍</span>
                     <span>Search</span>
+                  </button>
+                  <button
+                    onClick={toggleTheme}
+                    className="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300"
+                  >
+                    <span className="text-xl">{theme === 'dark' ? '☀️' : '🌙'}</span>
+                    <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
                   </button>
                 </div>
               </div>

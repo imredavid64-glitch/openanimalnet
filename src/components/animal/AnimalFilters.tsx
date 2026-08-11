@@ -80,7 +80,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
     onFilterChange({ categories: [], conservationStatus: [], dataCategories: [], isMonitored: undefined });
   };
 
-  const categoryOptions = animalCategoryData.map(cat => cat.category);
+  const categoryOptions = animalCategoryData.map(cat => cat.category as AnimalCategory);
   const statusOptions = conservationStatusData.map(s => s.status as ConservationStatus);
   const dataOptions = dataCategoryData.map(d => d.category as DataCategory);
 

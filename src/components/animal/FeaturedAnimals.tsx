@@ -44,7 +44,7 @@ const conservationStatusNames: Record<ConservationStatus, string> = {
 export default function FeaturedAnimals() {
   const [selectedAnimal, setSelectedAnimal] = useState<string | null>(null);
 
-  const featuredAnimals = sampleAnimals.slice(0, 8);
+  const featuredAnimals = sampleAnimals;
 
   return (
     <motion.div

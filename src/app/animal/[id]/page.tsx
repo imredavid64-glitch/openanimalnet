@@ -103,7 +103,7 @@ export default function AnimalDetailPage() {
               Animal Not Found
             </h2>
             <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-              The animal you're looking for doesn't exist in our database.
+              The animal you&apos;re looking for doesn&apos;t exist in our database.
             </p>
             <Link href="/animal" className="btn-primary">
               Browse All Animals
@@ -461,7 +461,7 @@ export default function AnimalDetailPage() {
                                 {typeof value === 'object' ? (
                                   <div className="font-medium text-secondary-900 dark:text-white">
                                     {Object.entries(value as any).map(([k, v]) => (
-                                      <div key={k}>{k}: {v}</div>
+                                      <div key={k}>{k}: {String(v)}</div>
                                     ))}
                                   </div>
                                 ) : (
@@ -492,7 +492,7 @@ export default function AnimalDetailPage() {
                                 {typeof value === 'object' ? (
                                   <div className="font-medium text-secondary-900 dark:text-white">
                                     {Object.entries(value as any).map(([k, v]) => (
-                                      <div key={k}>{k}: {v}</div>
+                                      <div key={k}>{k}: {String(v)}</div>
                                     ))}
                                   </div>
                                 ) : (
@@ -514,7 +514,7 @@ export default function AnimalDetailPage() {
                       No Biological Data Available
                     </h3>
                     <p className="text-secondary-600 dark:text-secondary-400">
-                      This animal doesn't have biological data in our system yet.
+                      This animal doesn&apos;t have biological data in our system yet.
                     </p>
                   </div>
                 )}
@@ -662,7 +662,7 @@ export default function AnimalDetailPage() {
                       No Behavioral Data Available
                     </h3>
                     <p className="text-secondary-600 dark:text-secondary-400">
-                      This animal doesn't have behavioral data in our system yet.
+                      This animal doesn&apos;t have behavioral data in our system yet.
                     </p>
                   </div>
                 )}
@@ -697,7 +697,7 @@ export default function AnimalDetailPage() {
                                 {typeof value === 'object' ? (
                                   <div className="font-medium text-secondary-900 dark:text-white">
                                     {Object.entries(value as any).map(([k, v]) => (
-                                      <div key={k}>{k}: {v}</div>
+                                      <div key={k}>{k}: {String(v)}</div>
                                     ))}
                                   </div>
                                 ) : (
@@ -802,7 +802,7 @@ export default function AnimalDetailPage() {
                       No Ecological Data Available
                     </h3>
                     <p className="text-secondary-600 dark:text-secondary-400">
-                      This animal doesn't have ecological data in our system yet.
+                      This animal doesn&apos;t have ecological data in our system yet.
                     </p>
                   </div>
                 )}
@@ -972,7 +972,7 @@ export default function AnimalDetailPage() {
                       No Population Data Available
                     </h3>
                     <p className="text-secondary-600 dark:text-secondary-400">
-                      This animal doesn't have population data in our system yet.
+                      This animal doesn&apos;t have population data in our system yet.
                     </p>
                   </div>
                 )}
@@ -1131,7 +1131,7 @@ export default function AnimalDetailPage() {
                       No Health Data Available
                     </h3>
                     <p className="text-secondary-600 dark:text-secondary-400">
-                      This animal doesn't have health data in our system yet.
+                      This animal doesn&apos;t have health data in our system yet.
                     </p>
                   </div>
                 )}

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import {
   sampleAnimals,
@@ -36,19 +36,62 @@ const categoryColors: Record<AnimalCategory, string> = {
   marine: '#1e40af',
 };
 
+const categoryIcons: Record<AnimalCategory, string> = {
+  mammals: '🦁',
+  birds: '🦅',
+  reptiles: '🐍',
+  amphibians: '🐸',
+  fish: '🐟',
+  invertebrates: '🦋',
+  insects: '🐜',
+  marine: '🐋',
+};
+
+interface MonitoringStats {
+  totalAnimals: number;
+  monitoredAnimals: number;
+  activeAlerts: number;
+  populationTrend: { date: string; mammals: number; birds: number; reptiles: number; amphibians: number }[];
+}
+
 export default function StatsDashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'categories' | 'conservation' | 'monitoring'>('overview');
   const [isClient, setIsClient] = useState(false);
+  const [apiStats, setApiStats] = useState<MonitoringStats | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  // Fetch live stats from the API; fall back to bundled sample data on error.
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/v1/monitoring/stats')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (!cancelled && json?.success) setApiStats(json.data);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setStatsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const liveStats = apiStats ?? {
+    totalAnimals: sampleMonitoringData.totalAnimals,
+    monitoredAnimals: sampleMonitoringData.monitoredAnimals,
+    activeAlerts: sampleMonitoringData.activeAlerts,
+  };
+
   // Prepare data for charts
   const categoryChartData = animalCategoryData.map(cat => ({
     name: cat.name,
     value: cat.count,
-    color: categoryColors[cat.category],
+    color: categoryColors[cat.category as AnimalCategory],
   }));
 
   const conservationChartData = conservationStatusData.map(status => ({
@@ -62,13 +105,7 @@ export default function StatsDashboard() {
     { name: 'Not Monitored', value: sampleMonitoringData.totalAnimals - sampleMonitoringData.monitoredAnimals, color: '#ef4444' },
   ];
 
-  const populationTrendData = [
-    { date: '2020', mammals: 45000, birds: 95000, reptiles: 85000, amphibians: 65000 },
-    { date: '2021', mammals: 46000, birds: 96000, reptiles: 86000, amphibians: 64000 },
-    { date: '2022', mammals: 47000, birds: 97000, reptiles: 87000, amphibians: 63000 },
-    { date: '2023', mammals: 48000, birds: 98000, reptiles: 88000, amphibians: 62000 },
-    { date: '2024', mammals: 49000, birds: 99000, reptiles: 89000, amphibians: 61000 },
-  ];
+  const populationTrendData = apiStats?.populationTrend ?? sampleMonitoringData.populationTrend;
 
   const dataCategoryChartData = dataCategoryData.map(cat => ({
     name: cat.name,
@@ -138,27 +175,38 @@ export default function StatsDashboard() {
           transition={{ duration: 0.3 }}
         >
           {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <div className="flex items-center justify-end mb-4">
+                {apiStats ? (
+                  <span className="inline-flex items-center space-x-1.5 text-xs font-medium text-success-600 dark:text-success-400">
+                    <span className="w-2 h-2 rounded-full bg-success-500 animate-pulse" />
+                    <span>Live API data</span>
+                  </span>
+                ) : statsLoading ? (
+                  <span className="text-xs text-secondary-400">Loading live stats…</span>
+                ) : null}
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Key Metrics */}
               <div className="grid grid-cols-2 gap-4">
                 {[
                   {
                     label: 'Total Species',
-                    value: sampleMonitoringData.totalAnimals.toLocaleString(),
+                    value: liveStats.totalAnimals.toLocaleString(),
                     icon: '🐾',
                     change: '+12%',
                     color: 'primary',
                   },
                   {
                     label: 'Monitored Animals',
-                    value: sampleMonitoringData.monitoredAnimals.toLocaleString(),
+                    value: liveStats.monitoredAnimals.toLocaleString(),
                     icon: '📡',
                     change: '+8%',
                     color: 'success',
                   },
                   {
                     label: 'Active Alerts',
-                    value: sampleMonitoringData.activeAlerts.toLocaleString(),
+                    value: liveStats.activeAlerts.toLocaleString(),
                     icon: '⚠️',
                     change: '-5%',
                     color: 'warning',
@@ -241,6 +289,7 @@ export default function StatsDashboard() {
                   )}
                 </div>
               </motion.div>
+            </div>
             </div>
           )}
 

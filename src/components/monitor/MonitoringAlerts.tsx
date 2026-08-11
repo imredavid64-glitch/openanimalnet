@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { sampleAnimals, sampleMonitoringData } from '@/data/sample/animals';
+import { sampleAlerts } from '@/data/sample/alerts';
 import { ConservationStatus } from '@/types/animal/types';
 
 const conservationStatusColors: Record<ConservationStatus, string> = {
@@ -22,61 +22,9 @@ const alertTypes = [
   { type: 'critical', name: 'Critical', icon: '🚨', color: 'bg-danger-500' },
   { type: 'warning', name: 'Warning', icon: '⚠️', color: 'bg-warning-500' },
   { type: 'info', name: 'Info', icon: 'ℹ️', color: 'bg-primary-500' },
-];
+] as const;
 
-// Sample alerts
-const sampleAlerts = [
-  {
-    id: 'alert-001',
-    type: 'critical' as const,
-    animal: sampleAnimals[1],
-    message: 'Elephant herd approaching human settlement in Kenya',
-    timestamp: new Date(Date.now() - 3600000),
-    severity: 9,
-    location: { lat: -1.2921, lng: 36.8219 },
-    action: 'Immediate intervention required',
-  },
-  {
-    id: 'alert-002',
-    type: 'warning' as const,
-    animal: sampleAnimals[0],
-    message: 'Lion pride showing unusual movement patterns',
-    timestamp: new Date(Date.now() - 7200000),
-    severity: 6,
-    location: { lat: -2.3333, lng: 35.0833 },
-    action: 'Monitor closely',
-  },
-  {
-    id: 'alert-003',
-    type: 'info' as const,
-    animal: sampleAnimals[3],
-    message: 'New bald eagle nest discovered in Alaska',
-    timestamp: new Date(Date.now() - 10800000),
-    severity: 3,
-    location: { lat: 61.3707, lng: -152.3978 },
-    action: 'Document and verify',
-  },
-  {
-    id: 'alert-004',
-    type: 'critical' as const,
-    animal: sampleAnimals[2],
-    message: 'Tiger sighting near village in India',
-    timestamp: new Date(Date.now() - 14400000),
-    severity: 8,
-    location: { lat: 23.0, lng: 88.0 },
-    action: 'Alert local authorities',
-  },
-  {
-    id: 'alert-005',
-    type: 'warning' as const,
-    animal: sampleAnimals[4],
-    message: 'Blue whale migration path deviation detected',
-    timestamp: new Date(Date.now() - 18000000),
-    severity: 7,
-    location: { lat: -30.0, lng: -120.0 },
-    action: 'Investigate environmental factors',
-  },
-];
+
 
 export default function MonitoringAlerts() {
   const [selectedAlert, setSelectedAlert] = useState<string | null>(null);
@@ -134,7 +82,7 @@ export default function MonitoringAlerts() {
           {alertTypes.map((alertType) => (
             <button
               key={alertType.type}
-              onClick={() => setFilterType(alertType.type === 'all' ? 'all' : alertType.type)}
+              onClick={() => setFilterType(alertType.type)}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 flex items-center space-x-1 ${
                 filterType === alertType.type
                   ? 'bg-white text-primary-600 shadow-lg'
@@ -170,8 +118,18 @@ export default function MonitoringAlerts() {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: 'easeOut' }}
             whileHover={{ y: -5, scale: 1.02 }}
+            role="button"
+            tabIndex={0}
+            aria-expanded={selectedAlert === alert.id}
+            aria-label={`${alert.type} alert for ${alert.animal.commonName}: ${alert.message}`}
             onClick={() => setSelectedAlert(selectedAlert === alert.id ? null : alert.id)}
-            className={`relative cursor-pointer ${
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelectedAlert(selectedAlert === alert.id ? null : alert.id);
+              }
+            }}
+            className={`relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-2xl ${
               selectedAlert === alert.id ? 'ring-2 ring-primary-500' : ''
             }`}
           >
@@ -199,7 +157,7 @@ export default function MonitoringAlerts() {
                     <div className="font-semibold text-secondary-900 dark:text-white">
                       {alert.type.toUpperCase()}
                     </div>
-                    <div className="text-xs text-secondary-500 dark:text-secondary-400">
+                    <div className="text-xs text-secondary-500 dark:text-secondary-400" suppressHydrationWarning>
                       {new Date(alert.timestamp).toLocaleString()}
                     </div>
                   </div>
@@ -243,6 +201,13 @@ export default function MonitoringAlerts() {
                     {alert.action}
                   </div>
                 </div>
+                <Link
+                  href={`/monitor/alerts/${alert.id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="mt-4 inline-flex items-center text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                >
+                  View Full Details →
+                </Link>
               </div>
 
               {/* Status Bar */}
@@ -278,6 +243,9 @@ export default function MonitoringAlerts() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 50 }}
               onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Alert details"
               className="bg-white dark:bg-secondary-800 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
             >
               {(() => {
@@ -315,7 +283,7 @@ export default function MonitoringAlerts() {
                           <span className="text-xl">×</span>
                         </button>
                       </div>
-                      <div className="mt-4 text-sm text-secondary-500 dark:text-secondary-400">
+                      <div className="mt-4 text-sm text-secondary-500 dark:text-secondary-400" suppressHydrationWarning>
                         {new Date(alert.timestamp).toLocaleString()}
                       </div>
                     </div>
@@ -407,7 +375,7 @@ export default function MonitoringAlerts() {
                           </div>
                           <div>
                             <div className="text-secondary-400">Last Updated</div>
-                            <div className="text-secondary-700 dark:text-secondary-300">{new Date(alert.animal.lastUpdated).toLocaleDateString()}</div>
+                            <div className="text-secondary-700 dark:text-secondary-300" suppressHydrationWarning>{new Date(alert.animal.lastUpdated).toLocaleDateString()}</div>
                           </div>
                           <div>
                             <div className="text-secondary-400">Data Categories</div>
@@ -431,6 +399,12 @@ export default function MonitoringAlerts() {
                           Monitor This Animal
                         </Link>
                       </div>
+                      <Link
+                        href={`/monitor/alerts/${alert.id}`}
+                        className="block w-full mt-4 text-center text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                      >
+                        View Full Alert Details →
+                      </Link>
                     </div>
                   </>
                 );

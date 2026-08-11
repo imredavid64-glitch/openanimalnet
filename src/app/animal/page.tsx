@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { sampleAnimals, animalCategoryData, conservationStatusData } from '@/data/sample/animals';
+import { sampleAnimals, animalCategoryData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus, AnimalFilter } from '@/types/animal/types';
+import { filterAndSortAnimals, AnimalSortBy } from '@/lib/animalFiltering';
 import AnimalCard from '@/components/animal/AnimalCard';
 import AnimalFilters from '@/components/animal/AnimalFilters';
 import Navbar from '@/components/layout/Navbar';
@@ -14,81 +15,34 @@ export default function AnimalPage() {
   const [animals, setAnimals] = useState(sampleAnimals);
   const [filters, setFilters] = useState<AnimalFilter>({});
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<'name' | 'population' | 'status' | 'monitored'>('name');
+  const [sortBy, setSortBy] = useState<AnimalSortBy>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Initialize filters from URL query params (?category=..., ?isMonitored=true)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category');
+    const monitored = params.get('isMonitored');
+    if (category) {
+      setFilters(prev => ({ ...prev, categories: [category as AnimalCategory] }));
+    }
+    if (monitored === 'true') {
+      setFilters(prev => ({ ...prev, isMonitored: true }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Apply filters and sorting
   useEffect(() => {
     setIsLoading(true);
-    
-    let filteredAnimals = [...sampleAnimals];
-    
-    // Apply category filter
-    if (filters.categories && filters.categories.length > 0) {
-      filteredAnimals = filteredAnimals.filter(animal => 
-        filters.categories!.includes(animal.category)
-      );
-    }
-    
-    // Apply conservation status filter
-    if (filters.conservationStatus && filters.conservationStatus.length > 0) {
-      filteredAnimals = filteredAnimals.filter(animal => 
-        filters.conservationStatus!.includes(animal.conservationStatus)
-      );
-    }
-    
-    // Apply data category filter
-    if (filters.dataCategories && filters.dataCategories.length > 0) {
-      filteredAnimals = filteredAnimals.filter(animal => 
-        filters.dataCategories!.some(cat => animal.dataCategories.includes(cat))
-      );
-    }
-    
-    // Apply monitored filter
-    if (filters.isMonitored !== undefined) {
-      filteredAnimals = filteredAnimals.filter(animal => 
-        animal.isMonitored === filters.isMonitored
-      );
-    }
-    
-    // Apply search query
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filteredAnimals = filteredAnimals.filter(animal => 
-        animal.commonName.toLowerCase().includes(query) ||
-        animal.scientificName.toLowerCase().includes(query) ||
-        animal.description?.toLowerCase().includes(query) ||
-        animal.habitat?.some(h => h.toLowerCase().includes(query))
-      );
-    }
-    
-    // Apply sorting
-    filteredAnimals.sort((a, b) => {
-      switch (sortBy) {
-        case 'name':
-          return sortDirection === 'asc' 
-            ? a.commonName.localeCompare(b.commonName)
-            : b.commonName.localeCompare(a.commonName);
-        case 'population':
-          const aPop = a.populationEstimate || 0;
-          const bPop = b.populationEstimate || 0;
-          return sortDirection === 'asc' ? aPop - bPop : bPop - aPop;
-        case 'status':
-          // Order by conservation status severity
-          const statusOrder: ConservationStatus[] = ['EX', 'EW', 'CR', 'EN', 'VU', 'NT', 'LC', 'DD', 'NE'];
-          const aIndex = statusOrder.indexOf(a.conservationStatus);
-          const bIndex = statusOrder.indexOf(b.conservationStatus);
-          return sortDirection === 'asc' ? aIndex - bIndex : bIndex - aIndex;
-        case 'monitored':
-          return sortDirection === 'asc' 
-            ? Number(a.isMonitored) - Number(b.isMonitored)
-            : Number(b.isMonitored) - Number(a.isMonitored);
-        default:
-          return 0;
-      }
-    });
-    
+    const filteredAnimals = filterAndSortAnimals(
+      sampleAnimals,
+      filters,
+      searchQuery,
+      sortBy,
+      sortDirection
+    );
     setAnimals(filteredAnimals);
     setIsLoading(false);
   }, [filters, searchQuery, sortBy, sortDirection]);
@@ -155,7 +109,7 @@ export default function AnimalPage() {
             >
               <div className="text-3xl mb-2">{category.icon}</div>
               <div className="text-lg font-bold text-secondary-900 dark:text-white">
-                {categoryCounts[category.category] || 0}
+                {categoryCounts[category.category as AnimalCategory] || 0}
               </div>
               <div className="text-xs text-secondary-500 dark:text-secondary-400">
                 {category.name}

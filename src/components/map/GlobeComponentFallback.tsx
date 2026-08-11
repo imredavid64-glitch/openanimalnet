@@ -2,11 +2,12 @@
 
 import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import SimpleWorldMap from './SimpleWorldMap';
+import { AnimalCategory } from '@/types/animal/types';
 
 interface GlobeProps {
   data: any[];
   onAnimalHover: (animalId: string | null) => void;
-  selectedCategory: string | null;
+  selectedCategory: AnimalCategory | null;
 }
 
 export default forwardRef(function GlobeComponentFallback(

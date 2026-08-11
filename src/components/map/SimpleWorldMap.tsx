@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { sampleAnimals } from '@/data/sample/animals';
 import { AnimalCategory } from '@/types/animal/types';
 
@@ -164,6 +165,24 @@ export default function SimpleWorldMap() {
     };
   }, [points, hoveredPoint]);
 
+  // Find the closest map point to given canvas coordinates (in % of canvas)
+  const findClosestPoint = (x: number, y: number): MapPoint | null => {
+    let closest: MapPoint | null = null;
+    let minDistance = Number.MAX_VALUE;
+    
+    for (const point of points) {
+      const distance = Math.sqrt(
+        Math.pow(point.x - x, 2) + Math.pow(point.y - y, 2)
+      );
+      if (distance < minDistance && distance < 5) {
+        minDistance = distance;
+        closest = point;
+      }
+    }
+    
+    return closest;
+  };
+
   // Handle canvas click
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current) return;
@@ -173,25 +192,8 @@ export default function SimpleWorldMap() {
     const x = (e.clientX - rect.left) / rect.width * 100;
     const y = (e.clientY - rect.top) / rect.height * 100;
     
-    // Find closest point
-    let closestPoint: MapPoint | null = null;
-    let minDistance = Number.MAX_VALUE;
-    
-    points.forEach(point => {
-      const distance = Math.sqrt(
-        Math.pow(point.x - x, 2) + Math.pow(point.y - y, 2)
-      );
-      if (distance < minDistance && distance < 5) {
-        minDistance = distance;
-        closestPoint = point;
-      }
-    });
-    
-    if (closestPoint) {
-      setHoveredPoint(closestPoint.id);
-    } else {
-      setHoveredPoint(null);
-    }
+    const closestPoint = findClosestPoint(x, y);
+    setHoveredPoint(closestPoint ? closestPoint.id : null);
   };
 
   return (
@@ -212,21 +214,7 @@ export default function SimpleWorldMap() {
           const x = (e.clientX - rect.left) / rect.width * 100;
           const y = (e.clientY - rect.top) / rect.height * 100;
           
-          // Find closest point
-          let closestPoint: MapPoint | null = null;
-          let minDistance = Number.MAX_VALUE;
-          
-          points.forEach(point => {
-            const distance = Math.sqrt(
-              Math.pow(point.x - x, 2) + Math.pow(point.y - y, 2)
-            );
-            if (distance < minDistance && distance < 5) {
-              minDistance = distance;
-              closestPoint = point;
-            }
-          });
-          
-          setHoveredPoint(closestPoint?.id || null);
+          setHoveredPoint(findClosestPoint(x, y)?.id || null);
         }}
         className="w-full h-[400px] md:h-[500px] rounded-2xl bg-gradient-to-br from-primary-600 to-secondary-700 cursor-pointer"
       />
