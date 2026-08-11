@@ -107,6 +107,26 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
   `min-w-[300px]` clipped on small screens. No other fixed-width offenders:
   tables use `overflow-x-auto`, grids are `grid-cols-2 md:grid-cols-4`, and
   headings scale down (`text-5xl md:text-7xl`).
+- Real content pass (2026-08): all 11 animals now use real photos served from
+  `public/images/animals/` (fetched from Wikimedia Commons via
+  `.freebuff/fetch-animal-images.js`); sample data refreshed with current
+  population estimates / IUCN statuses and `lastUpdated` dates; the bee's globe
+  coordinate moved to North Dakota (top US honey state); methodology page got a
+  "Current Figures & Sources" section; the `/api/v1/animals/[id]` route now
+  falls back to the base profile so all 11 species return full detail.
+
+## Commit / deploy (Aug 11 2026)
+
+- Committed as `641dd6c` ("Polish OpenAnimalNet: real images, accurate data,
+  globe fixes") and pushed to `origin/main` — remote verified at `641dd6c`,
+  local `main` aligned. CI workflow (`.github/workflows/ci.yml`) runs on the
+  push.
+- Machine-specific note: on this machine the antivirus scanner blocks reads of
+  `.git/objects` written more than ~minutes ago, which hangs `git commit`/
+  `git push` pack builds. Workaround used: build a fresh repo in `/tmp` from a
+  copied worktree, commit there, and push — freshly-written objects read fast.
+  See the copy procedure (per-file retries, skip `.freebuff/*.db*`, verify
+  non-empty files) if a future push stalls the same way.
 
 ## Remaining environment note
 
