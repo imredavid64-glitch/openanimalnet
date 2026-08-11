@@ -183,6 +183,28 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
   `engines.node >=22.6` to package.json. CI is green now; `gh run list` to
   check.
 
+## Round 5 (Aug 11 2026): population timelines + species generator
+
+- **Population timeline chart**: `Animal.populationHistory` (new optional
+  field, `{year, estimate}[]` + a `populationHistoryNote` caveat). 12 species
+  carry verified series (tiger/panda/gorilla/eagle/whale/elephant/leopard/
+  monarch/komodo/giraffe/orangutan/lion) — figures checked against sources on
+  2026-08-11. The detail page's Population tab renders a recharts line chart
+  with the current estimate and the per-species note; species without history
+  (polar bear, koala, dolphin, shark, bee, cow) fall back to the empty state.
+- **Species generator** `.freebuff/generate-species.mjs [--apply]` — builds
+  Animal + SpeciesSource entries from Wikidata/Wikipedia: full taxonomy via a
+  single `P171+` ancestor query (prefers P225 scientific names), IUCN ID
+  (P627), status (P141), lead photo, description. Census figures/habitat/
+  coords stay TODO placeholders for human review. Generated the **Snow
+  Leopard** (19th species; VU; ~7,500 per IUCN CatSG) as the proof.
+- Generator gotchas fixed: the JPEG magic check compared 3 bytes to a 2-char
+  string (fixed to startsWith), and `?rankLabel` was missing from the ancestor
+  query (so no rank names came back).
+- Tests updated for 19 species (unit 19/19, integration 12/12); version 1.4.0.
+- Preview rebuilt in the scratch tree as usual; `gh run list` shows CI green
+  (Node 22) and the Deploy workflow succeeding.
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview

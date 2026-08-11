@@ -7,6 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { sampleAnimals, sampleAnimalData } from '@/data/sample/animals';
 import { speciesSources } from '@/data/sample/sources';
 import { Animal, AnimalData } from '@/types/animal/types';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
@@ -62,6 +63,11 @@ export default function AnimalDetailPage() {
   const [animal, setAnimal] = useState<Animal | null>(null);
   const [animalData, setAnimalData] = useState<AnimalData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const [activeTab, setActiveTab] = useState<'overview' | 'biological' | 'behavioral' | 'ecological' | 'population' | 'health' | 'monitoring'>('overview');
 
   useEffect(() => {
@@ -855,7 +861,53 @@ export default function AnimalDetailPage() {
                 <h3 className="text-xl font-semibold text-secondary-900 dark:text-white mb-4">
                   Population & Demographic Data
                 </h3>
-                
+
+                {/* Population trend timeline */}
+                {animal.populationHistory && animal.populationHistory.length > 0 && (
+                  <div className="bg-secondary-50 dark:bg-secondary-700/50 rounded-xl p-4 mb-6">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                      <h4 className="text-lg font-semibold text-secondary-800 dark:text-secondary-200">
+                        Population Trend
+                      </h4>
+                      <div className="text-sm text-secondary-500 dark:text-secondary-400">
+                        Current estimate:{' '}
+                        <span className="font-semibold text-secondary-900 dark:text-white">
+                          {animal.populationEstimate?.toLocaleString() || 'N/A'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="h-56">
+                      {isClient && (
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart
+                            data={animal.populationHistory}
+                            margin={{ top: 5, right: 10, bottom: 5, left: 10 }}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" opacity={0.3} />
+                            <XAxis dataKey="year" stroke="#94a3b8" tickFormatter={(v) => String(v)} />
+                            <YAxis stroke="#94a3b8" tickFormatter={(v) => v >= 1000000 ? `${(v / 1000000).toFixed(1)}M` : v >= 1000 ? `${(v / 1000).toFixed(0)}k` : String(v)} />
+                            <Tooltip
+                              formatter={(value: number) => [value.toLocaleString(), 'Estimated population']}
+                              labelFormatter={(label) => `Year ${label}`}
+                              contentStyle={{
+                                backgroundColor: '#ffffff',
+                                border: '1px solid #e2e8f0',
+                                borderRadius: '12px',
+                              }}
+                            />
+                            <Line type="monotone" dataKey="estimate" stroke="#0ea5e9" strokeWidth={3} dot={{ r: 4 }} />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      )}
+                    </div>
+                    {animal.populationHistoryNote && (
+                      <p className="text-xs text-secondary-500 dark:text-secondary-400 mt-2">
+                        {animal.populationHistoryNote}
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 {animalData?.population ? (
                   <div className="space-y-6">
                     {/* Abundance Data */}

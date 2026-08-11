@@ -182,4 +182,13 @@ export const speciesSources: SpeciesSource[] = [
     conservationStatus: 'EN',
     populationNote: '~3,500 incl. juveniles (IUCN 2021); ~1,383 mature individuals',
   },
+  {
+  animalId: 'snow-leopard-001',
+  commonName: 'Snow Leopard',
+  scientificName: 'Panthera uncia',
+  wikipediaTitle: 'Snow leopard',
+  iucnId: 22732,
+  conservationStatus: 'VU',
+  populationNote: '~7,500 (latest IUCN CatSG estimate, 2,710–3,386 mature); 4,080–6,590 (IUCN 2017)'
+},
 ];

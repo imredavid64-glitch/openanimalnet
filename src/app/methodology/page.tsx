@@ -66,7 +66,13 @@ export default function MethodologyPage() {
         <li>Monarch butterfly (IUCN 2022 assessment, Endangered — western overwintering count
           ~233,000 in 2023-24, down from millions).</li>
         <li>Komodo dragon ~3,500 incl. juveniles, ~1,383 mature (IUCN 2021; Endangered).</li>
+        <li>Snow leopard ~7,500 (latest IUCN CatSG estimate; Vulnerable).</li>
       </ul>
+      <p>
+        New species are added with the generator (<code>node .freebuff/generate-species.mjs</code>),
+        which pulls taxonomy, IUCN assessment IDs, photos, and descriptions straight from
+        Wikidata/Wikipedia; census figures are then filled in by hand.
+      </p>
       <p>
         Every species links to its primary sources — Wikipedia and its official IUCN assessment —
         on our <PageLink href="/sources">data sources index</PageLink>.

@@ -122,7 +122,18 @@ npm run refresh:data
 ```
 
 Every species links to its primary sources on the
-[Data Sources page](/sources) and on each animal's detail page. Continuous
+[Data Sources page](/sources) and on each animal's detail page. Species pages
+also chart the species' historical population series (censuses/surveys) in the
+Population Data tab.
+
+New species can be generated from live Wikidata/Wikipedia data instead of
+hand-written — taxonomy, IUCN assessment ID, status, photo, and description
+are pulled automatically (census figures are reviewed by hand):
+
+```bash
+node .freebuff/generate-species.mjs "Panthera uncia"     # print a preview
+node .freebuff/generate-species.mjs --apply "Panthera uncia" # write files + fetch photo
+``` Continuous
 integration (lint, unit tests, build, API integration tests) runs on GitHub
 Actions for every push and pull request — see `.github/workflows/ci.yml`.
 

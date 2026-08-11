@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.4.0] - 2026-08-11
+
+### Added
+- **Population timeline chart**: every animal detail page now charts the
+  species' historical population series (censuses/surveys) with the current
+  estimate and a per-species unit/caveat note. 12 of 19 species have verified
+  series (e.g. Amur leopard's recovery 25→130, monarch's western collapse
+  4.5M→9,119, Komodo 5,000→3,458) — each figure checked against current
+  sources on 2026-08-11.
+- **Species generator** (`node .freebuff/generate-species.mjs [--apply]`):
+  builds complete Animal + SpeciesSource entries from live Wikidata/Wikipedia
+  — full taxonomy via the P171 ancestor chain, IUCN assessment ID (P627),
+  conservation status (P141), lead photo, and description. Census figures
+  remain a human-reviewed TODO step. Proved by adding the **Snow Leopard**
+  (19th species, VU, ~7,500 per latest IUCN CatSG estimate).
+
+### Fixed
+- Generator: the JPEG magic check compared 3 bytes against a 2-byte string
+  (never matched); fixed to a prefix check.
+
 ## [1.3.0] - 2026-08-11
 
 ### Added

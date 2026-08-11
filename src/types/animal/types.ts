@@ -583,6 +583,12 @@ export interface TurbineCollision {
   turbineId: string;
 }
 
+// A single point in a species' historical population series.
+export interface PopulationPoint {
+  year: number;
+  estimate: number;
+}
+
 // Main Animal Data Interface
 export interface Animal {
   id: string;
@@ -596,6 +602,10 @@ export interface Animal {
   location: Location;
   habitat?: string[];
   populationEstimate?: number;
+  /** Historical population estimates (censuses/surveys), oldest first. */
+  populationHistory?: PopulationPoint[];
+  /** Unit/caveat note for populationHistory (e.g. "nesting pairs in the US"). */
+  populationHistoryNote?: string;
   isMonitored: boolean;
   lastUpdated: Date;
   dataCategories: DataCategory[];
