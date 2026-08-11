@@ -177,6 +177,11 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
 - Tests updated for 18 species (unit 19/19, integration 12/12); version 1.3.0.
 - Preview served from the rebuilt scratch tree `/tmp/oan-fresh` (same machine
   workaround as round 3: fresh files dodge the antivirus scanner).
+- **CI was broken since round 1**: the unit/API tests import .ts files directly,
+  which needs Node ≥22.6 type stripping — CI ran Node 20, so every `npm test`
+  step failed. Fixed by moving the CI matrix to Node 22 and adding
+  `engines.node >=22.6` to package.json. CI is green now; `gh run list` to
+  check.
 
 ## Remaining environment note
 
