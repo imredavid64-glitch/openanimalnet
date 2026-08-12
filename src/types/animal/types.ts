@@ -606,6 +606,11 @@ export interface MigrationRoute {
   season?: MigrationSeason;
   /** Typical duration of the leg in days (approximate, from literature). */
   durationDays?: number;
+  /** First month of the movement (1–12), approximate from literature. */
+  startMonth?: number;
+  /** Last month of the movement (1–12); may wrap through December for
+   *  winter legs (e.g. 11→2 = Nov, Dec, Jan, Feb). */
+  endMonth?: number;
   points: MigrationRoutePoint[];
 }
 

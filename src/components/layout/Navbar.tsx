@@ -116,12 +116,6 @@ export default function Navbar() {
 
           {/* Right Side Items */}
           <div className="hidden lg:flex items-center space-x-6">
-            <button className="p-2 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300">
-              <span className="text-xl">🌍</span>
-            </button>
-            <button className="p-2 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300">
-              <span className="text-xl">🔍</span>
-            </button>
             <button
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -182,14 +176,6 @@ export default function Navbar() {
                   <Link href="/dashboard" className="btn-primary text-center">
                     Dashboard
                   </Link>
-                  <button className="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300">
-                    <span className="text-xl">🌍</span>
-                    <span>Map View</span>
-                  </button>
-                  <button className="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300">
-                    <span className="text-xl">🔍</span>
-                    <span>Search</span>
-                  </button>
                   <button
                     onClick={toggleTheme}
                     className="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300"

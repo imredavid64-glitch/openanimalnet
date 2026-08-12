@@ -2,6 +2,34 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.15.0] - 2026-08-12
+
+### Added
+- **Real migration timing**: every corridor now records its actual start/end
+  months (blue whale Sep–Dec, monarch Mar–Jun, saiga Apr–May, tern fall
+  Aug–Nov / spring Mar–May, leatherback year-round) and the calendar
+  renders those months — with wrap-aware winter legs — instead of season
+  ranges. Verified month counts shift accordingly (e.g. March now shows 3
+  corridors, June 2).
+- **Export the calendar**: an Export CSV button on /migration downloads
+  every corridor as a spreadsheet (species, corridor, season, active
+  months, distance, duration), with proper quoting.
+- **Month-linked globe filter**: each month card on the calendar deep-links
+  to /?season=…#globe — the globe loads pre-filtered to that season's
+  corridors and scrolls into view.
+
+### Changed (UI/UX identity + CSS cleanup)
+- **Hero redesign**: single-line Playfair Display wordmark, a deterministic
+  tracking-network constellation background (replaces floating emoji), and
+  honest derived stats (28 species · 6 corridors · 27 IUCN · 28 monitored)
+  replacing the template "1.2M+ species" marketing figures.
+- **Globe controls**: emoji buttons (🔄📍🧭☁️🌪️, search, play/pause) are
+  now a consistent inline stroke-SVG icon set.
+- **CSS**: Playfair Display applied to page-level headings (h1/h2), new
+  .font-display and .font-data (JetBrains Mono for figures) utilities,
+  selection color, focus-visible rings, and a prefers-reduced-motion
+  guard; dead navbar buttons (🌍/🔍/Map View/Search) removed.
+
 ## [1.14.0] - 2026-08-12
 
 ### Added

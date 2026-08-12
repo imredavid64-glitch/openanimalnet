@@ -190,6 +190,8 @@ export const sampleAnimals: Animal[] = [
         name: 'Eastern Pacific — feeding off California to breeding at the Costa Rica Dome',
         season: 'fall',
         durationDays: 75,
+        startMonth: 9,
+        endMonth: 12,
         points: [
           { latitude: 36.5, longitude: -122.5 },
           { latitude: 20, longitude: -115 },
@@ -613,6 +615,8 @@ export const sampleAnimals: Animal[] = [
         name: 'Eastern population — overwintering in Michoacán, Mexico to summer breeding in the Great Lakes',
         season: 'spring',
         durationDays: 90,
+        startMonth: 3,
+        endMonth: 6,
         points: [
           { latitude: 19.6, longitude: -100.3 },
           { latitude: 30, longitude: -98 },
@@ -844,6 +848,8 @@ export const sampleAnimals: Animal[] = [
         name: 'Western Pacific — nesting at Jamursba-Medi, Papua to foraging off California',
         season: 'year-round',
         durationDays: 330,
+        startMonth: 1,
+        endMonth: 12,
         points: [
           { latitude: -2.6, longitude: 140.7 },
           { latitude: 20, longitude: -155 },
@@ -929,6 +935,8 @@ export const sampleAnimals: Animal[] = [
         name: 'Betpak-Dala — wintering grounds in the south to calving grounds in the north',
         season: 'spring',
         durationDays: 30,
+        startMonth: 4,
+        endMonth: 5,
         points: [
           { latitude: 44.5, longitude: 67 },
           { latitude: 47.5, longitude: 70 },
@@ -1053,6 +1061,8 @@ export const sampleAnimals: Animal[] = [
       name: 'Fall — Arctic breeding grounds to Antarctic wintering grounds',
       season: 'fall',
       durationDays: 90,
+      startMonth: 8,
+      endMonth: 11,
       points: [
         { latitude: 64.1, longitude: -21.9 },
         { latitude: 30, longitude: -30 },
@@ -1064,6 +1074,8 @@ export const sampleAnimals: Animal[] = [
       name: 'Spring — Antarctic wintering grounds back to Arctic breeding grounds',
       season: 'spring',
       durationDays: 70,
+      startMonth: 3,
+      endMonth: 5,
       points: [
         { latitude: -65, longitude: -30 },
         { latitude: -20, longitude: -35 },

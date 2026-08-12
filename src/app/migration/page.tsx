@@ -2,7 +2,9 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import StaticPage, { Section } from '@/components/layout/StaticPage';
 import { sampleAnimals } from '@/data/sample/animals';
+import { MigrationRoute } from '@/types/animal/types';
 import { routeDistanceKm, formatKm, formatDurationDays } from '@/lib/geo';
+import ExportButton, { ExportRow } from './ExportButton';
 
 // Calendar season: the four seasons plus year-round. Migration legs are
 // spring/fall/year-round; summer/winter cells come from year-round corridors.
@@ -28,9 +30,9 @@ const MONTHS = [
   { key: 12, label: 'Dec' },
 ];
 
-// Season → calendar months (northern-hemisphere convention). Year-round
-// corridors are active every month.
-const SEASON_MONTHS: Record<CalendarSeason, number[]> = {
+// Season → calendar months, used only as a fallback when a corridor has no
+// recorded start/end month.
+const SEASON_FALLBACK_MONTHS: Record<CalendarSeason, number[]> = {
   spring: [3, 4, 5],
   summer: [6, 7, 8],
   fall: [9, 10, 11],
@@ -46,6 +48,34 @@ const SEASON_COLOR: Record<CalendarSeason, string> = {
   'year-round': '#94a3b8',
 };
 
+// The months a corridor is on the move, from its recorded start/end month
+// (inclusive, wrapping through December for winter legs). Falls back to the
+// season's months when timing isn't recorded.
+const monthsOfRoute = (route: MigrationRoute): number[] => {
+  const season = (route.season ?? 'year-round') as CalendarSeason;
+  if (route.startMonth && route.endMonth) {
+    const out: number[] = [];
+    if (route.startMonth <= route.endMonth) {
+      for (let m = route.startMonth; m <= route.endMonth; m++) out.push(m);
+    } else {
+      for (let m = route.startMonth; m <= 12; m++) out.push(m);
+      for (let m = 1; m <= route.endMonth; m++) out.push(m);
+    }
+    return out;
+  }
+  return SEASON_FALLBACK_MONTHS[season];
+};
+
+// Deep-link season for a calendar month: clicking a month card opens the
+// globe pre-filtered to that season (spring Mar–May, summer Jun–Aug,
+// fall Sep–Nov, winter Dec–Feb).
+const seasonOfMonth = (month: number): CalendarSeason => {
+  if (month >= 3 && month <= 5) return 'spring';
+  if (month >= 6 && month <= 8) return 'summer';
+  if (month >= 9 && month <= 11) return 'fall';
+  return 'winter';
+};
+
 // The species that actually migrate, in the order they appear in the dataset.
 const migrators = sampleAnimals
   .map((animal) => ({ animal, routes: animal.migrationRoutes ?? [] }))
@@ -54,7 +84,7 @@ const migrators = sampleAnimals
 // How many corridors are active in each calendar month (across all species).
 const activeByMonth = (month: number): number =>
   migrators.reduce((total, x) => {
-    total += x.routes.filter((r) => SEASON_MONTHS[r.season ?? 'year-round'].includes(month)).length;
+    total += x.routes.filter((r) => monthsOfRoute(r).includes(month)).length;
     return total;
   }, 0);
 
@@ -67,38 +97,57 @@ export default function MigrationPage() {
       title="Migration Calendar"
       subtitle="The great migrations don't happen all at once — this calendar shows which tracked corridors are on the move in each month of the year. Distances are great-circle approximations along each corridor's waypoints."
     >
-      {/* Per-month summary strip */}
+      {/* Per-month summary strip — each card deep-links to the globe
+          pre-filtered to that season (and scrolls it into view) */}
       <Section>Corridors Active by Month</Section>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mb-8">
         {MONTHS.map((m) => {
           const count = activeByMonth(m.key);
           const now = m.key === currentMonth;
           return (
-            <div
+            <Link
               key={m.key}
-              className={`rounded-xl p-3 text-center border transition-colors ${
+              href={`/?season=${seasonOfMonth(m.key)}#globe`}
+              className={`group rounded-xl p-3 text-center border transition-all ${
                 now
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 ring-1 ring-primary-500'
-                  : 'border-secondary-200 dark:border-secondary-800 bg-white dark:bg-secondary-900/40'
+                  : 'border-secondary-200 dark:border-secondary-800 bg-white dark:bg-secondary-900/40 hover:border-primary-400 hover:shadow-soft'
               }`}
+              title={`Show ${seasonOfMonth(m.key)} corridors on the globe`}
             >
-              <div className="text-xs font-semibold text-secondary-500 dark:text-secondary-400">
+              <div className="text-xs font-semibold text-secondary-500 dark:text-secondary-400 group-hover:text-primary-600 dark:group-hover:text-primary-400">
                 {m.label}
                 {now && <span className="ml-1 text-primary-600 dark:text-primary-400">●</span>}
               </div>
-              <div className="text-xl font-bold text-secondary-900 dark:text-white mt-0.5">
+              <div className="text-xl font-bold text-secondary-900 dark:text-white mt-0.5 font-data">
                 {count}
               </div>
               <div className="text-[10px] text-secondary-400 dark:text-secondary-500">corridors</div>
-            </div>
+            </Link>
           );
         })}
       </div>
 
-      <Section>Corridor Timeline</Section>
+      <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
+        <Section>Corridor Timeline</Section>
+        <ExportButton
+          rows={migrators.flatMap<ExportRow>(({ animal, routes }) =>
+            routes.map((route) => ({
+              commonName: animal.commonName,
+              scientificName: animal.scientificName,
+              corridor: route.name,
+              season: route.season,
+              months: monthsOfRoute(route),
+              distanceKm: routeDistanceKm(route.points),
+              durationDays: route.durationDays,
+            })),
+          )}
+        />
+      </div>
       <p className="mb-4">
-        Each row is one seasonal corridor: green = spring, blue = summer, amber = fall,
-        indigo = winter, gray = year-round. The current month is marked ●.
+        Each row is one corridor with its actual recorded months of movement:
+        green = spring, blue = summer, amber = fall, indigo = winter, gray = year-round.
+        The current month is marked ●.
       </p>
 
       <div className="overflow-x-auto -mx-4 px-4">
@@ -114,8 +163,8 @@ export default function MigrationPage() {
           <tbody>
             {migrators.map(({ animal, routes }) =>
               routes.map((route, ri) => {
-                const season = route.season ?? 'year-round';
-                const activeMonths = SEASON_MONTHS[season];
+                const season = (route.season ?? 'year-round') as CalendarSeason;
+                const activeMonths = monthsOfRoute(route);
                 return (
                   <tr
                     key={`${animal.id}-${ri}`}

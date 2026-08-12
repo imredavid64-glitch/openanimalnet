@@ -2,11 +2,9 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { sampleAnimals } from '@/data/sample/animals';
 
 export default function HeroSection() {
-  const router = useRouter();
-
   const scrollToExplore = () => {
     const exploreSection = document.querySelector('#explore');
     if (exploreSection) {
@@ -14,141 +12,126 @@ export default function HeroSection() {
     }
   };
 
+  // Real, derived figures — the same dataset the globe renders.
+  const speciesCount = sampleAnimals.length;
+  const corridorCount = sampleAnimals.reduce((t, a) => t + (a.migrationRoutes?.length ?? 0), 0);
+  const iucnCount = sampleAnimals.filter((a) => a.conservationStatus !== 'NE').length;
+  const monitoredCount = sampleAnimals.filter((a) => a.isMonitored).length;
+
+  const stats = [
+    { label: 'species tracked', value: String(speciesCount) },
+    { label: 'migration corridors', value: String(corridorCount) },
+    { label: 'IUCN-assessed', value: String(iucnCount) },
+    { label: 'under monitoring', value: String(monitoredCount) },
+  ];
+
+  // Deterministic "tracking network" constellation: nodes + connections,
+  // generated from a fixed seed so SSR and client render identically.
+  const nodes: { x: number; y: number; r: number }[] = [];
+  let seed = 42;
+  const rand = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+  for (let i = 0; i < 46; i++) {
+    nodes.push({ x: rand() * 100, y: rand() * 100, r: 0.6 + rand() * 1.4 });
+  }
+  const links: { x1: number; y1: number; x2: number; y2: number }[] = [];
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      if (dx * dx + dy * dy < 320) {
+        links.push({ x1: nodes[i].x, y1: nodes[i].y, x2: nodes[j].x, y2: nodes[j].y });
+      }
+    }
+  }
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-800 dark:from-primary-800 dark:via-primary-900 dark:to-secondary-950" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-700 via-primary-800 to-secondary-900 dark:from-primary-900 dark:via-primary-950 dark:to-secondary-950" />
 
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Floating Animals */}
-        {[
-          { emoji: '🦁', top: '10%', left: '5%', size: 40, delay: 0 },
-          { emoji: '🐘', top: '20%', right: '10%', size: 50, delay: 0.2 },
-          { emoji: '🦅', top: '60%', left: '15%', size: 35, delay: 0.4 },
-          { emoji: '🐋', top: '80%', right: '20%', size: 45, delay: 0.6 },
-          { emoji: '🐍', top: '30%', left: '80%', size: 30, delay: 0.8 },
-          { emoji: '🐸', top: '70%', left: '70%', size: 35, delay: 1.0 },
-          { emoji: '🐟', top: '40%', right: '80%', size: 25, delay: 1.2 },
-          { emoji: '🦋', top: '90%', left: '60%', size: 20, delay: 1.4 },
-        ].map((animal, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: -100, scale: 0.5 }}
-            animate={{ 
-              opacity: [0.3, 0.6, 0.3], 
-              y: [0, -20, 0], 
-              scale: [0.5, 1, 0.5]
-            }}
-            transition={{ 
-              duration: 8 + animal.delay * 2,
-              delay: animal.delay,
-              repeat: Infinity,
-              ease: 'easeInOut'
-            }}
-            style={{ top: animal.top, left: animal.left, fontSize: animal.size }}
-            className="absolute text-white/20"
-          >
-            {animal.emoji}
-          </motion.div>
-        ))}
-
-        {/* Glowing Orbs */}
-        {[0, 1, 2, 3, 4].map((i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
-              opacity: [0.2, 0.5, 0.2], 
-              scale: [0.5, 1.5, 0.5]
-            }}
-            transition={{ 
-              duration: 6 + i * 1.5,
-              delay: i * 0.5,
-              repeat: Infinity,
-              ease: 'easeInOut'
-            }}
-            style={{
-              top: `${20 + i * 15}%`,
-              left: `${10 + i * 18}%`,
-              width: `${40 + i * 10}px`,
-              height: `${40 + i * 10}px`,
-            }}
-            className="absolute rounded-full bg-white/10 backdrop-blur-sm"
+      {/* Tracking-network constellation — the platform's motif: nodes are
+          tracked animals, links are the routes between them */}
+      <svg
+        className="absolute inset-0 w-full h-full text-white/[0.07]"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        {links.map((l, i) => (
+          <line
+            key={`l${i}`}
+            x1={l.x1}
+            y1={l.y1}
+            x2={l.x2}
+            y2={l.y2}
+            stroke="currentColor"
+            strokeWidth="0.06"
           />
         ))}
+        {nodes.map((n, i) => (
+          <circle key={`n${i}`} cx={n.x} cy={n.y} r={n.r} fill="currentColor" />
+        ))}
+      </svg>
+
+      {/* Soft radial glow behind the wordmark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-[720px] h-[720px] rounded-full bg-primary-500/20 blur-[120px]" />
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
+      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto pt-24 pb-16">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6">
-            <span className="block">Open</span>
-            <span className="text-primary-300 block">Animal</span>
-            <span className="text-primary-200 block">Net</span>
+          <p className="text-xs uppercase tracking-[0.3em] text-primary-200/80 mb-5 font-data">
+            Global animal data platform
+          </p>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold text-white mb-6 font-display leading-none">
+            OpenAnimal<span className="text-primary-300">Net</span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-10 font-light">
-            Monitor, analyze, and explore comprehensive animal data from around the world.
-            Track biological, behavioral, ecological, and conservation data for all species.
+          <p className="text-lg md:text-xl text-white/75 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+            A living index of {speciesCount} species — population, conservation status, and
+            migration corridors — every figure sourced, dated, and checked against
+            current records.
           </p>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: 0.25, ease: 'easeOut' }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <Link
-            href="/animal"
-            className="btn-primary text-lg px-8 py-4"
-          >
-            Explore Animals
-          </Link>
-          <Link
-            href="/dashboard"
-            className="btn-secondary text-lg px-8 py-4 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
-          >
-            View Dashboard
+          <Link href="/animal" className="btn-primary text-lg px-8 py-4">
+            Explore the species
           </Link>
           <button
             onClick={scrollToExplore}
-            className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors duration-300"
+            className="text-white/70 hover:text-white transition-colors duration-300 text-sm font-medium"
           >
-            <span>Learn More</span>
-            <motion.span
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              ↓
-            </motion.span>
+            See the globe ↓
           </button>
         </motion.div>
 
-        {/* Stats Preview */}
+        {/* Real stats, rendered in the data font */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
+          transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
         >
-          {[
-            { label: 'Species', value: '1.2M+', icon: '🐾' },
-            { label: 'Monitored', value: '45K+', icon: '📡' },
-            { label: 'Data Points', value: '100M+', icon: '📊' },
-            { label: 'Countries', value: '195+', icon: '🌍' },
-          ].map((stat, index) => (
+          {stats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20"
+              className="bg-white/[0.07] backdrop-blur-lg rounded-2xl px-4 py-5 border border-white/10"
             >
-              <div className="text-3xl mb-2">{stat.icon}</div>
-              <div className="text-2xl font-bold text-white">{stat.value}</div>
-              <div className="text-sm text-white/60">{stat.label}</div>
+              <div className="text-3xl font-bold text-white font-data">{stat.value}</div>
+              <div className="text-sm text-white/60 mt-1">{stat.label}</div>
             </div>
           ))}
         </motion.div>

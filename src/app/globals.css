@@ -26,7 +26,37 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display headings — the site's distinctive serif voice (Playfair Display,
+   already self-hosted via the font import above). Only the page-level
+   headings get it; card titles stay in Inter for density. */
+h1,
+h2 {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.01em;
+}
+
+/* Text selection + keyboard focus — visible but unobtrusive */
+::selection {
+  background: rgba(14, 165, 233, 0.25);
+}
+
+:focus-visible {
+  outline: 2px solid rgba(14, 165, 233, 0.6);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Custom scrollbar */
@@ -50,6 +80,18 @@ body {
 
 /* Custom utility classes */
 @layer utilities {
+  /* Serif display voice for wordmarks and hero copy */
+  .font-display {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    letter-spacing: -0.01em;
+  }
+
+  /* JetBrains Mono for figures, coordinates, and data labels */
+  .font-data {
+    font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+    font-feature-settings: 'tnum' 1;
+  }
+
   .card-hover {
     transition: all 0.3s ease;
   }

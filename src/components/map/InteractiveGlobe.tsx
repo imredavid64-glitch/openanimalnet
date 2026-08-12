@@ -34,6 +34,43 @@ const SEASONS: { key: Exclude<SeasonFilter, 'all'>; label: string; emoji: string
   { key: 'winter', label: 'Winter', emoji: '❄️' },
 ];
 
+// Minimal inline icon set (stroke SVGs) so the globe controls don't lean on
+// emoji — crisp, consistent, and theme-aware via currentColor.
+const ICON_PATHS: Record<string, React.ReactNode> = {
+  search: <><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></>,
+  reset: <><path d="M3 12a9 9 0 1 0 2.64-6.36L3 8" /><path d="M3 3v5h5" /></>,
+  pin: <><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></>,
+  route: <><circle cx="6" cy="19" r="2" /><circle cx="18" cy="5" r="2" /><path d="M8 19h8a3 3 0 0 0 0-6H8a3 3 0 0 1 0-6h8" /></>,
+  cloud: <path d="M17.5 19a4.5 4.5 0 1 0-.44-8.98A6 6 0 0 0 5.66 12.3 3.5 3.5 0 0 0 6 19h11.5Z" />,
+  zoomIn: <><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /><path d="M11 8v6" /><path d="M8 11h6" /></>,
+  zoomOut: <><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /><path d="M8 11h6" /></>,
+  rotate: <><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></>,
+  calendar: <><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4" /><path d="M8 2v4" /><path d="M3 10h18" /></>,
+  play: <path d="M6 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 6 5.5Z" />,
+  pause: <><path d="M8 5v14" /><path d="M16 5v14" /></>,
+  close: <><path d="M18 6 6 18" /><path d="m6 6 12 12" /></>,
+  chevronLeft: <path d="m15 18-6-6 6-6" />,
+  chevronRight: <path d="m9 18 6-6-6-6" />,
+  globe: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z" /></>,
+};
+
+function CtrlIcon({ name, className = 'w-5 h-5' }: { name: keyof typeof ICON_PATHS; className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      {ICON_PATHS[name]}
+    </svg>
+  );
+}
+
 // Count of migration corridors active in a given season filter.
 const activeRouteCount = (filter: SeasonFilter): number =>
   sampleAnimals.reduce((total, animal) => {
@@ -98,6 +135,25 @@ export default function InteractiveGlobe() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Month-linked deep link from the migration calendar: /?season=spring#globe
+  // pre-filters the globe to that season and scrolls it into view.
+  useEffect(() => {
+    if (!isClient) return;
+    const params = new URLSearchParams(window.location.search);
+    const season = params.get('season');
+    if (season === 'all' || season === 'spring' || season === 'summer' || season === 'fall' || season === 'winter') {
+      setSeasonFilter(season);
+      setSeasonPlaying(false);
+    }
+    if (window.location.hash === '#globe') {
+      // wait for the globe to mount before scrolling
+      setTimeout(() => {
+        document.getElementById('globe')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 400);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isClient]);
 
   const handleCategorySelect = (category: AnimalCategory | null) => {
     setSelectedCategory(category);
@@ -220,10 +276,10 @@ export default function InteractiveGlobe() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setSearchOpen((prev) => !prev)}
-                className="p-2 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300"
+                className="p-2 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300 text-white"
                 title="Search species"
               >
-                <span className="text-white">🔍</span>
+                <CtrlIcon name="search" className="w-5 h-5" />
               </button>
               {searchOpen && (
                 <input
@@ -289,8 +345,8 @@ export default function InteractiveGlobe() {
               className="space-y-3"
             >
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-                  <span className="text-2xl">🧭</span>
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white">
+                  <CtrlIcon name="route" className="w-6 h-6" />
                 </div>
                 <div>
                   <div className="text-white font-semibold">{hoveredRoute.name}</div>
@@ -381,7 +437,9 @@ export default function InteractiveGlobe() {
             </motion.div>
           ) : (
             <div className="text-white/80 text-center py-8">
-              <div className="text-4xl mb-2">🌍</div>
+              <div className="text-4xl mb-2 text-white/70 flex justify-center">
+                <CtrlIcon name="globe" className="w-9 h-9" />
+              </div>
               <div className="text-sm">Hover over an animal on the globe</div>
               <div className="text-xs text-white/60 mt-2">
                 {filteredData.length} {selectedCategory ? selectedCategory : 'animals'} visible
@@ -515,15 +573,18 @@ export default function InteractiveGlobe() {
             which migration corridors are active in each */}
         <div className="absolute bottom-24 right-6 z-20 bg-white/10 backdrop-blur-lg rounded-2xl p-3 shadow-lg">
           <div className="flex items-center gap-1.5 mb-1.5">
-            <span className="text-white text-xs font-semibold mr-1">🗓️ Seasons</span>
+            <span className="text-white text-xs font-semibold mr-1 inline-flex items-center gap-1">
+              <CtrlIcon name="calendar" className="w-3.5 h-3.5" /> Seasons
+            </span>
             <button
               onClick={() => setSeasonPlaying((prev) => !prev)}
-              className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors duration-300 ${
+              className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors duration-300 inline-flex items-center gap-1 ${
                 seasonPlaying ? 'bg-primary-500 text-white' : 'bg-white/20 text-white hover:bg-white/30'
               }`}
               title={seasonPlaying ? 'Pause season cycle' : 'Play season cycle'}
             >
-              {seasonPlaying ? '⏸ Pause' : '▶ Play'}
+              <CtrlIcon name={seasonPlaying ? 'pause' : 'play'} className="w-3 h-3" />
+              {seasonPlaying ? 'Pause' : 'Play'}
             </button>
             <button
               onClick={() => {
@@ -570,10 +631,10 @@ export default function InteractiveGlobe() {
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-lg flex space-x-3">
           <button
             onClick={() => globeRef.current?.resetCamera()}
-            className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300"
+            className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300 text-white"
             title="Reset View"
           >
-            <span className="text-white">🔄</span>
+            <CtrlIcon name="reset" />
           </button>
           <button
             onClick={() => setShowMarkers((prev) => !prev)}
@@ -582,7 +643,7 @@ export default function InteractiveGlobe() {
             }`}
             title={showMarkers ? 'Hide species markers' : 'Show species markers'}
           >
-            <span className="text-white">📍</span>
+            <CtrlIcon name="pin" />
           </button>
           <button
             onClick={() => setShowRoutes((prev) => !prev)}
@@ -591,7 +652,7 @@ export default function InteractiveGlobe() {
             }`}
             title={showRoutes ? 'Hide migration corridors' : 'Show migration corridors'}
           >
-            <span className="text-white">🧭</span>
+            <CtrlIcon name="route" />
           </button>
           <button
             onClick={() => setShowClouds((prev) => !prev)}
@@ -600,28 +661,28 @@ export default function InteractiveGlobe() {
             }`}
             title={showClouds ? 'Hide clouds' : 'Show clouds'}
           >
-            <span className="text-white">☁️</span>
+            <CtrlIcon name="cloud" />
           </button>
           <button
             onClick={() => globeRef.current?.zoomIn()}
-            className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300"
+            className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300 text-white"
             title="Zoom In"
           >
-            <span className="text-white">+</span>
+            <CtrlIcon name="zoomIn" />
           </button>
           <button
             onClick={() => globeRef.current?.zoomOut()}
-            className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300"
+            className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300 text-white"
             title="Zoom Out"
           >
-            <span className="text-white">−</span>
+            <CtrlIcon name="zoomOut" />
           </button>
           <button
             onClick={() => globeRef.current?.toggleRotation()}
-            className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300"
+            className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300 text-white"
             title="Toggle Rotation"
           >
-            <span className="text-white">🌪️</span>
+            <CtrlIcon name="rotate" />
           </button>
         </div>
       </div>

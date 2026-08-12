@@ -403,3 +403,21 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
 - **Globe popup 🧭 Migration block**: per-corridor distance + duration for
   species with routes.
 - Tests 28/28 unit + 12/12 integration.
+
+## Round 16 (Aug 12 2026): real timing, export, month→globe links, UI identity
+
+- **Real migration timing**: MigrationRoute gains startMonth/endMonth; all 6
+  corridors filled (whale 9-12, monarch 3-6, leatherback 1-12, saiga 4-5,
+  tern 8-11 and 3-5). Calendar renders recorded months (wrap-aware).
+- **Export CSV** (/migration): client button downloads all corridors with
+  distances/durations.
+- **Month → globe**: month cards link to /?season=<season>#globe;
+  InteractiveGlobe reads the param on mount, sets the season filter, and
+  scrolls to the #globe anchor.
+- **UI/UX**: hero redesigned (Playfair wordmark, deterministic
+  constellation SVG background, derived real stats 28/6/27/28 instead of
+  fake marketing numbers); globe controls now inline SVG icons (CtrlIcon)
+  instead of emoji; globals.css gains h1/h2 Playfair + .font-display /
+  .font-data utilities, selection + focus-visible + reduced-motion styles;
+  dead navbar buttons removed.
+- Tests 28/28 unit + 12/12 integration.
