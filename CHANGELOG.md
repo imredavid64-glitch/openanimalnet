@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.2] - 2026-08-12
+
+### Added
+- **Wildlife-trafficking risk layer in the conflict predictor**: locations
+  are now scored by proximity to crime-flagged alerts (ivory trafficking,
+  snares), severity-scaled with exponential distance decay. Toggleable, with
+  a per-alert breakdown and a blended overall score; new Tsavo preset.
+
 ## [1.18.1] - 2026-08-12
 
 ### Added
