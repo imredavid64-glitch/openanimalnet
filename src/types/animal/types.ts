@@ -589,6 +589,18 @@ export interface PopulationPoint {
   estimate: number;
 }
 
+// A waypoint on a species' seasonal migration route.
+export interface MigrationRoutePoint {
+  latitude: number;
+  longitude: number;
+}
+
+// A named seasonal migration corridor (e.g. "Eastern monarch — Mexico to Great Lakes").
+export interface MigrationRoute {
+  name: string;
+  points: MigrationRoutePoint[];
+}
+
 // Main Animal Data Interface
 export interface Animal {
   id: string;
@@ -606,6 +618,8 @@ export interface Animal {
   populationHistory?: PopulationPoint[];
   /** Unit/caveat note for populationHistory (e.g. "nesting pairs in the US"). */
   populationHistoryNote?: string;
+  /** Documented seasonal migration corridors, drawn as animated arcs on the globe. */
+  migrationRoutes?: MigrationRoute[];
   isMonitored: boolean;
   lastUpdated: Date;
   dataCategories: DataCategory[];

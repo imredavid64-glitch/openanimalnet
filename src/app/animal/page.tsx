@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { sampleAnimals, animalCategoryData } from '@/data/sample/animals';
+import { sampleAnimals, animalCategoryData, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus, AnimalFilter } from '@/types/animal/types';
 import { filterAndSortAnimals, AnimalSortBy } from '@/lib/animalFiltering';
 import AnimalCard from '@/components/animal/AnimalCard';
@@ -19,13 +19,20 @@ export default function AnimalPage() {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Initialize filters from URL query params (?category=..., ?isMonitored=true)
+  // Initialize filters from URL query params (?category=..., ?status=CR,EN, ?isMonitored=true)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category');
     const monitored = params.get('isMonitored');
+    const status = params.get('status');
     if (category) {
       setFilters(prev => ({ ...prev, categories: [category as AnimalCategory] }));
+    }
+    if (status) {
+      setFilters(prev => ({
+        ...prev,
+        conservationStatus: status.split(',').filter(Boolean) as ConservationStatus[],
+      }));
     }
     if (monitored === 'true') {
       setFilters(prev => ({ ...prev, isMonitored: true }));
@@ -53,6 +60,14 @@ export default function AnimalPage() {
 
   const toggleSortDirection = () => {
     setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+  };
+
+  const handleStatusChipToggle = (status: ConservationStatus) => {
+    const current = filters.conservationStatus || [];
+    const next = current.includes(status)
+      ? current.filter(s => s !== status)
+      : [...current, status];
+    handleFilterChange({ conservationStatus: next });
   };
 
   const categoryCounts = sampleAnimals.reduce((acc, animal) => {
@@ -188,6 +203,54 @@ export default function AnimalPage() {
               >
                 Clear All
               </button>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Conservation Status Chips */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5, ease: 'easeOut' }}
+          className="mb-8"
+        >
+          <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4 shadow-md">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm font-semibold text-secondary-700 dark:text-secondary-300 mr-1">
+                🛡️ Conservation status:
+              </span>
+              {conservationStatusData
+                .filter((s) => (statusCounts[s.status as ConservationStatus] || 0) > 0)
+                .map((s) => {
+                  const active = filters.conservationStatus?.includes(s.status as ConservationStatus) ?? false;
+                  const count = statusCounts[s.status as ConservationStatus] || 0;
+                  return (
+                    <button
+                      key={s.status}
+                      onClick={() => handleStatusChipToggle(s.status as ConservationStatus)}
+                      title={`${s.name} — ${count} species`}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                        active
+                          ? 'text-white shadow-md ring-2 ring-offset-1 ring-offset-white dark:ring-offset-secondary-800'
+                          : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-200 hover:bg-secondary-200 dark:hover:bg-secondary-600'
+                      }`}
+                      style={active ? { backgroundColor: s.color, boxShadow: `0 2px 8px ${s.color}55` } : undefined}
+                    >
+                      <span className="font-bold">{s.status}</span>
+                      <span className={active ? 'text-white/90' : 'text-secondary-500 dark:text-secondary-400'}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              {(filters.conservationStatus?.length || 0) > 0 && (
+                <button
+                  onClick={() => handleFilterChange({ conservationStatus: [] })}
+                  className="ml-auto inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-200 hover:bg-secondary-200 dark:hover:bg-secondary-600 transition-colors duration-200"
+                >
+                  ✕ Clear status
+                </button>
+              )}
             </div>
           </div>
         </motion.div>

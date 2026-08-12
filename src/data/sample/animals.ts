@@ -185,6 +185,16 @@ export const sampleAnimals: Animal[] = [
       { year: 2020, estimate: 15000 },
     ],
     populationHistoryNote: 'Pre-whaling estimate ~350,000 (range 275k–350k); current ~15,000 (NOAA/IWC)',
+    migrationRoutes: [
+      {
+        name: 'Eastern Pacific — feeding off California to breeding at the Costa Rica Dome',
+        points: [
+          { latitude: 36.5, longitude: -122.5 },
+          { latitude: 20, longitude: -115 },
+          { latitude: 8, longitude: -88 },
+        ],
+      },
+    ],
     isMonitored: true,
     lastUpdated: new Date('2026-08-01'),
     dataCategories: ['biological', 'behavioral', 'ecological', 'population', 'health'],
@@ -596,6 +606,16 @@ export const sampleAnimals: Animal[] = [
       { year: 2025, estimate: 9119 },
     ],
     populationHistoryNote: 'Western overwintering counts (Xerces/WWF Mexico); the eastern population is in the millions',
+    migrationRoutes: [
+      {
+        name: 'Eastern population — overwintering in Michoacán, Mexico to summer breeding in the Great Lakes',
+        points: [
+          { latitude: 19.6, longitude: -100.3 },
+          { latitude: 30, longitude: -98 },
+          { latitude: 44.5, longitude: -84.5 },
+        ],
+      },
+    ],
     isMonitored: true,
     lastUpdated: new Date('2026-08-01'),
     dataCategories: ['biological', 'behavioral', 'ecological', 'population'],
@@ -815,6 +835,16 @@ export const sampleAnimals: Animal[] = [
       { year: 2010, estimate: 54262 },
     ],
     populationHistoryNote: 'Global annual nest counts: ~90,600 (1980s) → ~54,300 (2010), a ~40% decline; ~34,000–36,000 nesting females (IUCN 2013)',
+    migrationRoutes: [
+      {
+        name: 'Western Pacific — nesting at Jamursba-Medi, Papua to foraging off California',
+        points: [
+          { latitude: -2.6, longitude: 140.7 },
+          { latitude: 20, longitude: -155 },
+          { latitude: 37.5, longitude: -123 },
+        ],
+      },
+    ],
     isMonitored: true,
     lastUpdated: new Date('2026-08-11'),
     dataCategories: ['biological', 'behavioral', 'ecological', 'population', 'health'],
@@ -888,6 +918,15 @@ export const sampleAnimals: Animal[] = [
       { year: 2026, estimate: 4600000 },
     ],
     populationHistoryNote: 'Kazakhstan aerial censuses: 21,000 (2003) → 334,400 (2019) → 4.6M (2026); ~922,600–988,500 mature individuals globally (IUCN 2023)',
+    migrationRoutes: [
+      {
+        name: 'Betpak-Dala — wintering grounds in the south to calving grounds in the north',
+        points: [
+          { latitude: 44.5, longitude: 67 },
+          { latitude: 47.5, longitude: 70 },
+        ],
+      },
+    ],
     isMonitored: true,
     lastUpdated: new Date('2026-08-11'),
     dataCategories: ['biological', 'behavioral', 'ecological', 'population', 'health'],

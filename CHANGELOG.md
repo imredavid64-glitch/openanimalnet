@@ -2,6 +2,32 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.9.0] - 2026-08-12
+
+### Added
+- **Ocean-layer globe**: a real NASA/Solar System Scope clouds texture
+  (`public/images/clouds.jpg`, white-on-black) wraps the earth as a
+  translucent layer that drifts slightly slower than the surface, and the
+  lighting was rebalanced (low ambient + strong sun) so the globe shows a
+  visible day/night terminator instead of flat lighting.
+- **Animated migration corridors**: the data model gained `migrationRoutes`
+  (named waypoint corridors), populated for four well-documented migrators —
+  monarch (Mexico → Great Lakes), blue whale (California → Costa Rica Dome),
+  leatherback (Papua → California), saiga (Betpak-Dala winter → calving
+  grounds). The 3D globe draws each as a status-colored arc lifted above the
+  surface with a comet dot traveling it; the 2D fallback map mirrors the
+  arcs with a rAF-driven comet. Routes respect the category/status filters.
+- **Conservation-status filter chips** on the animal browser: a chip row
+  (CR/EN/VU/NT/LC/DD/NE with live counts) sits above the results, toggles
+  the same filter state as the Filters dropdown, supports
+  `?status=CR,EN` deep links, and shows a clear button when active.
+
+### Fixed
+- Globe markers silently accumulated on every filter/data change: the
+  teardown guard (`'geometry' in pointsRef.current`) never matched the
+  marker Group, so the old markers were never removed. Groups are now
+  disposed properly on data changes.
+
 ## [1.8.0] - 2026-08-12
 
 ### Added

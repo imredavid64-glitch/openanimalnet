@@ -47,10 +47,16 @@ interface MapPoint {
   statusColor: string;
 }
 
+interface MapRoute {
+  color: string;
+  points: { x: number; y: number }[];
+}
+
 export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (animalId: string) => void }) {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [points, setPoints] = useState<MapPoint[]>([]);
+  const [routes, setRoutes] = useState<MapRoute[]>([]);
   const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
 
   // Convert animal data to map points
@@ -76,6 +82,21 @@ export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (ani
     });
     
     setPoints(mapPoints);
+
+    // Project each species' migration corridors into canvas space
+    const mapRoutes: MapRoute[] = [];
+    sampleAnimals.forEach((animal) => {
+      (animal.migrationRoutes || []).forEach((route) => {
+        mapRoutes.push({
+          color: statusColor(animal.conservationStatus),
+          points: route.points.map((p) => ({
+            x: ((p.longitude + 180) / 360) * 100,
+            y: ((90 - p.latitude) / 180) * 100,
+          })),
+        });
+      });
+    });
+    setRoutes(mapRoutes);
   }, []);
 
   // Draw world map and points
@@ -90,10 +111,10 @@ export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (ani
     const resizeCanvas = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
-      draw();
+      draw(performance.now());
     };
     
-    const draw = () => {
+    const draw = (timeMs: number) => {
       if (!ctx) return;
       
       // Clear canvas
@@ -169,6 +190,48 @@ export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (ani
           ctx.fillText(point.status, badgeX, badgeY - 1);
         }
       });
+
+      // Migration corridors — lifted arcs + a comet dot traveling each route
+      const W = canvas.width;
+      const H = canvas.height;
+      routes.forEach((route, ri) => {
+        if (route.points.length < 2) return;
+        const pts = route.points.map((p) => ({ x: (p.x * W) / 100, y: (p.y * H) / 100 }));
+        const lift = 14; // px the arc rises above the chord
+
+        // Sample the piecewise-quadratic arc so the comet can follow it
+        const samples: { x: number; y: number }[] = [];
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 0; i < pts.length - 1; i++) {
+          const mx = (pts[i].x + pts[i + 1].x) / 2;
+          const my = (pts[i].y + pts[i + 1].y) / 2 - lift;
+          ctx.quadraticCurveTo(mx, my, pts[i + 1].x, pts[i + 1].y);
+          for (let s = 0; s <= 20; s++) {
+            const t = s / 20;
+            const x = (1 - t) * (1 - t) * pts[i].x + 2 * (1 - t) * t * mx + t * t * pts[i + 1].x;
+            const y = (1 - t) * (1 - t) * pts[i].y + 2 * (1 - t) * t * my + t * t * pts[i + 1].y;
+            samples.push({ x, y });
+          }
+        }
+        ctx.strokeStyle = route.color + '80';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Comet dot
+        const t = ((timeMs / 1000) * (0.035 + ri * 0.007) + ri * 0.21) % 1;
+        const pos = samples[Math.floor(t * (samples.length - 1))] || samples[0];
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = route.color + '35';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = route.color;
+        ctx.fill();
+      });
     };
     
     const drawContinent = (ctx: CanvasRenderingContext2D, xCoords: number[], yCoords: number[], name: string) => {
@@ -185,16 +248,25 @@ export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (ani
       ctx.stroke();
     };
     
-    // Initial draw
+    // Initial draw — animate continuously when migration routes are present
     resizeCanvas();
+    let rafId = 0;
+    if (routes.length > 0) {
+      const tick = (now: number) => {
+        draw(now);
+        rafId = requestAnimationFrame(tick);
+      };
+      rafId = requestAnimationFrame(tick);
+    }
     
     // Handle resize
     window.addEventListener('resize', resizeCanvas);
     
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [points, hoveredPoint]);
+  }, [points, routes, hoveredPoint]);
 
   // Find the closest map point to given canvas coordinates (in % of canvas)
   const findClosestPoint = (x: number, y: number): MapPoint | null => {

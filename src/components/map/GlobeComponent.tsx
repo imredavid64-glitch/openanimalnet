@@ -5,6 +5,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 
+interface RoutePoint {
+  latitude: number;
+  longitude: number;
+}
+
 interface GlobeData {
   id: string;
   name: string;
@@ -17,6 +22,8 @@ interface GlobeData {
   icon: string;
   conservationStatus: ConservationStatus;
   isMonitored: boolean;
+  /** Seasonal migration corridors, drawn as animated arcs. */
+  migrationRoutes?: { name: string; points: RoutePoint[] }[];
 }
 
 interface GlobeProps {
@@ -63,9 +70,16 @@ export default forwardRef(function GlobeComponent(
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const globeRef = useRef<THREE.Mesh | null>(null);
+  const cloudsRef = useRef<THREE.Mesh | null>(null);
   const pointsRef = useRef<THREE.Points | THREE.Group | null>(null);
+  const routesRef = useRef<THREE.Group | null>(null);
   const raycasterRef = useRef<THREE.Raycaster | null>(null);
   const mouseRef = useRef<THREE.Vector2 | null>(null);
+
+  // Animated migration dots: { curve, dot, speed, phase } per route
+  const routeAnimsRef = useRef<
+    { curve: THREE.CatmullRomCurve3; dot: THREE.Mesh; speed: number; phase: number }[]
+  >([]);
   
   // Animation state
   const [isRotating, setIsRotating] = useState(true);
@@ -116,11 +130,11 @@ export default forwardRef(function GlobeComponent(
     raycasterRef.current = new THREE.Raycaster();
     mouseRef.current = new THREE.Vector2();
     
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    // Lighting — low ambient + strong sun gives a visible day/night terminator
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.22);
     scene.add(ambientLight);
     
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.35);
     directionalLight.position.set(5, 3, 5);
     scene.add(directionalLight);
     
@@ -129,6 +143,9 @@ export default forwardRef(function GlobeComponent(
     
     // Create Points
     createPoints(scene, data);
+    
+    // Create migration routes
+    createRoutes(scene, data);
     
     // Handle resize
     const handleResize = () => {
@@ -147,6 +164,18 @@ export default forwardRef(function GlobeComponent(
       
       if (isRotating && globeRef.current && !hoveredRef.current) {
         globeRef.current.rotation.y += rotationSpeed;
+      }
+      
+      // Clouds drift slightly slower than the surface
+      if (cloudsRef.current) {
+        cloudsRef.current.rotation.y += rotationSpeed * 0.35;
+      }
+      
+      // Advance migration dots along their routes
+      const now = performance.now() / 1000;
+      for (const anim of routeAnimsRef.current) {
+        const t = (now * anim.speed + anim.phase) % 1;
+        anim.dot.position.copy(anim.curve.getPoint(t));
       }
       
       if (controlsRef.current) {
@@ -175,23 +204,42 @@ export default forwardRef(function GlobeComponent(
     // One-time scene setup: createGlobe/createPoints are intentionally
     // captured once; data changes are handled by the dedicated effect below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
-  // Update points when data changes
+  }, []);    // Update points + routes when data changes
   useEffect(() => {
     if (!sceneRef.current) return;
     
-    // Remove existing points
-    if (pointsRef.current && 'geometry' in pointsRef.current) {
+    // Remove existing points (a Group of meshes — the old `'geometry' in ...`
+    // guard never matched a Group, so markers silently accumulated on every
+    // filter/data change)
+    if (pointsRef.current) {
       sceneRef.current.remove(pointsRef.current);
-      pointsRef.current.geometry.dispose();
-      (pointsRef.current.material as THREE.Material).dispose();
+      pointsRef.current.traverse((obj) => {
+        if (obj instanceof THREE.Mesh) {
+          obj.geometry.dispose();
+          (obj.material as THREE.Material).dispose();
+        }
+      });
+      pointsRef.current = null;
     }
     
-    // Create new points
+    // Remove existing routes + reset animation state
+    if (routesRef.current) {
+      sceneRef.current.remove(routesRef.current);
+      routesRef.current.traverse((obj) => {
+        if (obj instanceof THREE.Mesh) {
+          obj.geometry.dispose();
+          (obj.material as THREE.Material).dispose();
+        }
+      });
+      routesRef.current = null;
+    }
+    routeAnimsRef.current = [];
+    
+    // Create new points + routes
     createPoints(sceneRef.current, data);
-    // createPoints is a component-scope helper; its only input is `data`,
-    // which is already the dependency.
+    createRoutes(sceneRef.current, data);
+    // createPoints/createRoutes are component-scope helpers; their only input
+    // is `data`, which is already the dependency.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   
@@ -310,6 +358,31 @@ export default forwardRef(function GlobeComponent(
     globeRef.current = globe;
     scene.add(globe);
     
+    // Clouds layer — white-on-black NASA texture used as both map and
+    // alphaMap so clouds are translucent and shaded by the sun.
+    const cloudsGeometry = new THREE.SphereGeometry(2.045, 96, 96);
+    const cloudsMaterial = new THREE.MeshPhongMaterial({
+      transparent: true,
+      opacity: 0.9,
+      depthWrite: false,
+    });
+    const clouds = new THREE.Mesh(cloudsGeometry, cloudsMaterial);
+    cloudsRef.current = clouds;
+    scene.add(clouds);
+    textureLoader.load(
+      '/images/clouds.jpg',
+      (texture) => {
+        texture.colorSpace = THREE.SRGBColorSpace;
+        cloudsMaterial.map = texture;
+        cloudsMaterial.alphaMap = texture;
+        cloudsMaterial.needsUpdate = true;
+      },
+      undefined,
+      () => {
+        clouds.visible = false;
+      },
+    );
+    
     // Add atmosphere effect
     const atmosphereGeometry = new THREE.SphereGeometry(2.1, 128, 128);
     const atmosphereMaterial = new THREE.MeshPhongMaterial({
@@ -347,6 +420,79 @@ export default forwardRef(function GlobeComponent(
     scene.add(stars);
   };
   
+  // Convert a lat/lng waypoint to a position on (or above) the globe surface.
+  const latLngToVector3 = (lat: number, lng: number, radius: number): THREE.Vector3 => {
+    const phi = (90 - lat) * (Math.PI / 180);
+    const theta = (lng + 180) * (Math.PI / 180);
+    return new THREE.Vector3(
+      radius * Math.sin(phi) * Math.cos(theta),
+      radius * Math.cos(phi),
+      radius * Math.sin(phi) * Math.sin(theta)
+    );
+  };
+
+  // Build the animated migration arcs for every species with a route.
+  const createRoutes = (scene: THREE.Scene, data: GlobeData[]) => {
+    const routesWithData = data.filter((d) => d.migrationRoutes && d.migrationRoutes.length > 0);
+    if (routesWithData.length === 0) return;
+
+    const group = new THREE.Group();
+    const anims: { curve: THREE.CatmullRomCurve3; dot: THREE.Mesh; speed: number; phase: number }[] = [];
+    const surfaceRadius = 2;
+
+    routesWithData.forEach((d, animalIdx) => {
+      const color = new THREE.Color(conservationStatusColors[d.conservationStatus] || d.color);
+      d.migrationRoutes!.forEach((route, routeIdx) => {
+        if (route.points.length < 2) return;
+
+        // Build control points: surface endpoints + lifted segment midpoints so
+        // every arc (even a 2-point one) bulges above the globe instead of
+        // cutting through it. Lift scales with the arc's angular distance.
+        const controls: THREE.Vector3[] = [];
+        for (let i = 0; i < route.points.length - 1; i++) {
+          const a = latLngToVector3(route.points[i].latitude, route.points[i].longitude, surfaceRadius);
+          const b = latLngToVector3(route.points[i + 1].latitude, route.points[i + 1].longitude, surfaceRadius);
+          controls.push(a);
+          const angle = a.angleTo(b) * (180 / Math.PI);
+          const lift = Math.min(0.6, 0.06 + angle * 0.02);
+          controls.push(
+            a.clone().add(b).multiplyScalar(0.5).normalize().multiplyScalar(surfaceRadius + lift)
+          );
+        }
+        const last = route.points[route.points.length - 1];
+        controls.push(latLngToVector3(last.latitude, last.longitude, surfaceRadius));
+
+        const curve = new THREE.CatmullRomCurve3(controls, false, 'catmullrom', 0.5);
+
+        // Route line
+        const lineGeo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(96));
+        const lineMat = new THREE.LineBasicMaterial({
+          color,
+          transparent: true,
+          opacity: 0.4,
+        });
+        group.add(new THREE.Line(lineGeo, lineMat));
+
+        // Moving dot
+        const dotGeo = new THREE.SphereGeometry(0.045, 12, 12);
+        const dotMat = new THREE.MeshBasicMaterial({ color });
+        const dot = new THREE.Mesh(dotGeo, dotMat);
+        group.add(dot);
+
+        anims.push({
+          curve,
+          dot,
+          speed: 0.035 + (animalIdx * 0.007 + routeIdx * 0.005) % 0.02,
+          phase: animalIdx * 0.21 + routeIdx * 0.37,
+        });
+      });
+    });
+
+    routesRef.current = group;
+    routeAnimsRef.current = anims;
+    scene.add(group);
+  };
+
   const createPoints = (scene: THREE.Scene, data: GlobeData[]) => {
     if (data.length === 0) return;
     

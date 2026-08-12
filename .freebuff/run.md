@@ -283,6 +283,24 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
   `SRGBColorSpace` + needsUpdate; the old texture was not an earth map.
 - Version 1.8.0; tests 19/19 + 12/12.
 
+## Round 10 (Aug 12 2026): ocean-layer globe, migration corridors, status chips
+
+- **Globe**: clouds layer (public/images/clouds.jpg, white-on-black, used as
+  map + alphaMap, drifts slower than the surface) + day/night terminator
+  (ambient 0.5→0.22, sun 0.8→1.35). `Animal.migrationRoutes` added and
+  populated for 4 migrators (monarch, blue whale, leatherback, saiga); the
+  3D globe renders each as a status-colored arc with a comet dot, the 2D
+  fallback mirrors it. Routes respect category/status filters.
+- **Fixed pre-existing globe leak**: the data-change teardown guard
+  (`'geometry' in pointsRef.current`) never matched the marker Group, so
+  markers accumulated on every filter change; groups are now disposed.
+- **Animal browser status chips**: clickable CR/EN/VU/NT/LC/DD/NE chips with
+  counts, sharing state with the Filters dropdown, `?status=CR,EN` deep
+  links, and a clear button. Also fixed a redundant ternary in the chip
+  title.
+- Version 1.9.0; tests 19/19 + 12/12. Build in the scratch tree as usual
+  (typecheck skipped in config, verified via `tsc --noEmit` detached).
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview

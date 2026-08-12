@@ -83,6 +83,7 @@ export default function InteractiveGlobe() {
     icon: categoryIcons[animal.category],
     conservationStatus: animal.conservationStatus,
     isMonitored: animal.isMonitored,
+    migrationRoutes: animal.migrationRoutes,
   }));
 
   // Filter data based on selected category AND IUCN status
