@@ -90,6 +90,20 @@ async function lookupSpecies(scientificName) {
  * pick the taxa at the standard ranks. Prefers the scientific name (P225);
  * falls back to the item label.
  */
+// Wikidata's P171 chain is paraphyletic: bird lineages pass through
+// "Reptilia" (and the chain can carry several class-ranked nodes). When that
+// happens, prefer the most specific extant clade that actually appears in the
+// chain instead of whatever node Wikidata ranked last.
+const CLASS_PRIORITY = ['Aves', 'Mammalia', 'Amphibia', 'Reptilia', 'Actinopterygii', 'Chondrichthyes', 'Insecta'];
+
+function bestClass(classList) {
+  const lower = classList.map((c) => c.toLowerCase());
+  for (const c of CLASS_PRIORITY) {
+    if (lower.includes(c.toLowerCase())) return c;
+  }
+  return classList[classList.length - 1] ?? null;
+}
+
 async function walkTaxonomy(qid) {
   const bindings = await sparql(`SELECT ?anc ?sciname ?rankLabel WHERE {
     wd:${qid} wdt:P171+ ?anc .
@@ -98,14 +112,21 @@ async function walkTaxonomy(qid) {
     SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
   }`);
   const ranks = {};
+  const classRanks = [];
   for (const row of bindings) {
     const key = row.rankLabel?.value?.toLowerCase();
-    if (key) ranks[key] = row.sciname?.value ?? row.anc.value.split('/').pop();
+    if (!key) continue;
+    const name = row.sciname?.value ?? row.anc.value.split('/').pop();
+    if (key === 'class') classRanks.push(name);
+    ranks[key] = name;
   }
   return {
     kingdom: ranks.kingdom ?? null,
     phylum: ranks.phylum ?? null,
-    class: ranks.class ?? null,
+    // Corrected class (e.g. Aves instead of a paraphyletic Reptilia node).
+    class: bestClass(classRanks) ?? ranks.class ?? null,
+    // The raw class Wikidata reported last, for the correction warning.
+    classRaw: ranks.class ?? null,
     order: ranks.order ?? null,
     family: ranks.family ?? null,
     genus: ranks.genus ?? null,
@@ -217,9 +238,25 @@ async function generate(scientificName) {
   console.log(`QID ${sp.qid} · ${sp.label} · IUCN ${sp.iucnId ?? '—'} · status ${sp.statusQid ? STATUS_BY_QID[sp.statusQid] ?? '?' : 'NE'}`);
 
   const tax = await walkTaxonomy(sp.qid);
+  // Guard: warn when the paraphyletic-chain correction changed the class
+  // (e.g. birds resolving through Reptilia) so the entry is double-checked.
+  if (tax.class && tax.classRaw && tax.class.toLowerCase() !== tax.classRaw.toLowerCase()) {
+    console.log(`⚠ taxonomy guard: class ${tax.classRaw} → ${tax.class} (preferred extant clade in the P171 chain)`);
+  } else if (!tax.class) {
+    console.log('⚠ taxonomy guard: no class found in the ancestor chain — fill taxonomy by hand');
+  }
   const title = sp.label.replace(/ /g, '_');
   const wiki = await wikipediaSummary(title);
   const commonName = (sp.commonName ?? wiki.title ?? sp.label).replace(/^./, (c) => c.toUpperCase());
+  // Guard: warn when the Wikidata common name looks like a synonym of the
+  // Wikipedia article title (e.g. "Trunkback Turtle" vs "Leatherback sea
+  // turtle") so the human reviewer can pick the canonical name.
+  const norm = (s) => (s ?? '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const cn = norm(commonName);
+  const wt = norm(wiki.title);
+  if (cn && wt && !wt.includes(cn) && !cn.includes(wt)) {
+    console.log(`⚠ taxonomy guard: common name "${commonName}" doesn't match the Wikipedia article "${wiki.title}" — prefer the article title`);
+  }
   const category = inferCategory(tax);
   const status = sp.statusQid ? STATUS_BY_QID[sp.statusQid] ?? '?' : 'NE';
   const description = wiki.extract?.split('\n')[0] ?? '';

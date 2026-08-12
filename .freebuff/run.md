@@ -229,6 +229,25 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
   invocation is `node .freebuff/start-preview.js start /tmp/oan-fresh` —
   passing the root as argv[2] silently serves the main checkout's stale build.
 
+## Round 7 (Aug 12 2026): conservation page, generator guards, cache warmer
+
+- **Conservation Overview** (`/conservation`, footer DATA column): groups all
+  27 species by IUCN status with summary cards, per-status bar chart + share
+  donut (recharts), and species lists ordered most endangered first.
+- **Generator taxonomy guards**: the P171 chain is paraphyletic (birds pass
+  through Reptilia), so `walkTaxonomy` now collects all class-ranked nodes
+  and picks the most specific extant clade (Aves > Mammalia > Amphibia >
+  Reptilia > …), warning when a correction fires. A second guard warns when
+  the Wikidata common name is a synonym of the Wikipedia article title.
+- **Cache warmer** `.freebuff/warm-preview.js [port] [root]`: waits for the
+  server to bind (first start after a build can take 8+ min on this
+  machine), then pre-fetches the key routes, API endpoints, animal pages,
+  and images so first Preview loads are instant. Run it after
+  `start-preview.js`:
+  `node .freebuff/warm-preview.js 3100 /tmp/oan-fresh`.
+- Version 1.6.0; tests still 19/19 unit + 12/12 integration (the
+  conservation page adds no API surface).
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview

@@ -18,6 +18,7 @@ const footerLinks = {
     { name: 'Ecological', path: '/data/ecological' },
     { name: 'Population', path: '/data/population' },
     { name: 'Health', path: '/data/health' },
+    { name: 'Conservation', path: '/conservation' },
   ],
   about: [
     { name: 'About Us', path: '/about' },

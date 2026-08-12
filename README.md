@@ -124,7 +124,8 @@ npm run refresh:data
 Every species links to its primary sources on the
 [Data Sources page](/sources) and on each animal's detail page. Species pages
 also chart the species' historical population series (censuses/surveys) in the
-Population Data tab.
+Population Data tab, and the [Conservation Overview](/conservation) groups
+every species by its IUCN status with charts and most-endangered-first lists.
 
 New species can be generated from live Wikidata/Wikipedia data instead of
 hand-written — taxonomy, IUCN assessment ID, status, photo, and description

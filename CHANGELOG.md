@@ -2,6 +2,24 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.6.0] - 2026-08-12
+
+### Added
+- **Conservation Overview page** (`/conservation`, linked from the footer):
+  groups all 27 species by IUCN status — summary cards, a per-status bar
+  chart and share donut (recharts), and full species lists ordered most
+  endangered first, each with photo, population note, and a link to its
+  profile.
+- **Taxonomy guards in the species generator**: the P171 ancestor chain is
+  paraphyletic (birds resolve through Reptilia), so the generator now picks
+  the most specific extant class present in the chain (Aves wins over
+  Reptilia for birds) and warns when a correction was applied. It also warns
+  when the Wikidata common name is a synonym of the Wikipedia article title
+  (e.g. "Trunkback Turtle" vs "Leatherback sea turtle").
+- **Preview cache warmer** (`.freebuff/warm-preview.js`): after `next start`
+  binds, it pre-fetches the key routes/API endpoints/images so first page
+  loads in the Preview tab are instant, and reports any that fail.
+
 ## [1.5.0] - 2026-08-12
 
 ### Added
