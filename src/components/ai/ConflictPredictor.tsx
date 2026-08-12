@@ -64,27 +64,28 @@ export default function ConflictPredictor() {
   const result = useMemo(() => {
     if (!valid) return null;
     const point = { latitude: latNum, longitude: lngNum };
-    const risks: SpeciesRisk[] = CONFLICT_SPECIES.map((id) => {
-      const animal = sampleAnimals.find((a) => a.id === id);
-      if (!animal) return null;
-      const routes = animal.migrationRoutes ?? [];
-      let nearestKm: number | null = null;
-      let corridor: string | null = null;
-      for (const route of routes) {
-        const d = distanceToRouteKm(point, route.points);
-        if (nearestKm === null || d < nearestKm) {
-          nearestKm = d;
-          corridor = route.name;
+    const risks: SpeciesRisk[] = CONFLICT_SPECIES
+      .map((id) => sampleAnimals.find((a) => a.id === id))
+      .filter((animal): animal is NonNullable<typeof animal> => Boolean(animal))
+      .map((animal) => {
+        const routes = animal.migrationRoutes ?? [];
+        let nearestKm: number | null = null;
+        let corridor: string | null = null;
+        for (const route of routes) {
+          const d = distanceToRouteKm(point, route.points);
+          if (nearestKm === null || d < nearestKm) {
+            nearestKm = d;
+            corridor = route.name;
+          }
         }
-      }
-      const weight = WEIGHT[id] ?? 0.5;
-      const boost = STATUS_BOOST[animal.conservationStatus] ?? 1;
-      // Exponential distance decay: full weight at 0 km, ~half at 35 km,
-      // negligible past ~150 km.
-      const proximity = nearestKm === null ? 0 : 100 * Math.exp(-nearestKm / 50);
-      const contribution = Math.round(Math.min(100, proximity * weight * boost));
-      return { animalId: id, commonName: animal.commonName, conservationStatus: animal.conservationStatus, weight, nearestKm, corridor, contribution };
-    }).filter((r): r is SpeciesRisk => r !== null);
+        const weight = WEIGHT[animal.id] ?? 0.5;
+        const boost = STATUS_BOOST[animal.conservationStatus] ?? 1;
+        // Exponential distance decay: full weight at 0 km, ~half at 35 km,
+        // negligible past ~150 km.
+        const proximity = nearestKm === null ? 0 : 100 * Math.exp(-nearestKm / 50);
+        const contribution = Math.round(Math.min(100, proximity * weight * boost));
+        return { animalId: animal.id, commonName: animal.commonName, conservationStatus: animal.conservationStatus, weight, nearestKm, corridor, contribution };
+      });
 
     const raw = risks.reduce((t, r) => t + r.contribution * r.weight, 0) / risks.reduce((t, r) => t + r.weight, 0);
     const score = Math.round(Math.min(100, raw));
