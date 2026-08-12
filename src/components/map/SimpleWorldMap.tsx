@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
+import type { SeasonFilter } from './GlobeComponent';
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
   mammals: '#0ea5e9',
@@ -63,10 +64,12 @@ export default function SimpleWorldMap({
   onAnimalClick,
   showRoutes = true,
   showMarkers = true,
+  seasonFilter = 'all',
 }: {
   onAnimalClick?: (animalId: string) => void;
   showRoutes?: boolean;
   showMarkers?: boolean;
+  seasonFilter?: SeasonFilter;
 }) {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -98,10 +101,17 @@ export default function SimpleWorldMap({
     
     setPoints(mapPoints);
 
-    // Project each species' migration corridors into canvas space
+    // Project each species' migration corridors into canvas space, keeping
+    // only the corridors active in the scrubber's current season
     const mapRoutes: MapRoute[] = [];
     sampleAnimals.forEach((animal) => {
       (animal.migrationRoutes || []).forEach((route) => {
+        const season = route.season ?? 'year-round';
+        const active =
+          seasonFilter === 'all' ||
+          season === 'year-round' ||
+          season === seasonFilter;
+        if (!active) return;
         mapRoutes.push({
           color: seasonColor(route.season),
           points: route.points.map((p) => ({
@@ -112,7 +122,7 @@ export default function SimpleWorldMap({
       });
     });
     setRoutes(showRoutes ? mapRoutes : []);
-  }, [showRoutes]);
+  }, [showRoutes, seasonFilter]);
 
   // Draw world map and points
   useEffect(() => {

@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import SimpleWorldMap from './SimpleWorldMap';
 import { AnimalCategory } from '@/types/animal/types';
-import type { RouteHoverInfo } from './GlobeComponent';
+import type { RouteHoverInfo, SeasonFilter } from './GlobeComponent';
 
 interface GlobeProps {
   data: any[];
@@ -15,10 +15,11 @@ interface GlobeProps {
   showClouds?: boolean;
   onRouteHover?: (info: RouteHoverInfo | null) => void;
   onRouteClick?: (info: RouteHoverInfo) => void;
+  seasonFilter?: SeasonFilter;
 }
 
 export default forwardRef(function GlobeComponentFallback(
-  { onAnimalClick, showRoutes = true, showMarkers = true }: GlobeProps,
+  { onAnimalClick, showRoutes = true, showMarkers = true, seasonFilter = 'all' }: GlobeProps,
   ref
 ) {
   const [isClient, setIsClient] = useState(false);
@@ -45,7 +46,7 @@ export default forwardRef(function GlobeComponentFallback(
 
   return (
     <div className="w-full h-full">
-      <SimpleWorldMap onAnimalClick={onAnimalClick} showRoutes={showRoutes} showMarkers={showMarkers} />
+      <SimpleWorldMap onAnimalClick={onAnimalClick} showRoutes={showRoutes} showMarkers={showMarkers} seasonFilter={seasonFilter} />
     </div>
   );
 });

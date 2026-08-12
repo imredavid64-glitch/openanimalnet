@@ -16,6 +16,10 @@ interface RouteData {
   points: RoutePoint[];
 }
 
+// Season scrubber value — 'all' shows every corridor; the four seasons only
+// show corridors active during them (year-round routes are always active).
+export type SeasonFilter = 'all' | 'spring' | 'summer' | 'fall' | 'winter';
+
 interface GlobeData {
   id: string;
   name: string;
@@ -68,6 +72,8 @@ interface GlobeProps {
   onRouteHover?: (info: RouteHoverInfo | null) => void;
   /** Fired when a migration corridor is clicked. */
   onRouteClick?: (info: RouteHoverInfo) => void;
+  /** Season scrubber: hide/dim corridors that aren't active in this season. */
+  seasonFilter?: SeasonFilter;
 }
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
@@ -104,6 +110,7 @@ export default forwardRef(function GlobeComponent(
     showClouds = true,
     onRouteHover,
     onRouteClick,
+    seasonFilter = 'all',
   }: GlobeProps,
   ref
 ) {
@@ -143,6 +150,23 @@ export default forwardRef(function GlobeComponent(
   >([]);
   // Hovered route, mirrored in a ref so the animation loop can highlight it
   const hoveredRouteRef = useRef<RouteHoverInfo | null>(null);
+  // Whether a route is active for the current season filter (a corridor is
+  // active when it's year-round, matches the season, or all seasons are shown)
+  const isRouteActive = (season?: string): boolean =>
+    seasonFilter === 'all' ||
+    season === 'year-round' ||
+    season === seasonFilter;
+  // Apply the season filter to every route object (line, dot, arrows) tagged
+  // with its leg season in userData
+  const applySeasonFilter = () => {
+    const group = routesRef.current;
+    if (!group) return;
+    group.traverse((obj) => {
+      const season = obj.userData?.season as string | undefined;
+      if (!season) return;
+      obj.visible = isRouteActive(season);
+    });
+  };
   // Camera fly-to animation state (target point on the globe)
   const flyRef = useRef<{
     fromCam: THREE.Vector3;
@@ -369,11 +393,19 @@ export default forwardRef(function GlobeComponent(
     }
     if (showRoutes) {
       createRoutes(sceneRef.current, data);
+      applySeasonFilter();
     }
     // createPoints/createRoutes are component-scope helpers; their only input
     // is `data`, which is already the dependency.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, showRoutes, showMarkers]);
+  
+  // Re-apply the season filter when the scrubber moves (routes are rebuilt on
+  // data changes but not on season changes — just toggle visibility here)
+  useEffect(() => {
+    applySeasonFilter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seasonFilter]);
   
   // Handle mouse events for hover + click
   useEffect(() => {
@@ -688,13 +720,17 @@ export default forwardRef(function GlobeComponent(
         });
         const line = new THREE.Line(lineGeo, lineMat);
         line.computeLineDistances();
-        line.userData = { animalId: d.id, name: d.name, routeName: route.name } as RouteHoverInfo;
+        // The season tag lets the scrubber hide/dim this corridor outside its
+        // active season (kept on the line for picking, copied to dot/arrows)
+        const seasonTag = route.season ?? 'year-round';
+        line.userData = { animalId: d.id, name: d.name, routeName: route.name, season: seasonTag } as RouteHoverInfo;
         group.add(line);
 
         // Moving dot
         const dotGeo = new THREE.SphereGeometry(0.045, 12, 12);
         const dotMat = new THREE.MeshBasicMaterial({ color });
         const dot = new THREE.Mesh(dotGeo, dotMat);
+        dot.userData.season = seasonTag;
         group.add(dot);
 
         // Directional arrows: small cones that travel the route pointing along
@@ -705,6 +741,7 @@ export default forwardRef(function GlobeComponent(
         for (let a = 0; a < 3; a++) {
           const cone = new THREE.Mesh(coneGeo, coneMat);
           cone.visible = false; // positioned by the animation loop
+          cone.userData.season = seasonTag;
           arrows.push(cone);
           group.add(cone);
         }

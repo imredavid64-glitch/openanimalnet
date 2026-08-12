@@ -1,11 +1,19 @@
 'use client';
 
 import { MigrationRoute, MigrationSeason } from '@/types/animal/types';
+import { routeDistanceKm, formatKm, formatDurationDays } from '@/lib/geo';
 
 const seasonColor = (season?: MigrationSeason): string => {
   if (season === 'spring') return '#22c55e';
   if (season === 'fall') return '#f59e0b';
   return '#94a3b8';
+};
+
+// Midpoint of a route (lat/lng) for placing its distance label on the map.
+const midpoint = (points: MigrationRoute['points']): { lat: number; lng: number } => {
+  if (points.length === 0) return { lat: 0, lng: 0 };
+  const mid = points[Math.floor((points.length - 1) / 2)];
+  return { lat: mid.latitude, lng: mid.longitude };
 };
 
 /**
@@ -38,6 +46,10 @@ export default function MiniRouteMap({
           const line = route.points
             .map((p) => `${(p.longitude + 180).toFixed(2)},${(90 - p.latitude).toFixed(2)}`)
             .join(' ');
+          const mid = midpoint(route.points);
+          const km = routeDistanceKm(route.points);
+          const duration = route.durationDays ? formatDurationDays(route.durationDays) : null;
+          const label = [formatKm(km), duration].filter(Boolean).join(' · ');
           return (
             <g key={i}>
               <polyline
@@ -61,12 +73,32 @@ export default function MiniRouteMap({
                   strokeWidth="0.7"
                 />
               ))}
+              {/* Distance + duration label at the route's midpoint */}
+              <g>
+                <rect
+                  x={mid.lng + 180 + 2.5}
+                  y={90 - mid.lat - 6.5}
+                  width={label.length * 3.05 + 4}
+                  height="13"
+                  rx="2.5"
+                  fill="rgba(0,0,0,0.55)"
+                />
+                <text
+                  x={mid.lng + 180 + 4.5}
+                  y={90 - mid.lat + 3.2}
+                  fontSize="8"
+                  fill="#ffffff"
+                  fontFamily="ui-monospace, monospace"
+                >
+                  {label}
+                </text>
+              </g>
             </g>
           );
         })}
       </svg>
       <div className="absolute bottom-1.5 right-2 text-[10px] text-white/80 bg-black/40 rounded-md px-1.5 py-0.5">
-        spring · fall · year-round
+        distances approx. · spring · fall · year-round
       </div>
     </div>
   );

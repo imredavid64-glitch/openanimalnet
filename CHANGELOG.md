@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.13.0] - 2026-08-12
+
+### Added
+- **Seasonal time scrubber on the globe**: a 🗓️ Seasons control scrubs
+  through the four seasons (plus All), hiding corridors that aren't active
+  in the selected season — year-round routes persist, seasonal legs appear
+  only in their season — with a live "N of M corridors active" counter and a
+  ▶ Play button that cycles spring → summer → fall → winter. Wired through
+  the 3D globe (per-route visibility tags) and the 2D fallback map.
+- **Distance labels on migration routes**: the mini route maps on profile
+  and monitor pages now label every corridor with its great-circle distance
+  and duration (e.g. Arctic tern fall leg: "~15,008 km · ~3 months"), and
+  the globe's route hover panel shows the same figures. New pure helpers in
+  `src/lib/geo.ts` (haversine route distance + compact km/duration
+  formatting) with their own unit tests.
+- **Migration durations**: every corridor now carries a literature-based
+  `durationDays` (blue whale ~75, monarch ~90, saiga ~30, leatherback
+  trans-Pacific ~330, tern fall ~90 / spring ~70).
+
 ## [1.12.0] - 2026-08-12
 
 ### Added

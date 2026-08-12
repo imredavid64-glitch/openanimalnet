@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
+import { routeDistanceKm, formatKm, formatDurationDays } from '@/lib/geo';
+import type { SeasonFilter } from './GlobeComponent';
 
 // Dynamically import Three.js components to avoid SSR issues
 const Globe = dynamic(() => import('./GlobeComponent').catch(() => import('./GlobeComponentFallback')), {
@@ -22,6 +24,25 @@ interface RouteInfo {
   name: string;
   routeName: string;
 }
+
+// Season scrubber: the four seasons + 'all'. Year-round corridors are always
+// active; summer/winter show only those.
+const SEASONS: { key: Exclude<SeasonFilter, 'all'>; label: string; emoji: string }[] = [
+  { key: 'spring', label: 'Spring', emoji: '🌱' },
+  { key: 'summer', label: 'Summer', emoji: '☀️' },
+  { key: 'fall', label: 'Fall', emoji: '🍂' },
+  { key: 'winter', label: 'Winter', emoji: '❄️' },
+];
+
+// Count of migration corridors active in a given season filter.
+const activeRouteCount = (filter: SeasonFilter): number =>
+  sampleAnimals.reduce((total, animal) => {
+    (animal.migrationRoutes || []).forEach((route) => {
+      const season = route.season ?? 'year-round';
+      if (filter === 'all' || season === 'year-round' || season === filter) total += 1;
+    });
+    return total;
+  }, 0);
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
   mammals: '#0ea5e9',
@@ -69,6 +90,8 @@ export default function InteractiveGlobe() {
   const [showClouds, setShowClouds] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [seasonFilter, setSeasonFilter] = useState<SeasonFilter>('all');
+  const [seasonPlaying, setSeasonPlaying] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const globeRef = useRef<any>(null);
 
@@ -122,6 +145,19 @@ export default function InteractiveGlobe() {
     // A route hover supersedes the animal hover panel
     if (info) setHoveredAnimal(null);
   };
+
+  // Season scrubber play: cycle through the four seasons while playing
+  useEffect(() => {
+    if (!seasonPlaying) return;
+    const id = setInterval(() => {
+      setSeasonFilter((prev) => {
+        if (prev === 'all') return 'spring';
+        const idx = SEASONS.findIndex((s) => s.key === prev);
+        return SEASONS[(idx + 1) % SEASONS.length].key;
+      });
+    }, 1800);
+    return () => clearInterval(id);
+  }, [seasonPlaying]);
 
   const handleRouteClick = (info: RouteInfo) => {
     // Focus like a marker click (popup + fly-to) — the corridor also traces
@@ -264,6 +300,25 @@ export default function InteractiveGlobe() {
               <div className="text-white/80 text-sm bg-white/10 rounded-xl p-3">
                 {hoveredRoute.routeName}
               </div>
+              {(() => {
+                const animal = sampleAnimals.find((a) => a.id === hoveredRoute.animalId);
+                const route = animal?.migrationRoutes?.find((r) => r.name === hoveredRoute.routeName);
+                if (!route) return null;
+                const km = routeDistanceKm(route.points);
+                const duration = route.durationDays ? formatDurationDays(route.durationDays) : null;
+                return (
+                  <div className="flex items-center gap-3 text-xs text-white/80">
+                    <span className="inline-flex items-center gap-1 bg-white/10 rounded-lg px-2 py-1">
+                      📏 {formatKm(km)}
+                    </span>
+                    {duration && (
+                      <span className="inline-flex items-center gap-1 bg-white/10 rounded-lg px-2 py-1">
+                        ⏱ {duration}
+                      </span>
+                    )}
+                  </div>
+                );
+              })()}
               <button
                 onClick={() => router.push(`/animal/${hoveredRoute.animalId}`)}
                 className="w-full px-3 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white text-sm font-medium transition-colors duration-300"
@@ -347,6 +402,7 @@ export default function InteractiveGlobe() {
             showClouds={showClouds}
             onRouteHover={handleRouteHover}
             onRouteClick={handleRouteClick}
+            seasonFilter={seasonFilter}
           />
         )}
 
@@ -429,6 +485,61 @@ export default function InteractiveGlobe() {
             </div>
           );
         })()}
+
+        {/* Seasonal time scrubber — scrub/play through the seasons to watch
+            which migration corridors are active in each */}
+        <div className="absolute bottom-24 right-6 z-20 bg-white/10 backdrop-blur-lg rounded-2xl p-3 shadow-lg">
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <span className="text-white text-xs font-semibold mr-1">🗓️ Seasons</span>
+            <button
+              onClick={() => setSeasonPlaying((prev) => !prev)}
+              className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors duration-300 ${
+                seasonPlaying ? 'bg-primary-500 text-white' : 'bg-white/20 text-white hover:bg-white/30'
+              }`}
+              title={seasonPlaying ? 'Pause season cycle' : 'Play season cycle'}
+            >
+              {seasonPlaying ? '⏸ Pause' : '▶ Play'}
+            </button>
+            <button
+              onClick={() => {
+                setSeasonFilter('all');
+                setSeasonPlaying(false);
+              }}
+              className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors duration-300 ${
+                seasonFilter === 'all' ? 'bg-white text-primary-600' : 'bg-white/20 text-white hover:bg-white/30'
+              }`}
+              title="Show all corridors"
+            >
+              All
+            </button>
+          </div>
+          <div className="flex gap-1">
+            {SEASONS.map((s) => {
+              const active = seasonFilter === s.key;
+              return (
+                <button
+                  key={s.key}
+                  onClick={() => {
+                    setSeasonFilter(s.key);
+                    setSeasonPlaying(false);
+                  }}
+                  className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
+                    active
+                      ? 'bg-white text-primary-600 shadow-lg'
+                      : 'bg-white/20 text-white hover:bg-white/30'
+                  }`}
+                  title={`Show ${s.label} migrations`}
+                >
+                  <span className="mr-1">{s.emoji}</span>
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
+          <div className="mt-1.5 text-[11px] text-white/70">
+            {activeRouteCount(seasonFilter)} of {activeRouteCount('all')} corridors active
+          </div>
+        </div>
 
         {/* Bottom Controls */}
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 bg-white/10 backdrop-blur-lg rounded-2xl p-4 shadow-lg flex space-x-3">
@@ -562,6 +673,10 @@ export default function InteractiveGlobe() {
         <span className="inline-flex items-center gap-1">
           <span className="w-2 h-2 rounded-full bg-primary-400" />
           click a marker to focus
+        </span>
+        <span className="inline-flex items-center gap-1">
+          🗓️
+          scrub seasons to watch migrations
         </span>
       </div>
     </motion.div>

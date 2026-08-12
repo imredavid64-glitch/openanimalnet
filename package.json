@@ -1,6 +1,6 @@
 {
   "name": "openanimalnet",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "private": true,
   "engines": {
     "node": ">=22.6"
@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --test src/lib/animalFiltering.test.ts src/lib/rateLimit.test.ts",
+    "test": "node --test src/lib/animalFiltering.test.ts src/lib/rateLimit.test.ts src/lib/geo.test.ts",
     "test:api": "node --test tests/api.integration.test.ts",
     "refresh:data": "node .freebuff/refresh-sources.mjs",
     "check:taxonomy": "node .freebuff/check-taxonomy.mjs",

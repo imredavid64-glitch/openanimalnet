@@ -604,6 +604,8 @@ export interface MigrationRoute {
   name: string;
   /** Leg season for arc coloring on the globe. */
   season?: MigrationSeason;
+  /** Typical duration of the leg in days (approximate, from literature). */
+  durationDays?: number;
   points: MigrationRoutePoint[];
 }
 

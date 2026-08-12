@@ -376,3 +376,18 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview
   (they load fine in a normal browser).
+
+## Round 14 (Aug 12 2026): seasonal scrubber + distance labels
+
+- **Seasonal time scrubber**: 🗓️ Seasons control on the globe (4 season
+  chips + All + ▶ Play cycle) hides corridors that aren't active in the
+  selected season; year-round routes persist. 3D globe tags each route
+  (line/dot/arrows) with its leg season in userData and toggles visibility;
+  the 2D fallback filters its route list. Counter shows "N of M corridors
+  active".
+- **Distance labels**: `src/lib/geo.ts` (haversine great-circle km +
+  compact formatKm/formatDurationDays); MiniRouteMap labels each corridor
+  "~X km · ~Y"; the globe route hover panel shows the same figures.
+- Migration routes now carry `durationDays` (leatherback ~330 = the
+  documented 10–12 month trans-Pacific).
+- Tests 28/28 unit (9 new geo tests) + 12/12 integration.
