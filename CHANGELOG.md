@@ -2,6 +2,39 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.16.0] - 2026-08-12
+
+### Added
+- **SVG icon system site-wide**: the shared stroke-icon set now covers every
+  surface — navbar, footer, globe controls, alerts, dashboard, AI assistant,
+  monitor, animal profiles, and static pages — replacing scattered emoji.
+- **ICS calendar export**: an "Add to calendar (.ics)" button on /migration
+  downloads every corridor as a calendar feed alongside the CSV export.
+- **Animated constellation hero**: slow drift animation with a pulse on the
+  current month's node.
+
+### Changed
+- **Honest site-wide stats**: fabricated figures ("1,258,723 species",
+  "45,823 monitored", "100M+ data points") replaced with values derived from
+  the real 28-species dataset (28 species, 28 monitored, 6 alerts).
+- **Class-based dark mode**: the page surface now follows the `.dark` class
+  (matching Tailwind's `darkMode: 'class'`), so the toggle flips the whole
+  page consistently, seeded pre-hydration.
+- **Globe visibility**: removed the 128px hero overlap so the interactive
+  globe sits fully below the landing hero.
+- **Tailwind JIT purge fix**: dynamically-interpolated `bg-{color}-100` /
+  `border-{color}-500` classes replaced with static lookup maps so chips and
+  borders actually render.
+- **Deploy pipeline**: replaced the deprecated amondnet action (broken under
+  GitHub's forced Node 24) with a direct `vercel deploy --prod` step; deploys
+  auto-run on every push.
+
+### Fixed
+- API integration test asserting outdated dataset totals.
+- Removed the low-contrast "NET" hover pill from the navbar logo.
+- Leftover emoji in monitor data chips, profile source links, and the animal
+  search input replaced with SVG icons.
+
 ## [1.15.0] - 2026-08-12
 
 ### Added

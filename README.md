@@ -6,12 +6,21 @@ OpenAnimalNet is a comprehensive platform for monitoring, analyzing, and explori
 
 ## Features
 
-- **Interactive Globe**: Visualize animal locations and movements on a 3D interactive globe
-- **Real-time Monitoring**: Track animals with live GPS data and receive alerts
-- **Comprehensive Data**: Access biological, behavioral, ecological, population, and health data
-- **AI Assistant**: Get intelligent insights and analysis using natural language queries
-- **Advanced Filtering**: Filter animals by category, conservation status, data type, and more
-- **Beautiful UI**: Modern, responsive design with smooth animations
+- **Interactive Globe**: 3D globe with all 28 species, search, conservation-status
+  filters, click-to-focus popups, and animated migration routes.
+- **Seasonal migration explorer**: a time scrubber animates corridors month by
+  month; the migration calendar lists every route with real start/end months,
+  distances, and durations — exportable as CSV or an ICS calendar feed.
+- **Monitoring & alerts**: per-species dashboards with live alerts, coverage
+  maps, and mini route maps on every profile.
+- **Conservation overview**: every species grouped by IUCN status with
+  population charts and most-endangered-first lists.
+- **Accurate, source-linked data**: each species is verified against live
+  Wikidata/Wikipedia sources (IUCN assessment ID, status, taxonomy, photo),
+  with source links on every profile and a weekly drift check in CI.
+- **AI Assistant**: intelligent insights from the dataset via natural language.
+- **Public API**: a documented JSON API under `/api/v1/*` with filters and
+  rate limiting (see below).
 
 ## Animal Data Categories
 
