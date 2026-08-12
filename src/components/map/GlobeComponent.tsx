@@ -26,12 +26,24 @@ interface GlobeData {
   migrationRoutes?: { name: string; points: RoutePoint[] }[];
 }
 
+export interface RouteHoverInfo {
+  animalId: string;
+  name: string;
+  routeName: string;
+}
+
 interface GlobeProps {
   data: GlobeData[];
   onAnimalHover: (animalId: string | null) => void;
   selectedCategory: AnimalCategory | null;
   /** Called when a marker is clicked — parents can navigate to the profile. */
   onAnimalClick?: (animalId: string) => void;
+  /** Whether migration corridors should be drawn. */
+  showRoutes?: boolean;
+  /** Fired when the pointer moves over/off a migration corridor. */
+  onRouteHover?: (info: RouteHoverInfo | null) => void;
+  /** Fired when a migration corridor is clicked. */
+  onRouteClick?: (info: RouteHoverInfo) => void;
 }
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
@@ -58,7 +70,7 @@ const conservationStatusColors: Record<ConservationStatus, string> = {
 };
 
 export default forwardRef(function GlobeComponent(
-  { data, onAnimalHover, selectedCategory, onAnimalClick }: GlobeProps,
+  { data, onAnimalHover, selectedCategory, onAnimalClick, showRoutes = true, onRouteHover, onRouteClick }: GlobeProps,
   ref
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -76,10 +88,23 @@ export default forwardRef(function GlobeComponent(
   const raycasterRef = useRef<THREE.Raycaster | null>(null);
   const mouseRef = useRef<THREE.Vector2 | null>(null);
 
-  // Animated migration dots: { curve, dot, speed, phase } per route
+  // Animated migration dots: { curve, dot, speed, phase, material, animalId, routeName } per route
+  // (dashOffset is a real runtime property of LineDashedMaterial in three r160,
+  // but @types/three omits it — cast it in so the animation can set it)
+  type RouteMaterial = THREE.LineDashedMaterial & { dashOffset: number };
   const routeAnimsRef = useRef<
-    { curve: THREE.CatmullRomCurve3; dot: THREE.Mesh; speed: number; phase: number }[]
+    {
+      curve: THREE.CatmullRomCurve3;
+      dot: THREE.Mesh;
+      speed: number;
+      phase: number;
+      material: RouteMaterial;
+      animalId: string;
+      routeName: string;
+    }[]
   >([]);
+  // Hovered route, mirrored in a ref so the animation loop can highlight it
+  const hoveredRouteRef = useRef<RouteHoverInfo | null>(null);
   
   // Animation state
   const [isRotating, setIsRotating] = useState(true);
@@ -144,8 +169,10 @@ export default forwardRef(function GlobeComponent(
     // Create Points
     createPoints(scene, data);
     
-    // Create migration routes
-    createRoutes(scene, data);
+    // Create migration routes (rebuilt by the data effect on any change)
+    if (showRoutes) {
+      createRoutes(scene, data);
+    }
     
     // Handle resize
     const handleResize = () => {
@@ -171,11 +198,20 @@ export default forwardRef(function GlobeComponent(
         cloudsRef.current.rotation.y += rotationSpeed * 0.35;
       }
       
-      // Advance migration dots along their routes
+      // Advance migration dots along their routes; scroll the dash so the
+      // corridors visibly flow, and pulse/highlight on hover
       const now = performance.now() / 1000;
       for (const anim of routeAnimsRef.current) {
         const t = (now * anim.speed + anim.phase) % 1;
         anim.dot.position.copy(anim.curve.getPoint(t));
+        anim.material.dashOffset = -now * 0.22;
+        const hovered =
+          hoveredRouteRef.current?.animalId === anim.animalId &&
+          hoveredRouteRef.current?.routeName === anim.routeName;
+        anim.material.opacity = hovered
+          ? 0.95
+          : 0.4 + 0.08 * Math.sin(now * 1.6 + anim.phase * 9);
+        anim.dot.scale.setScalar(hovered ? 1.8 : 1);
       }
       
       if (controlsRef.current) {
@@ -204,7 +240,7 @@ export default forwardRef(function GlobeComponent(
     // One-time scene setup: createGlobe/createPoints are intentionally
     // captured once; data changes are handled by the dedicated effect below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);    // Update points + routes when data changes
+  }, []);    // Update points + routes when data or the routes toggle changes
   useEffect(() => {
     if (!sceneRef.current) return;
     
@@ -222,13 +258,20 @@ export default forwardRef(function GlobeComponent(
       pointsRef.current = null;
     }
     
-    // Remove existing routes + reset animation state
+    // Remove existing routes + reset animation state (Lines and Meshes both
+    // carry geometry/material — dispose both)
     if (routesRef.current) {
       sceneRef.current.remove(routesRef.current);
       routesRef.current.traverse((obj) => {
-        if (obj instanceof THREE.Mesh) {
-          obj.geometry.dispose();
-          (obj.material as THREE.Material).dispose();
+        const withGeo = obj as unknown as {
+          geometry?: THREE.BufferGeometry;
+          material?: THREE.Material | THREE.Material[];
+        };
+        withGeo.geometry?.dispose();
+        if (Array.isArray(withGeo.material)) {
+          withGeo.material.forEach((m) => m.dispose());
+        } else {
+          withGeo.material?.dispose();
         }
       });
       routesRef.current = null;
@@ -237,37 +280,80 @@ export default forwardRef(function GlobeComponent(
     
     // Create new points + routes
     createPoints(sceneRef.current, data);
-    createRoutes(sceneRef.current, data);
+    if (showRoutes) {
+      createRoutes(sceneRef.current, data);
+    }
     // createPoints/createRoutes are component-scope helpers; their only input
     // is `data`, which is already the dependency.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [data, showRoutes]);
   
   // Handle mouse events for hover + click
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !cameraRef.current || !raycasterRef.current || !mouseRef.current) return;
     
-    const pickMarker = (event: MouseEvent): string | null => {
+    const setPointer = (event: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       mouseRef.current!.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       mouseRef.current!.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
       raycasterRef.current!.setFromCamera(mouseRef.current!, cameraRef.current!);
+    };
+    
+    const pickMarker = (event: MouseEvent): string | null => {
+      setPointer(event);
       if (!pointsRef.current) return null;
       const intersects = raycasterRef.current!.intersectObject(pointsRef.current);
-      if (intersects.length === 0) return null;
-      const instanceId = intersects[0].instanceId;
-      if (instanceId === undefined || instanceId >= data.length) return null;
-      return data[instanceId].id;
+      // Markers are plain meshes in a Group (not InstancedMesh), so their
+      // index travels in userData — glow spheres have no index and are
+      // skipped in favor of the marker they wrap.
+      for (const hit of intersects) {
+        const index = (hit.object.userData?.index as number | undefined);
+        if (index !== undefined && index < data.length) return data[index].id;
+      }
+      return null;
+    };
+    
+    // Thin lines are hard to raycast against at a distance — widen the line
+    // threshold just for the routes pass, then restore it for markers.
+    const pickRoute = (event: MouseEvent): RouteHoverInfo | null => {
+      if (!routesRef.current) return null;
+      setPointer(event);
+      const prev = raycasterRef.current!.params.Line.threshold;
+      raycasterRef.current!.params.Line.threshold = 0.05;
+      const intersects = raycasterRef.current!.intersectObject(routesRef.current, true);
+      raycasterRef.current!.params.Line.threshold = prev;
+      for (const hit of intersects) {
+        const info = hit.object.userData as RouteHoverInfo | undefined;
+        if (info) return info;
+      }
+      return null;
     };
     
     const handleMouseMove = (event: MouseEvent) => {
+      const route = pickRoute(event);
+      if (route) {
+        hoveredRouteRef.current = route;
+        hoveredRef.current = null;
+        onRouteHover?.(route);
+        onAnimalHover(null);
+        return;
+      }
+      if (hoveredRouteRef.current) {
+        hoveredRouteRef.current = null;
+        onRouteHover?.(null);
+      }
       const id = pickMarker(event);
       hoveredRef.current = id;
       onAnimalHover(id);
     };
     
     const handleClick = (event: MouseEvent) => {
+      const route = pickRoute(event);
+      if (route) {
+        onRouteClick?.(route);
+        return;
+      }
       const id = pickMarker(event);
       if (id) onAnimalClick?.(id);
     };
@@ -279,7 +365,7 @@ export default forwardRef(function GlobeComponent(
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('click', handleClick);
     };
-  }, [data, onAnimalHover, onAnimalClick]);
+  }, [data, onAnimalHover, onAnimalClick, onRouteHover, onRouteClick]);
   
   // Expose methods to parent component
   useImperativeHandle(ref, () => ({
@@ -437,7 +523,15 @@ export default forwardRef(function GlobeComponent(
     if (routesWithData.length === 0) return;
 
     const group = new THREE.Group();
-    const anims: { curve: THREE.CatmullRomCurve3; dot: THREE.Mesh; speed: number; phase: number }[] = [];
+    const anims: {
+      curve: THREE.CatmullRomCurve3;
+      dot: THREE.Mesh;
+      speed: number;
+      phase: number;
+      material: RouteMaterial;
+      animalId: string;
+      routeName: string;
+    }[] = [];
     const surfaceRadius = 2;
 
     routesWithData.forEach((d, animalIdx) => {
@@ -464,14 +558,20 @@ export default forwardRef(function GlobeComponent(
 
         const curve = new THREE.CatmullRomCurve3(controls, false, 'catmullrom', 0.5);
 
-        // Route line
+        // Route line — dashed and animated (flowing dash) so it reads as a
+        // directional corridor; carries its identity for picking/highlighting
         const lineGeo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(96));
-        const lineMat = new THREE.LineBasicMaterial({
+        const lineMat = new THREE.LineDashedMaterial({
           color,
           transparent: true,
-          opacity: 0.4,
+          opacity: 0.45,
+          dashSize: 0.09,
+          gapSize: 0.05,
         });
-        group.add(new THREE.Line(lineGeo, lineMat));
+        const line = new THREE.Line(lineGeo, lineMat);
+        line.computeLineDistances();
+        line.userData = { animalId: d.id, name: d.name, routeName: route.name } as RouteHoverInfo;
+        group.add(line);
 
         // Moving dot
         const dotGeo = new THREE.SphereGeometry(0.045, 12, 12);
@@ -484,6 +584,9 @@ export default forwardRef(function GlobeComponent(
           dot,
           speed: 0.035 + (animalIdx * 0.007 + routeIdx * 0.005) % 0.02,
           phase: animalIdx * 0.21 + routeIdx * 0.37,
+          material: lineMat as RouteMaterial,
+          animalId: d.id,
+          routeName: route.name,
         });
       });
     });
@@ -517,6 +620,7 @@ export default forwardRef(function GlobeComponent(
     
     data.forEach((d, index) => {
       const mesh = new THREE.Mesh(geometry, materials[index]);
+      mesh.userData.index = index;
       
       // Convert lat/lng to spherical coordinates
       const phi = (90 - d.lat) * (Math.PI / 180);

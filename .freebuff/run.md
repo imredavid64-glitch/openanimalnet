@@ -301,6 +301,31 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
 - Version 1.9.0; tests 19/19 + 12/12. Build in the scratch tree as usual
   (typecheck skipped in config, verified via `tsc --noEmit` detached).
 
+## Round 11 (Aug 12 2026): interactive routes, migration toggle, profile sections
+
+- **Interactive corridors**: routes are now dashed-and-flowing (LineDashed-
+  Material dashOffset), pulse subtly, brighten + grow their comet on hover,
+  and are pickable via a raycaster with a widened Line threshold (0.05).
+  Hovering shows a panel (species + route name + View profile); clicking a
+  route opens the species page. The 2D fallback keeps its comet animation.
+- **Toggle + legend**: 🧭 button in the globe controls shows/hides all
+  corridors (rebuilds the routes group cleanly); legend under the globe
+  explains the dashed corridors.
+- **Profile migration section**: monarch/blue whale/leatherback/saiga pages
+  now show a "Seasonal Migration" card with route name, waypoints, formatted
+  endpoints, and an SVG arc sketch.
+- **FOUND + FIXED a pre-existing bug**: globe marker picking read
+  `intersects[0].instanceId` (InstancedMesh-only), so markers in the plain
+  Group never hovered/clicked — markers now carry their index in userData
+  and the picker iterates hits. Verified: marker click navigates, route
+  hover panel renders, route click navigates, toggle hides routes.
+- Debug note: the routes only raycast-pick when their hemisphere faces the
+  camera; synthetic-event sweeps must either rotate the globe (or wait for
+  auto-rotation) to bring the Pacific-side routes into view. Line raycast
+  was validated against the actual geometry in Node (1168 hits across a
+  sweep) before confirming in the preview.
+- Version 1.10.0; tests 19/19 + 12/12.
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview

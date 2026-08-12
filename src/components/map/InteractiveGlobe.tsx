@@ -17,6 +17,12 @@ const Globe = dynamic(() => import('./GlobeComponent').catch(() => import('./Glo
   ),
 });
 
+interface RouteInfo {
+  animalId: string;
+  name: string;
+  routeName: string;
+}
+
 const animalCategoryColors: Record<AnimalCategory, string> = {
   mammals: '#0ea5e9',
   birds: '#38bdf8',
@@ -44,6 +50,8 @@ export default function InteractiveGlobe() {
   const [selectedCategory, setSelectedCategory] = useState<AnimalCategory | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<ConservationStatus | null>(null);
   const [hoveredAnimal, setHoveredAnimal] = useState<string | null>(null);
+  const [hoveredRoute, setHoveredRoute] = useState<RouteInfo | null>(null);
+  const [showRoutes, setShowRoutes] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const globeRef = useRef<any>(null);
 
@@ -68,6 +76,16 @@ export default function InteractiveGlobe() {
 
   const handleAnimalClick = (animalId: string) => {
     router.push(`/animal/${animalId}`);
+  };
+
+  const handleRouteHover = (info: RouteInfo | null) => {
+    setHoveredRoute(info);
+    // A route hover supersedes the animal hover panel
+    if (info) setHoveredAnimal(null);
+  };
+
+  const handleRouteClick = (info: RouteInfo) => {
+    router.push(`/animal/${info.animalId}`);
   };
 
   // Convert sample animals to format suitable for globe
@@ -151,7 +169,32 @@ export default function InteractiveGlobe() {
             </div>
           </div>
           
-          {hoveredAnimal ? (
+          {hoveredRoute ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-3"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                  <span className="text-2xl">🧭</span>
+                </div>
+                <div>
+                  <div className="text-white font-semibold">{hoveredRoute.name}</div>
+                  <div className="text-white/70 text-sm">Migration corridor</div>
+                </div>
+              </div>
+              <div className="text-white/80 text-sm bg-white/10 rounded-xl p-3">
+                {hoveredRoute.routeName}
+              </div>
+              <button
+                onClick={() => router.push(`/animal/${hoveredRoute.animalId}`)}
+                className="w-full px-3 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white text-sm font-medium transition-colors duration-300"
+              >
+                View {hoveredRoute.name} profile →
+              </button>
+            </motion.div>
+          ) : hoveredAnimal ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -215,14 +258,16 @@ export default function InteractiveGlobe() {
           )}
         </div>
 
-        {/* Globe Component */}
-        {isClient && (
+        {/* Globe Component */}          {isClient && (
           <Globe
             ref={globeRef}
             data={filteredData}
             onAnimalHover={handleAnimalHover}
             onAnimalClick={handleAnimalClick}
             selectedCategory={selectedCategory}
+            showRoutes={showRoutes}
+            onRouteHover={handleRouteHover}
+            onRouteClick={handleRouteClick}
           />
         )}
 
@@ -234,6 +279,15 @@ export default function InteractiveGlobe() {
             title="Reset View"
           >
             <span className="text-white">🔄</span>
+          </button>
+          <button
+            onClick={() => setShowRoutes((prev) => !prev)}
+            className={`p-3 rounded-xl transition-colors duration-300 ${
+              showRoutes ? 'bg-primary-500 text-white shadow-lg' : 'bg-white/20 hover:bg-white/30 text-white'
+            }`}
+            title={showRoutes ? 'Hide migration corridors' : 'Show migration corridors'}
+          >
+            <span className="text-white">🧭</span>
           </button>
           <button
             onClick={() => globeRef.current?.zoomIn()}
@@ -305,6 +359,21 @@ export default function InteractiveGlobe() {
               </button>
             );
           })}
+      </div>
+
+      {/* Migration Legend */}
+      <div className="mt-2 flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-xs text-secondary-500 dark:text-secondary-400">
+        <span className="inline-flex items-center gap-1.5">
+          <svg width="26" height="6" viewBox="0 0 26 6">
+            <line x1="0" y1="3" x2="26" y2="3" stroke="currentColor" strokeWidth="2" strokeDasharray="4 2" />
+            <circle cx="3" cy="3" r="1.8" fill="currentColor" />
+          </svg>
+          {showRoutes ? 'Migration corridor (click to open species)' : 'Migration corridors hidden'}
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-primary-400" />
+          Hover or click a corridor for details
+        </span>
       </div>
     </motion.div>
   );

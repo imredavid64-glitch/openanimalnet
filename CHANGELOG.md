@@ -2,6 +2,33 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.10.0] - 2026-08-12
+
+### Added
+- **Interactive migration corridors**: routes now use animated flowing dashes
+  (LineDashedMaterial with scrolling dashOffset) plus a soft pulse, hover
+  brightens the route and enlarges its comet, and a route picker (raycaster
+  with a widened Line threshold) lets hovering a corridor show a panel with
+  the species + route name and a "View profile" button, or clicking it open
+  the species page directly. The 2D fallback map respects the same toggle.
+- **Migration route toggle + legend**: a 🧭 button in the globe controls hides
+  or shows all corridors (the 3D globe, 2D fallback, and animation state all
+  rebuild), and a legend under the globe explains the dashed corridors.
+- **Seasonal Migration section on animal profiles**: species with
+  `migrationRoutes` (monarch, blue whale, leatherback, saiga) show a card
+  with each route's name, waypoint count, formatted endpoints, and a small
+  status-colored SVG arc sketch.
+
+### Fixed
+- **Globe marker picking was broken**: `pickMarker` read
+  `intersects[0].instanceId`, which only exists on InstancedMesh — the
+  markers are plain meshes in a Group, so the lookup always returned null
+  and hovering/clicking markers silently did nothing. Markers now carry
+  their index in `userData`, the picker iterates hits (skipping the larger
+  glow spheres that wrap them), and marker clicks navigate to profiles.
+- Route teardown now disposes Lines as well as Meshes (the dashed-route
+  materials were leaking on every data/toggle change).
+
 ## [1.9.0] - 2026-08-12
 
 ### Added

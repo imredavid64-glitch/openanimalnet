@@ -52,7 +52,13 @@ interface MapRoute {
   points: { x: number; y: number }[];
 }
 
-export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (animalId: string) => void }) {
+export default function SimpleWorldMap({
+  onAnimalClick,
+  showRoutes = true,
+}: {
+  onAnimalClick?: (animalId: string) => void;
+  showRoutes?: boolean;
+}) {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [points, setPoints] = useState<MapPoint[]>([]);
@@ -96,8 +102,8 @@ export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (ani
         });
       });
     });
-    setRoutes(mapRoutes);
-  }, []);
+    setRoutes(showRoutes ? mapRoutes : []);
+  }, [showRoutes]);
 
   // Draw world map and points
   useEffect(() => {
@@ -248,10 +254,10 @@ export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (ani
       ctx.stroke();
     };
     
-    // Initial draw — animate continuously when migration routes are present
+    // Initial draw — animate continuously when migration routes are visible
     resizeCanvas();
     let rafId = 0;
-    if (routes.length > 0) {
+    if (routes.length > 0 && showRoutes) {
       const tick = (now: number) => {
         draw(now);
         rafId = requestAnimationFrame(tick);
@@ -266,7 +272,7 @@ export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (ani
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [points, routes, hoveredPoint]);
+  }, [points, routes, hoveredPoint, showRoutes]);
 
   // Find the closest map point to given canvas coordinates (in % of canvas)
   const findClosestPoint = (x: number, y: number): MapPoint | null => {

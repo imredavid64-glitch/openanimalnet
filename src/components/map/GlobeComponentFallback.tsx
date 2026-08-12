@@ -3,16 +3,20 @@
 import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import SimpleWorldMap from './SimpleWorldMap';
 import { AnimalCategory } from '@/types/animal/types';
+import type { RouteHoverInfo } from './GlobeComponent';
 
 interface GlobeProps {
   data: any[];
   onAnimalHover: (animalId: string | null) => void;
   selectedCategory: AnimalCategory | null;
   onAnimalClick?: (animalId: string) => void;
+  showRoutes?: boolean;
+  onRouteHover?: (info: RouteHoverInfo | null) => void;
+  onRouteClick?: (info: RouteHoverInfo) => void;
 }
 
 export default forwardRef(function GlobeComponentFallback(
-  { onAnimalClick }: GlobeProps,
+  { onAnimalClick, showRoutes = true }: GlobeProps,
   ref
 ) {
   const [isClient, setIsClient] = useState(false);
@@ -39,7 +43,7 @@ export default forwardRef(function GlobeComponentFallback(
 
   return (
     <div className="w-full h-full">
-      <SimpleWorldMap onAnimalClick={onAnimalClick} />
+      <SimpleWorldMap onAnimalClick={onAnimalClick} showRoutes={showRoutes} />
     </div>
   );
 });
