@@ -267,6 +267,22 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
   did). Preview uses the 3D globe when WebGL is available.
 - Version 1.7.0; tests still 19/19 + 12/12.
 
+## Round 9 (Aug 12 2026): sparklines, merged drift checks, globe status filters + continents
+
+- **Conservation sparklines**: 19 cards with census series show a mini
+  recharts line chart; trend arrow unchanged.
+- **Drift workflow now runs both jobs**: `data-drift.yml` has
+  `source-drift` (refresh:data --fail) and `taxonomy` (check:taxonomy)
+  jobs; the standalone taxonomy-check.yml was deleted.
+- **Globe**: the IUCN legend is now clickable status filters (combined with
+  category filters; click again to clear). Clicking a marker opens the
+  profile (`onAnimalClick` wired through GlobeComponent → InteractiveGlobe
+  router, and SimpleWorldMap for the fallback). Auto-rotation pauses on
+  hover. The globe texture is a real NASA Blue Marble equirectangular map
+  (public/images/earth.jpg, 2048x1024, public domain) applied with
+  `SRGBColorSpace` + needsUpdate; the old texture was not an earth map.
+- Version 1.8.0; tests 19/19 + 12/12.
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview

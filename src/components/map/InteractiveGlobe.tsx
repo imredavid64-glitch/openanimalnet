@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
-import { AnimalCategory } from '@/types/animal/types';
+import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 
 // Dynamically import Three.js components to avoid SSR issues
 const Globe = dynamic(() => import('./GlobeComponent').catch(() => import('./GlobeComponentFallback')), {
@@ -39,7 +40,9 @@ const categoryIcons: Record<AnimalCategory, string> = {
 };
 
 export default function InteractiveGlobe() {
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<AnimalCategory | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<ConservationStatus | null>(null);
   const [hoveredAnimal, setHoveredAnimal] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const globeRef = useRef<any>(null);
@@ -50,12 +53,21 @@ export default function InteractiveGlobe() {
 
   const handleCategorySelect = (category: AnimalCategory | null) => {
     setSelectedCategory(category);
-    // Reset animal hover when category changes
+    // Reset animal hover when filters change
+    setHoveredAnimal(null);
+  };
+
+  const handleStatusSelect = (status: ConservationStatus | null) => {
+    setSelectedStatus((prev) => (prev === status ? null : status));
     setHoveredAnimal(null);
   };
 
   const handleAnimalHover = (animalId: string | null) => {
     setHoveredAnimal(animalId);
+  };
+
+  const handleAnimalClick = (animalId: string) => {
+    router.push(`/animal/${animalId}`);
   };
 
   // Convert sample animals to format suitable for globe
@@ -73,10 +85,12 @@ export default function InteractiveGlobe() {
     isMonitored: animal.isMonitored,
   }));
 
-  // Filter data based on selected category
-  const filteredData = selectedCategory
-    ? globeData.filter(d => d.category === selectedCategory)
-    : globeData;
+  // Filter data based on selected category AND IUCN status
+  const filteredData = globeData.filter(
+    (d) =>
+      (!selectedCategory || d.category === selectedCategory) &&
+      (!selectedStatus || d.conservationStatus === selectedStatus),
+  );
 
   // Get unique categories from sample animals
   const uniqueCategories = [...new Set(sampleAnimals.map(a => a.category))] as AnimalCategory[];
@@ -206,6 +220,7 @@ export default function InteractiveGlobe() {
             ref={globeRef}
             data={filteredData}
             onAnimalHover={handleAnimalHover}
+            onAnimalClick={handleAnimalClick}
             selectedCategory={selectedCategory}
           />
         )}
@@ -265,18 +280,30 @@ export default function InteractiveGlobe() {
         ))}
       </div>
 
-      {/* IUCN Status Legend — marker ring color on the globe */}
-      <div className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs text-secondary-600 dark:text-secondary-300">
-        <span className="font-semibold uppercase tracking-wide text-secondary-400 dark:text-secondary-500 mr-1">IUCN status:</span>
+      {/* IUCN Status Legend — clickable filters (marker color on the globe) */}
+      <div className="mt-3 flex flex-wrap justify-center gap-x-2 gap-y-1.5 text-xs text-secondary-600 dark:text-secondary-300">
+        <span className="font-semibold uppercase tracking-wide text-secondary-400 dark:text-secondary-500 mr-1 self-center">IUCN status:</span>
         {conservationStatusData
           .filter((s) => sampleAnimals.some((a) => a.conservationStatus === s.status))
-          .map((s) => (
-            <span key={s.status} className="inline-flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: s.color }} />
-              <span className="font-semibold">{s.status}</span>
-              {s.name}
-            </span>
-          ))}
+          .map((s) => {
+            const active = selectedStatus === s.status;
+            return (
+              <button
+                key={s.status}
+                onClick={() => handleStatusSelect(s.status as ConservationStatus)}
+                className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full transition-all ${
+                  active
+                    ? 'ring-2 ring-primary-500 bg-white/80 dark:bg-secondary-800/60 shadow'
+                    : 'hover:bg-white/60 dark:hover:bg-secondary-800/40'
+                }`}
+                title={`Filter to ${s.name}`}
+              >
+                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: s.color }} />
+                <span className="font-semibold">{s.status}</span>
+                {s.name}
+              </button>
+            );
+          })}
       </div>
     </motion.div>
   );

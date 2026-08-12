@@ -12,6 +12,8 @@ import {
   PieChart,
   Pie,
   Cell,
+  LineChart,
+  Line,
 } from 'recharts';
 import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
 import { speciesSources } from '@/data/sample/sources';
@@ -45,6 +47,19 @@ const TREND_META: Record<Exclude<Trend, null>, { label: string; icon: string; co
   up: { label: 'recovering', icon: '↑', color: '#22c55e' },
   stable: { label: 'stable', icon: '→', color: '#94a3b8' },
 };
+
+/** Mini line chart of the census series, backing the trend arrow. */
+function Sparkline({ history, color }: { history: { year: number; estimate: number }[]; color: string }) {
+  return (
+    <div className="h-12 mt-1 -mx-1 pointer-events-none">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={history} margin={{ top: 2, right: 0, bottom: 0, left: 0 }}>
+          <Line type="monotone" dataKey="estimate" stroke={color} strokeWidth={2} dot={false} isAnimationActive={false} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
 
 export default function ConservationPage() {
   const sources = speciesSources.reduce<Record<string, (typeof speciesSources)[number]>>(
@@ -252,6 +267,9 @@ export default function ConservationPage() {
                             {TREND_META[trend].icon} {TREND_META[trend].label}
                           </span>
                         </div>
+                      )}
+                      {animal.populationHistory && animal.populationHistory.length >= 2 && (
+                        <Sparkline history={animal.populationHistory} color={TREND_META[trend ?? 'stable'].color} />
                       )}
                     </div>
                   </div>

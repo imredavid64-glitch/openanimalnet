@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 
@@ -46,7 +47,8 @@ interface MapPoint {
   statusColor: string;
 }
 
-export default function SimpleWorldMap() {
+export default function SimpleWorldMap({ onAnimalClick }: { onAnimalClick?: (animalId: string) => void }) {
+  const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [points, setPoints] = useState<MapPoint[]>([]);
   const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
@@ -212,7 +214,7 @@ export default function SimpleWorldMap() {
     return closest;
   };
 
-  // Handle canvas click
+  // Handle canvas click — open the profile when a marker is hit
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current) return;
     
@@ -223,6 +225,7 @@ export default function SimpleWorldMap() {
     
     const closestPoint = findClosestPoint(x, y);
     setHoveredPoint(closestPoint ? closestPoint.id : null);
+    if (closestPoint) onAnimalClick?.(closestPoint.id);
   };
 
   return (

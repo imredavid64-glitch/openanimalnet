@@ -8,10 +8,11 @@ interface GlobeProps {
   data: any[];
   onAnimalHover: (animalId: string | null) => void;
   selectedCategory: AnimalCategory | null;
+  onAnimalClick?: (animalId: string) => void;
 }
 
 export default forwardRef(function GlobeComponentFallback(
-  { data, onAnimalHover, selectedCategory }: GlobeProps,
+  { onAnimalClick }: GlobeProps,
   ref
 ) {
   const [isClient, setIsClient] = useState(false);
@@ -38,7 +39,7 @@ export default forwardRef(function GlobeComponentFallback(
 
   return (
     <div className="w-full h-full">
-      <SimpleWorldMap />
+      <SimpleWorldMap onAnimalClick={onAnimalClick} />
     </div>
   );
 });

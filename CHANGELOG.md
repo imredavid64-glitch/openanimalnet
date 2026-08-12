@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.8.0] - 2026-08-12
+
+### Added
+- **Conservation card sparklines**: every species card on `/conservation`
+  with a census series now shows a mini line chart of that series behind the
+  trend arrow (19 species).
+- **Taxonomy check merged into the drift workflow**: `.github/workflows/
+  data-drift.yml` now runs two jobs — the weekly source-drift check and the
+  taxonomy-class check (`npm run check:taxonomy`) — so both regressions
+  surface in one weekly report. The standalone taxonomy-check workflow was
+  removed.
+- **Globe status filters**: the IUCN legend under the globe is clickable —
+  selecting a status filters the markers (combined with the category
+  filter), and clicking again deselects.
+- **More interactive globe with real continents**: the globe texture is now
+  a NASA Blue Marble equirectangular map (continents render instead of a
+  flat gradient), clicking a marker opens the animal's profile, and
+  auto-rotation pauses while hovering a marker. The texture also renders in
+  the WebGL color space (sRGB) and is applied with needsUpdate on load.
+
 ## [1.7.0] - 2026-08-12
 
 ### Added

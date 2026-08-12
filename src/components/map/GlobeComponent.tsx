@@ -23,6 +23,8 @@ interface GlobeProps {
   data: GlobeData[];
   onAnimalHover: (animalId: string | null) => void;
   selectedCategory: AnimalCategory | null;
+  /** Called when a marker is clicked — parents can navigate to the profile. */
+  onAnimalClick?: (animalId: string) => void;
 }
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
@@ -49,7 +51,7 @@ const conservationStatusColors: Record<ConservationStatus, string> = {
 };
 
 export default forwardRef(function GlobeComponent(
-  { data, onAnimalHover, selectedCategory }: GlobeProps,
+  { data, onAnimalHover, selectedCategory, onAnimalClick }: GlobeProps,
   ref
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -68,6 +70,9 @@ export default forwardRef(function GlobeComponent(
   // Animation state
   const [isRotating, setIsRotating] = useState(true);
   const rotationSpeed = 0.001;
+  // Ref mirror of the hovered marker so the animation loop can pause rotation
+  // while the pointer is over an animal (without re-subscribing the loop).
+  const hoveredRef = useRef<string | null>(null);
   
   // Initialize Three.js
   useEffect(() => {
@@ -140,7 +145,7 @@ export default forwardRef(function GlobeComponent(
     const animate = () => {
       requestAnimationFrame(animate);
       
-      if (isRotating && globeRef.current) {
+      if (isRotating && globeRef.current && !hoveredRef.current) {
         globeRef.current.rotation.y += rotationSpeed;
       }
       
@@ -190,42 +195,43 @@ export default forwardRef(function GlobeComponent(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   
-  // Handle mouse events for hover
+  // Handle mouse events for hover + click
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !cameraRef.current || !raycasterRef.current || !mouseRef.current) return;
     
-    const handleMouseMove = (event: MouseEvent) => {
-      // Calculate mouse position in normalized device coordinates
+    const pickMarker = (event: MouseEvent): string | null => {
       const rect = container.getBoundingClientRect();
       mouseRef.current!.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       mouseRef.current!.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-      
-      // Update raycaster
       raycasterRef.current!.setFromCamera(mouseRef.current!, cameraRef.current!);
-      
-      // Check for intersections with points
-      if (pointsRef.current) {
-        const intersects = raycasterRef.current!.intersectObject(pointsRef.current);
-        
-        if (intersects.length > 0) {
-          // Find the closest point
-          const instanceId = intersects[0].instanceId;
-          if (instanceId !== undefined && instanceId < data.length) {
-            onAnimalHover(data[instanceId].id);
-          }
-        } else {
-          onAnimalHover(null);
-        }
-      }
+      if (!pointsRef.current) return null;
+      const intersects = raycasterRef.current!.intersectObject(pointsRef.current);
+      if (intersects.length === 0) return null;
+      const instanceId = intersects[0].instanceId;
+      if (instanceId === undefined || instanceId >= data.length) return null;
+      return data[instanceId].id;
+    };
+    
+    const handleMouseMove = (event: MouseEvent) => {
+      const id = pickMarker(event);
+      hoveredRef.current = id;
+      onAnimalHover(id);
+    };
+    
+    const handleClick = (event: MouseEvent) => {
+      const id = pickMarker(event);
+      if (id) onAnimalClick?.(id);
     };
     
     container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('click', handleClick);
     
     return () => {
       container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('click', handleClick);
     };
-  }, [data, onAnimalHover]);
+  }, [data, onAnimalHover, onAnimalClick]);
   
   // Expose methods to parent component
   useImperativeHandle(ref, () => ({
@@ -266,27 +272,38 @@ export default forwardRef(function GlobeComponent(
       opacity: 0.8,
     });
     
-    // Load earth texture (fallback to gradient)
+    // Load the NASA Blue Marble equirectangular texture; fall back to a
+    // gradient if it can't be fetched. needsUpdate is set in BOTH paths so
+    // the renderer picks the map up.
     const textureLoader = new THREE.TextureLoader();
-    const earthTexture = textureLoader.load('/images/earth.jpg', undefined, undefined, () => {
-      // Use gradient as fallback
-      const canvas = document.createElement('canvas');
-      canvas.width = 2048;
-      canvas.height = 1024;
-      const ctx = canvas.getContext('2d')!;
-      
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, '#0ea5e9');
-      gradient.addColorStop(0.5, '#1e40af');
-      gradient.addColorStop(1, '#0f172a');
-      
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      const texture = new THREE.CanvasTexture(canvas);
-      material.map = texture;
-      material.needsUpdate = true;
-    });
+    textureLoader.load(
+      '/images/earth.jpg',
+      (texture) => {
+        texture.colorSpace = THREE.SRGBColorSpace;
+        material.map = texture;
+        material.needsUpdate = true;
+      },
+      undefined,
+      () => {
+        // Use gradient as fallback
+        const canvas = document.createElement('canvas');
+        canvas.width = 2048;
+        canvas.height = 1024;
+        const ctx = canvas.getContext('2d')!;
+        
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, '#0ea5e9');
+        gradient.addColorStop(0.5, '#1e40af');
+        gradient.addColorStop(1, '#0f172a');
+        
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        const texture = new THREE.CanvasTexture(canvas);
+        material.map = texture;
+        material.needsUpdate = true;
+      },
+    );
     
     // Create globe mesh
     const globe = new THREE.Mesh(geometry, material);
