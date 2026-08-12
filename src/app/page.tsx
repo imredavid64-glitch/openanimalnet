@@ -33,8 +33,10 @@ export default function HomePage() {
           <HeroSection />
         </section>
 
-        {/* Interactive Globe Section */}
-        <section id="globe" className="relative -mt-32 z-0 scroll-mt-24">
+        {/* Interactive Globe Section — sits below the hero, fully visible:
+            the old -mt-32 pulled it up under the opaque hero (z-10) which
+            hid the globe's top edge. */}
+        <section id="globe" className="relative z-0 scroll-mt-24">
           <div className="container mx-auto px-4">
             <InteractiveGlobe />
           </div>
