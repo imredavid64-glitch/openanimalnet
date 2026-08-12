@@ -372,7 +372,8 @@ export default forwardRef(function GlobeComponent(
       if (d.isMonitored) {
         const glowGeometry = new THREE.SphereGeometry(0.1 + d.size * 0.02, 16, 16);
         const glowMaterial = new THREE.MeshBasicMaterial({
-          color: new THREE.Color(d.color),
+          // Match the marker's IUCN status color so the badge is consistent.
+          color: new THREE.Color(conservationStatusColors[d.conservationStatus] || d.color),
           transparent: true,
           opacity: 0.2,
         });

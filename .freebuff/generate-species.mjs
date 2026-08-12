@@ -38,17 +38,7 @@ const IMG_DIR = path.join(ROOT, 'public', 'images', 'animals');
 const WIKIDATA = 'https://query.wikidata.org/sparql';
 const UA = 'OpenAnimalNet-species-generator/1.0 (https://github.com/imredavid64-glitch/openanimalnet)';
 
-// Wikidata Q-IDs for IUCN Red List categories (property P141 values).
-const STATUS_BY_QID = {
-  Q219127: 'CR',
-  Q96377276: 'EN',
-  Q278113: 'VU',
-  Q719675: 'NT',
-  Q211005: 'LC',
-  Q3245245: 'DD',
-  Q237350: 'EX',
-  Q239509: 'EW',
-};
+import { STATUS_BY_QID, bestClass } from './iucn-taxonomy.mjs';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -90,20 +80,6 @@ async function lookupSpecies(scientificName) {
  * pick the taxa at the standard ranks. Prefers the scientific name (P225);
  * falls back to the item label.
  */
-// Wikidata's P171 chain is paraphyletic: bird lineages pass through
-// "Reptilia" (and the chain can carry several class-ranked nodes). When that
-// happens, prefer the most specific extant clade that actually appears in the
-// chain instead of whatever node Wikidata ranked last.
-const CLASS_PRIORITY = ['Aves', 'Mammalia', 'Amphibia', 'Reptilia', 'Actinopterygii', 'Chondrichthyes', 'Insecta'];
-
-function bestClass(classList) {
-  const lower = classList.map((c) => c.toLowerCase());
-  for (const c of CLASS_PRIORITY) {
-    if (lower.includes(c.toLowerCase())) return c;
-  }
-  return classList[classList.length - 1] ?? null;
-}
-
 async function walkTaxonomy(qid) {
   const bindings = await sparql(`SELECT ?anc ?sciname ?rankLabel WHERE {
     wd:${qid} wdt:P171+ ?anc .

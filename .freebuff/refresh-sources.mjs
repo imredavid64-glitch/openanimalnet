@@ -21,18 +21,7 @@ import { speciesSources } from '../src/data/sample/sources.ts';
 const WIKIDATA_ENDPOINT = 'https://query.wikidata.org/sparql';
 
 // Wikidata Q-IDs for IUCN Red List categories (property P141 values).
-// Verified against Wikidata labels 2026-08-11 — note Q21983152 is a mountain
-// range, NOT "critically endangered"; the correct CR QID is Q219127.
-const STATUS_BY_QID = {
-  Q219127: 'CR',   // Critically Endangered
-  Q96377276: 'EN', // Endangered
-  Q278113: 'VU',   // Vulnerable
-  Q719675: 'NT',   // Near Threatened (Q214984 is the taxonomy rank "division", NOT NT)
-  Q211005: 'LC',   // Least Concern
-  Q3245245: 'DD',  // Data Deficient
-  Q237350: 'EX',   // Extinct (Q209175 is an actress, NOT extinct)
-  Q239509: 'EW',   // Extinct in the Wild (Q552752 is a cardinal, NOT EW)
-};
+import { STATUS_BY_QID } from './iucn-taxonomy.mjs';
 
 // Documented exceptions where Wikidata's P141 is stale or absent, verified
 // against the IUCN Red List on 2026-08-11. Remove an entry once Wikidata

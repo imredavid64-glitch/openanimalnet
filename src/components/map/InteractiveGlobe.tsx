@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import { sampleAnimals } from '@/data/sample/animals';
+import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory } from '@/types/animal/types';
 
 // Dynamically import Three.js components to avoid SSR issues
@@ -263,6 +263,20 @@ export default function InteractiveGlobe() {
             />
           </motion.div>
         ))}
+      </div>
+
+      {/* IUCN Status Legend — marker ring color on the globe */}
+      <div className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-xs text-secondary-600 dark:text-secondary-300">
+        <span className="font-semibold uppercase tracking-wide text-secondary-400 dark:text-secondary-500 mr-1">IUCN status:</span>
+        {conservationStatusData
+          .filter((s) => sampleAnimals.some((a) => a.conservationStatus === s.status))
+          .map((s) => (
+            <span key={s.status} className="inline-flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: s.color }} />
+              <span className="font-semibold">{s.status}</span>
+              {s.name}
+            </span>
+          ))}
       </div>
     </motion.div>
   );

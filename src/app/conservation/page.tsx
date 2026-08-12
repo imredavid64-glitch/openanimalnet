@@ -29,6 +29,23 @@ const statusMeta = (status: string) =>
     count: 0,
   };
 
+// Trend from the species' populationHistory series: first vs last estimate.
+type Trend = 'up' | 'down' | 'stable' | null;
+function computeTrend(history?: { year: number; estimate: number }[]): Trend {
+  if (!history || history.length < 2) return null;
+  const first = history[0].estimate;
+  const last = history[history.length - 1].estimate;
+  if (last < first * 0.9) return 'down';
+  if (last > first * 1.1) return 'up';
+  return 'stable';
+}
+
+const TREND_META: Record<Exclude<Trend, null>, { label: string; icon: string; color: string }> = {
+  down: { label: 'declining', icon: '↓', color: '#dc2626' },
+  up: { label: 'recovering', icon: '↑', color: '#22c55e' },
+  stable: { label: 'stable', icon: '→', color: '#94a3b8' },
+};
+
 export default function ConservationPage() {
   const sources = speciesSources.reduce<Record<string, (typeof speciesSources)[number]>>(
     (acc, s) => {
@@ -45,8 +62,15 @@ export default function ConservationPage() {
       .map((a) => ({
         animal: a,
         source: sources[a.id],
+        trend: computeTrend(a.populationHistory),
       })),
   })).filter((g) => g.species.length > 0);
+
+  // Species most at risk: CR/EN status with a declining population trend.
+  const mostAtRisk = byStatus
+    .filter((g) => g.status === 'CR' || g.status === 'EN')
+    .flatMap((g) => g.species)
+    .filter((s) => s.trend === 'down');
 
   const chartData = byStatus.map((g) => ({
     name: g.status,
@@ -86,6 +110,45 @@ export default function ConservationPage() {
           </div>
         ))}
       </div>
+
+      {mostAtRisk.length > 0 && (
+        <div className="mt-6 rounded-2xl border-2 border-danger-300 dark:border-danger-700 bg-danger-50 dark:bg-danger-900/20 p-5">
+          <h3 className="font-bold text-danger-700 dark:text-danger-300 flex items-center gap-2">
+            🚨 Most at Risk
+          </h3>
+          <p className="text-sm text-secondary-600 dark:text-secondary-300 mt-1 mb-3">
+            {mostAtRisk.length} species are Critically Endangered or Endangered <em>and</em> show a
+            declining population trend in their census series — the ones to watch closest.
+          </p>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {mostAtRisk.map(({ animal, source }) => (
+              <li key={animal.id}>
+                <Link
+                  href={`/animal/${animal.id}`}
+                  className="flex items-center gap-3 rounded-xl bg-white dark:bg-secondary-800 px-3 py-2 border border-danger-200 dark:border-danger-800 hover:shadow-md transition-shadow"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/images/animals/${animal.id}.jpg`}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="rounded-lg object-cover shrink-0"
+                    loading="lazy"
+                  />
+                  <div className="min-w-0">
+                    <div className="font-semibold text-secondary-900 dark:text-white text-sm truncate">{animal.commonName}</div>
+                    <div className="text-xs text-secondary-500 dark:text-secondary-400 truncate">
+                      {animal.conservationStatus} · {source?.populationNote ?? 'declining'}
+                    </div>
+                  </div>
+                  <span className="ml-auto text-danger-500 dark:text-danger-400 font-bold shrink-0">↓</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <Section>Dataset Distribution by Status</Section>
       <p>
@@ -159,7 +222,7 @@ export default function ConservationPage() {
               </span>
             </Section>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {group.species.map(({ animal, source }) => (
+              {group.species.map(({ animal, source, trend }) => (
                 <Link
                   key={animal.id}
                   href={`/animal/${animal.id}`}
@@ -183,6 +246,13 @@ export default function ConservationPage() {
                       <div className="text-xs text-secondary-600 dark:text-secondary-300 mt-1 line-clamp-2">
                         {source?.populationNote ?? (animal.populationEstimate ? `~${animal.populationEstimate.toLocaleString()} estimated` : 'Population figure pending review')}
                       </div>
+                      {trend && (
+                        <div className="text-xs font-semibold mt-1">
+                          <span className="inline-flex items-center gap-1" style={{ color: TREND_META[trend].color }}>
+                            {TREND_META[trend].icon} {TREND_META[trend].label}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Link>

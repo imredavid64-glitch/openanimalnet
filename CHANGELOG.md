@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.7.0] - 2026-08-12
+
+### Added
+- **Conservation page trend arrows**: every species card on `/conservation`
+  now shows its population trend (↑ recovering / ↓ declining / → stable)
+  derived from the census series, plus a **Most at Risk** callout listing
+  CR/EN species whose trend is declining.
+- **CI taxonomy check** (`npm run check:taxonomy`, weekly workflow
+  `.github/workflows/taxonomy-check.yml`): resolves every species on
+  Wikidata, walks the P171 chain, and fails if the recorded class disagrees
+  with the live one. All 27 species verified.
+- **Shared taxonomy module** (`.freebuff/iucn-taxonomy.mjs`): the IUCN
+  status-QID map and the paraphyletic-chain class picker are now a single
+  source of truth shared by the generator, the freshness checker, and the
+  new taxonomy check — no more duplicated maps to drift apart.
+- **Globe status badges**: InteractiveGlobe now shows an IUCN status legend;
+  the 2D fallback draws a status-colored ring around each marker with a
+  status badge pill on hover; the 3D globe's glow matches the status color
+  (markers already used status colors).
+
 ## [1.6.0] - 2026-08-12
 
 ### Added

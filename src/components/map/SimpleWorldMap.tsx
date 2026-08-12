@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { sampleAnimals } from '@/data/sample/animals';
-import { AnimalCategory } from '@/types/animal/types';
+import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
+import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
   mammals: '#0ea5e9',
@@ -28,6 +28,10 @@ const categoryIcons: Record<AnimalCategory, string> = {
   marine: '🐋',
 };
 
+// IUCN status color per species, for the marker ring / hover badge.
+const statusColor = (status: string): string =>
+  conservationStatusData.find((s) => s.status === status)?.color ?? '#94a3b8';
+
 interface MapPoint {
   id: string;
   name: string;
@@ -38,6 +42,8 @@ interface MapPoint {
   color: string;
   icon: string;
   isMonitored: boolean;
+  status: ConservationStatus;
+  statusColor: string;
 }
 
 export default function SimpleWorldMap() {
@@ -62,6 +68,8 @@ export default function SimpleWorldMap() {
         color: animalCategoryColors[animal.category],
         icon: categoryIcons[animal.category],
         isMonitored: animal.isMonitored,
+        status: animal.conservationStatus,
+        statusColor: statusColor(animal.conservationStatus),
       };
     });
     
@@ -128,6 +136,13 @@ export default function SimpleWorldMap() {
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 1;
         ctx.stroke();
+
+        // IUCN status badge ring around the marker
+        ctx.beginPath();
+        ctx.arc(point.x * canvas.width / 100, point.y * canvas.height / 100, radius + 3.5, 0, Math.PI * 2);
+        ctx.strokeStyle = point.statusColor;
+        ctx.lineWidth = 2;
+        ctx.stroke();
         
         // Draw icon for hovered point
         if (hoveredPoint === point.id) {
@@ -136,6 +151,20 @@ export default function SimpleWorldMap() {
           ctx.textBaseline = 'middle';
           ctx.fillStyle = '#ffffff';
           ctx.fillText(point.icon, point.x * canvas.width / 100, point.y * canvas.height / 100);
+
+          // Status badge pill above the marker
+          const badgeY = point.y * canvas.height / 100 - radius - 12;
+          const badgeW = point.status.length * 7 + 8;
+          ctx.font = 'bold 9px Arial';
+          const badgeX = point.x * canvas.width / 100;
+          ctx.beginPath();
+          ctx.roundRect(badgeX - badgeW / 2, badgeY - 8, badgeW, 14, 4);
+          ctx.fillStyle = point.statusColor;
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(point.status, badgeX, badgeY - 1);
         }
       });
     };

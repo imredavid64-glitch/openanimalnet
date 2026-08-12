@@ -248,6 +248,25 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
 - Version 1.6.0; tests still 19/19 unit + 12/12 integration (the
   conservation page adds no API surface).
 
+## Round 8 (Aug 12 2026): trend arrows, CI taxonomy check, globe status badges
+
+- **Conservation page**: species cards now show population trend arrows
+  (first vs last point of the census series) and a **Most at Risk** callout
+  lists CR/EN species with a declining trend.
+- **CI taxonomy check** (`npm run check:taxonomy`): parses
+  `src/data/sample/animals.ts`, resolves each species on Wikidata, walks the
+  P171 chain, and fails if the recorded class mismatches the live one. Runs
+  weekly (`.github/workflows/taxonomy-check.yml`) + on demand. 27/27 pass.
+- **Shared taxonomy module** `.freebuff/iucn-taxonomy.mjs`: STATUS_BY_QID +
+  bestClass now live in one file imported by the generator, the refresh
+  checker, and the taxonomy check (they were duplicated before — how three
+  wrong QIDs slipped through).
+- **Globe status badges**: InteractiveGlobe adds an IUCN status legend;
+  SimpleWorldMap draws a status ring per marker + status badge pill on
+  hover; the 3D globe's glow uses the status color (its markers already
+  did). Preview uses the 3D globe when WebGL is available.
+- Version 1.7.0; tests still 19/19 + 12/12.
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview
