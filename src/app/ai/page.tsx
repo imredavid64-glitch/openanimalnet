@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import AIAssistant from '@/components/ai/AIAssistant';
+import ConflictPredictor from '@/components/ai/ConflictPredictor';
+import HabitatSimulator from '@/components/ai/HabitatSimulator';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { sampleAnimals, sampleAnimalData, dataCategoryData } from '@/data/sample/animals';
@@ -166,6 +168,26 @@ export default function AIPage() {
                     Start Chatting with AI
                   </button>
                 </div>
+              </div>
+            </motion.div>
+
+            {/* Predictive Tools */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="mb-12"
+            >
+              <div className="text-center mb-8">
+                <h2 className="text-3xl md:text-4xl font-bold text-white">Predictive Tools</h2>
+                <p className="text-white/70 mt-2 max-w-2xl mx-auto">
+                  Interactive, transparent models built on the dataset&apos;s real migration corridors and population series.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <ConflictPredictor />
+                <HabitatSimulator />
               </div>
             </motion.div>
 
