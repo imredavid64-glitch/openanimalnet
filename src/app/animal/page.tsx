@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { sampleAnimals, animalCategoryData, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus, AnimalFilter } from '@/types/animal/types';
-import { CategoryIcon, PawIcon } from '@/components/icons';
+import { CategoryIcon, PawIcon, SearchIcon, ShieldIcon } from '@/components/icons';
 import { filterAndSortAnimals, AnimalSortBy } from '@/lib/animalFiltering';
 import AnimalCard from '@/components/animal/AnimalCard';
 import AnimalFilters from '@/components/animal/AnimalFilters';
@@ -157,8 +157,8 @@ export default function AnimalPage() {
                   placeholder="Search by name, scientific name, habitat, or description..."
                   className="w-full px-4 py-3 rounded-xl border border-secondary-200 dark:border-secondary-600 bg-white dark:bg-secondary-800 text-secondary-900 dark:text-secondary-100 placeholder:text-secondary-400 dark:placeholder:text-secondary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                  <span className="text-secondary-400">🔍</span>
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary-400">
+                  <SearchIcon className="w-5 h-5" />
                 </div>
               </div>
             </div>
@@ -219,8 +219,8 @@ export default function AnimalPage() {
         >
           <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4 shadow-md">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold text-secondary-700 dark:text-secondary-300 mr-1">
-                🛡️ Conservation status:
+              <span className="text-sm font-semibold text-secondary-700 dark:text-secondary-300 mr-1 flex items-center gap-1.5">
+                <ShieldIcon className="w-4 h-4" /> Conservation status:
               </span>
               {conservationStatusData
                 .filter((s) => (statusCounts[s.status as ConservationStatus] || 0) > 0)
@@ -274,7 +274,7 @@ export default function AnimalPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-12"
           >
-            <div className="text-6xl mb-4">🔍</div>
+            <SearchIcon className="w-16 h-16 mx-auto text-secondary-300 dark:text-secondary-600" />
             <h3 className="text-2xl font-bold text-secondary-900 dark:text-white mb-2">
               No Animals Found
             </h3>

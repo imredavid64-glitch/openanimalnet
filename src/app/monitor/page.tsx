@@ -8,7 +8,7 @@ import MonitoringAlerts from '@/components/monitor/MonitoringAlerts';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { sampleAnimals, sampleMonitoringData } from '@/data/sample/animals';
-import { AntennaIcon, BellIcon, PawIcon, GlobeIcon, PinIcon } from '@/components/icons';
+import { AntennaIcon, BellIcon, PawIcon, GlobeIcon, PinIcon, DataCategoryIcon } from '@/components/icons';
 
 // Static Tailwind classes — JIT purges dynamically-constructed class names,
 // so the accent borders are mapped here instead of interpolated.
@@ -43,7 +43,7 @@ export default function MonitorPage() {
             transition={{ duration: 0.5 }}
             className="inline-block"
           >
-            <span className="text-5xl">📡</span>
+            <AntennaIcon className="w-14 h-14 text-primary-600 dark:text-primary-400" />
           </motion.div>
           <h1 className="text-5xl md:text-6xl font-bold text-secondary-900 dark:text-white mt-4">
             Real-Time Monitoring
@@ -255,14 +255,10 @@ export default function MonitorPage() {
                       {animal.dataCategories.slice(0, 3).map(category => (
                         <span
                           key={category}
-                          className="w-6 h-6 rounded-full bg-secondary-100 dark:bg-secondary-700 flex items-center justify-center text-xs"
+                          className="w-6 h-6 rounded-full bg-secondary-100 dark:bg-secondary-700 flex items-center justify-center text-secondary-600 dark:text-secondary-300"
                           title={category}
                         >
-                          {category === 'biological' && '🧬'}
-                          {category === 'behavioral' && '🗺️'}
-                          {category === 'ecological' && '🌿'}
-                          {category === 'population' && '📊'}
-                          {category === 'health' && '🏥'}
+                          <DataCategoryIcon category={category} className="w-3.5 h-3.5" />
                         </span>
                       ))}
                     </div>

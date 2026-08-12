@@ -75,13 +75,6 @@ export default function Navbar() {
               <span className="text-3xl group-hover:text-primary-600 transition-colors duration-300 block">
                 <PawIcon className="w-8 h-8" />
               </span>
-              <motion.span
-                className="absolute -top-1 -right-1 text-xs bg-primary-500 text-white px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                initial={{ scale: 0.5 }}
-                animate={{ scale: 1 }}
-              >
-                NET
-              </motion.span>
             </motion.div>
             <div className="flex flex-col">
               <span className="text-xl font-bold text-secondary-900 dark:text-white group-hover:text-primary-600 transition-colors duration-300">

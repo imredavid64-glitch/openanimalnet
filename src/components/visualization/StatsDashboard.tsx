@@ -11,7 +11,7 @@ import {
 } from '@/data/sample/animals';
 import { ConservationStatus, AnimalCategory, DataCategory } from '@/types/animal/types';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { PawIcon, AntennaIcon, ShieldIcon, DataCategoryIcon, SeverityIcon, CalendarIcon, ChartIcon } from '@/components/icons';
+import { PawIcon, AntennaIcon, ShieldIcon, DataCategoryIcon, SeverityIcon, CalendarIcon, ChartIcon, TrendIcon } from '@/components/icons';
 
 const COLORS = ['#0ea5e9', '#38bdf8', '#06b6d4', '#0891b2', '#0e7490', '#1d4ed8', '#7c3aed', '#1e40af'];
 const CONSERVATION_COLORS: Record<ConservationStatus, string> = {
@@ -136,7 +136,7 @@ export default function StatsDashboard() {
           transition={{ duration: 0.5 }}
           className="inline-block"
         >
-          <span className="text-4xl">📈</span>
+          <TrendIcon className="w-12 h-12 text-primary-600 dark:text-primary-400" />
         </motion.div>
         <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-white mt-4">
           Global Statistics

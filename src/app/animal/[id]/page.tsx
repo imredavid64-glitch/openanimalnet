@@ -11,7 +11,7 @@ import { Animal, AnimalData } from '@/types/animal/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { CategoryIcon, DataCategoryIcon, AntennaIcon, GlobeIcon, UsersIcon, PinIcon } from '@/components/icons';
+import { CategoryIcon, DataCategoryIcon, AntennaIcon, GlobeIcon, UsersIcon, PinIcon, ChartIcon, ShieldIcon, BookIcon, CalendarIcon } from '@/components/icons';
 
 const conservationStatusColors: Record<string, string> = {
   EX: 'bg-danger-500',
@@ -50,16 +50,6 @@ const conservationStatusHex: Record<string, string> = {
   NE: '#94a3b8',
 };
 
-const dataCategoryIcons: Record<string, string> = {
-  biological: '🧬',
-  behavioral: '🗺️',
-  ecological: '🌿',
-  population: '📊',
-  health: '🏥',
-  agricultural: '🐄',
-  shelter: '🏠',
-  'human-interaction': '⚠️',
-};
 
 export default function AnimalDetailPage() {
   const params = useParams();
@@ -94,7 +84,7 @@ export default function AnimalDetailPage() {
         <Navbar />
         <main className="container mx-auto px-4 py-20">
           <div className="text-center py-12">
-            <div className="text-4xl animate-spin">🌍</div>
+            <GlobeIcon className="w-12 h-12 text-primary-600 dark:text-primary-400 animate-spin" />
             <p className="text-secondary-600 dark:text-secondary-400 mt-4">Loading animal details...</p>
           </div>
         </main>
@@ -249,15 +239,15 @@ export default function AnimalDetailPage() {
                   <div className="text-xs text-secondary-500 dark:text-secondary-400">Location</div>
                 </div>
                 <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4">
-                  <div className="text-2xl mb-1">🌍</div>
-                  <div className="text-lg font-bold text-secondary-900 dark:text-white">
+                  <div className="mb-1"><GlobeIcon className="w-5 h-5 text-primary-600 dark:text-primary-400" /></div>
+                  <div className="text-lg font-bold text-secondary-900 dark:text-white font-data">
                     {animal.habitat?.length || 0}
                   </div>
                   <div className="text-xs text-secondary-500 dark:text-secondary-400">Habitats</div>
                 </div>
                 <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4">
-                  <div className="text-2xl mb-1">📊</div>
-                  <div className="text-lg font-bold text-secondary-900 dark:text-white">
+                  <div className="mb-1"><ChartIcon className="w-5 h-5 text-primary-600 dark:text-primary-400" /></div>
+                  <div className="text-lg font-bold text-secondary-900 dark:text-white font-data">
                     {animal.dataCategories.length}
                   </div>
                   <div className="text-xs text-secondary-500 dark:text-secondary-400">Data Categories</div>
@@ -281,7 +271,7 @@ export default function AnimalDetailPage() {
                       key={category}
                       className="px-3 py-1 bg-secondary-100 dark:bg-secondary-700 rounded-xl text-secondary-600 dark:text-secondary-300 text-sm flex items-center space-x-1"
                     >
-                      <span>{dataCategoryIcons[category]}</span>
+                      <DataCategoryIcon category={category} className="w-3.5 h-3.5" />
                       <span>{category.replace('-', ' ')}</span>
                     </span>
                   ))}
@@ -291,7 +281,7 @@ export default function AnimalDetailPage() {
               {/* Seasonal Migration */}
               {animal.migrationRoutes && animal.migrationRoutes.length > 0 && (
                 <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4 mt-4">
-                  <h3 className="font-semibold text-secondary-900 dark:text-white mb-1">🗺️ Seasonal Migration</h3>
+                  <h3 className="font-semibold text-secondary-900 dark:text-white mb-1 flex items-center gap-1.5"><CalendarIcon className="w-4 h-4" /> Seasonal Migration</h3>
                   <p className="text-sm text-secondary-500 dark:text-secondary-400 mb-3">
                     Documented seasonal corridors — shown as animated arcs on the globe and traced on the map below.
                   </p>
@@ -344,7 +334,7 @@ export default function AnimalDetailPage() {
                         rel="noopener noreferrer"
                         className="px-3 py-2 rounded-xl bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 text-sm hover:bg-secondary-200 dark:hover:bg-secondary-600 transition-colors duration-300 flex items-center gap-2"
                       >
-                        <span>📖</span> Wikipedia — {source.commonName}
+                        <BookIcon className="w-4 h-4 shrink-0" /> Wikipedia — {source.commonName}
                       </a>
                       {iucnUrl && (
                         <a
@@ -353,7 +343,7 @@ export default function AnimalDetailPage() {
                           rel="noopener noreferrer"
                           className="px-3 py-2 rounded-xl bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 text-sm hover:bg-secondary-200 dark:hover:bg-secondary-600 transition-colors duration-300 flex items-center gap-2"
                         >
-                          <span>🟥</span> IUCN Red List assessment
+                          <ShieldIcon className="w-4 h-4 shrink-0" /> IUCN Red List assessment
                         </a>
                       )}
                     </div>
@@ -1256,7 +1246,7 @@ export default function AnimalDetailPage() {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <div className="text-6xl mb-4">🏥</div>
+                    <DataCategoryIcon category="health" className="w-16 h-16 mx-auto text-secondary-400 dark:text-secondary-500" />
                     <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">
                       No Health Data Available
                     </h3>
@@ -1334,7 +1324,7 @@ export default function AnimalDetailPage() {
                           key={category}
                           className="px-3 py-1 bg-white dark:bg-secondary-800 rounded-xl text-secondary-700 dark:text-secondary-300 text-sm flex items-center space-x-1"
                         >
-                          <span>{dataCategoryIcons[category]}</span>
+                          <DataCategoryIcon category={category} className="w-3.5 h-3.5" />
                           <span>{category.replace('-', ' ')}</span>
                         </span>
                       ))}
