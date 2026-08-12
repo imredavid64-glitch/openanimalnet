@@ -2,6 +2,24 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.14.0] - 2026-08-12
+
+### Added
+- **Season filter on mini route maps**: the Seasonal Migration cards on
+  profile and monitor pages now have their own compact 🗓️ season scrubber
+  (All / 🌱 Spring / ☀️ Summer / 🍂 Fall / ❄️ Winter) — corridors outside
+  the selected season are filtered off the map, with a live "N of M active"
+  counter.
+- **Migration calendar page** (`/migration`, in the main nav): a
+  month-by-month timeline of every tracked corridor. A per-month summary
+  strip shows how many corridors are on the move each month (Aug 2026:
+  spring months peak at 4, fall at 3), and a species × month grid colors
+  each corridor's active months by season with a current-month marker.
+- **Route distances in the globe popup**: clicking a species with
+  migration corridors now shows a 🧭 Migration block in the details popup —
+  each corridor with its great-circle distance and duration (e.g. Arctic
+  tern: "~15,008 km · ~3 months").
+
 ## [1.13.0] - 2026-08-12
 
 ### Added

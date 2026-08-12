@@ -391,3 +391,15 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
 - Migration routes now carry `durationDays` (leatherback ~330 = the
   documented 10–12 month trans-Pacific).
 - Tests 28/28 unit (9 new geo tests) + 12/12 integration.
+
+## Round 15 (Aug 12 2026): mini-map seasons, migration calendar, popup distances
+
+- **MiniRouteMap season scrubber**: inline 🗓️ chips (All + 4 seasons) filter
+  which corridors draw on the profile/monitor mini maps, with "N of M
+  active".
+- **/migration calendar page** (nav: Migrations): per-month summary strip
+  + species × month grid, season-colored cells, current-month marker,
+  distances/durations per corridor. Static server component.
+- **Globe popup 🧭 Migration block**: per-corridor distance + duration for
+  species with routes.
+- Tests 28/28 unit + 12/12 integration.

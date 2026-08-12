@@ -33,7 +33,7 @@ export default function HomePage() {
         </section>
 
         {/* Interactive Globe Section */}
-        <section className="relative -mt-32 z-0">
+        <section id="globe" className="relative -mt-32 z-0 scroll-mt-24">
           <div className="container mx-auto px-4">
             <InteractiveGlobe />
           </div>

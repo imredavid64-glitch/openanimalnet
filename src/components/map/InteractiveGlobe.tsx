@@ -447,6 +447,31 @@ export default function InteractiveGlobe() {
                   ×
                 </button>
               </div>
+              {animal.migrationRoutes && animal.migrationRoutes.length > 0 && (
+                <div className="mt-3 pt-3 border-t border-secondary-100 dark:border-secondary-700">
+                  <div className="text-[11px] uppercase tracking-wide text-secondary-400 dark:text-secondary-500 font-semibold mb-1.5">
+                    🧭 Migration
+                  </div>
+                  <ul className="space-y-1">
+                    {animal.migrationRoutes.map((route, i) => {
+                      const km = routeDistanceKm(route.points);
+                      const duration = route.durationDays ? formatDurationDays(route.durationDays) : null;
+                      return (
+                        <li key={i} className="flex items-start gap-1.5 text-xs">
+                          <span className="inline-block w-2 h-2 rounded-full mt-1 shrink-0" style={{ backgroundColor: route.season === 'spring' ? '#22c55e' : route.season === 'fall' ? '#f59e0b' : '#94a3b8' }} />
+                          <span className="text-secondary-600 dark:text-secondary-300 min-w-0">
+                            <span className="block truncate" title={route.name}>{route.name}</span>
+                            <span className="text-secondary-400 dark:text-secondary-500">
+                              {formatKm(km)}
+                              {duration ? ` · ${duration}` : ''}
+                            </span>
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
               <div className="flex items-center gap-2 mt-3">
                 <button
                   onClick={() => stepGallery(-1)}

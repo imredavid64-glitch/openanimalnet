@@ -9,6 +9,7 @@ import { clsx } from 'clsx';
 const navItems = [
   { name: 'Home', path: '/' },
   { name: 'Animals', path: '/animal' },
+  { name: 'Migrations', path: '/migration' },
   { name: 'Dashboard', path: '/dashboard' },
   { name: 'Monitor', path: '/monitor' },
   { name: 'AI Analysis', path: '/ai' },
