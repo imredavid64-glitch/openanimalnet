@@ -99,7 +99,8 @@ export default function ConflictPredictor() {
     const crimeAlerts = sampleAlerts
       .filter((a) => a.crime)
       .map((a) => {
-        const distKm = greatCircleKm(point, a.location);
+        // SampleAlert.location uses { lat, lng }; GeoPoint uses { latitude, longitude }.
+        const distKm = greatCircleKm(point, { latitude: a.location.lat, longitude: a.location.lng });
         const contribution = Math.round(Math.min(100, 100 * Math.exp(-distKm / 30) * (a.severity / 10)));
         return { alert: a, distKm, contribution };
       })
