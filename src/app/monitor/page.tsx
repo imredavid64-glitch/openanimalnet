@@ -10,6 +10,15 @@ import Footer from '@/components/layout/Footer';
 import { sampleAnimals, sampleMonitoringData } from '@/data/sample/animals';
 import { AntennaIcon, BellIcon, PawIcon, GlobeIcon, PinIcon } from '@/components/icons';
 
+// Static Tailwind classes — JIT purges dynamically-constructed class names,
+// so the accent borders are mapped here instead of interpolated.
+const statBorder: Record<string, string> = {
+  primary: 'border-primary-500',
+  danger: 'border-danger-500',
+  success: 'border-success-500',
+  accent: 'border-accent-500',
+};
+
 export default function MonitorPage() {
   const [selectedAnimal, setSelectedAnimal] = useState<string | null>(null);
 
@@ -81,7 +90,7 @@ export default function MonitorPage() {
             <motion.div
               key={index}
               whileHover={{ scale: 1.05, y: -5 }}
-              className={`bg-white dark:bg-secondary-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 border-${stat.color}-500`}
+              className={`bg-white dark:bg-secondary-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 ${statBorder[stat.color] ?? 'border-primary-500'}`}
             >
               <div className="text-3xl mb-2">{stat.icon}</div>
               <div className="text-2xl font-bold text-secondary-900 dark:text-white">

@@ -72,6 +72,15 @@ export default function StatsDashboard() {
     };
   }, []);
 
+  // Static Tailwind classes for the metric cards — JIT purges dynamically
+  // constructed class names, so the tinted backgrounds live in this map.
+  const metricBg: Record<string, string> = {
+    primary: 'bg-primary-100 dark:bg-primary-900/20',
+    success: 'bg-success-100 dark:bg-success-900/20',
+    warning: 'bg-warning-100 dark:bg-warning-900/20',
+    accent: 'bg-accent-100 dark:bg-accent-900/20',
+  };
+
   const liveStats = apiStats ?? {
     totalAnimals: sampleMonitoringData.totalAnimals,
     monitoredAnimals: sampleMonitoringData.monitoredAnimals,
@@ -215,7 +224,7 @@ export default function StatsDashboard() {
                     className="bg-white dark:bg-secondary-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <div className={`w-12 h-12 rounded-2xl bg-${metric.color}-100 dark:bg-${metric.color}-900/20 flex items-center justify-center`}>
+                      <div className={`w-12 h-12 rounded-2xl ${metricBg[metric.color] ?? 'bg-primary-100 dark:bg-primary-900/20'} flex items-center justify-center`}>
                         {metric.icon}
                       </div>
                     </div>
