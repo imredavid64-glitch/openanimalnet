@@ -2,6 +2,30 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.17.0] - 2026-08-12
+
+### Added
+- **Live GBIF ingestion**: `/api/v1/live/sync` pulls recent georeferenced
+  occurrences from the GBIF occurrence API (60s per-instance cache), and every
+  species profile shows a "Last synced from GBIF" badge with the recent
+  occurrence count and a refresh button.
+- **Predictive AI tools on /ai**: a Human–Wildlife Conflict Predictor (GPS
+  coordinate or region preset → encounter risk scored from documented
+  migration corridors, with a per-species breakdown) and a Habitat
+  Degradation Simulator (temperature/deforestation sliders → live population
+  projection chart).
+- **Alert Action Center**: critical alerts on /monitor now offer simulated
+  workflows — dispatch a ranger notification, generate a mitigation route to
+  a safe zone, and render an acoustic deterrent coverage radius — with an
+  honest action log.
+- **Migration corridors for conflict-prone species**: real corridors added for
+  the African elephant (Amboseli–Tsavo/Kimana), lion (Serengeti–Masai Mara),
+  and Bengal tiger (Corbett–Rajaji), powering the predictor and the globe.
+- **Point-to-route geo helpers** (`distanceToSegmentKm` / `distanceToRouteKm`)
+  with unit tests.
+- **README**: banner, badges, no-env quickstart, mermaid architecture diagram,
+  and a demo GIF placeholder.
+
 ## [1.16.1] - 2026-08-12
 
 ### Added

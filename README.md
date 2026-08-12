@@ -1,23 +1,47 @@
-# OpenAnimalNet
+<div align="center">
+
+# 🐾 OpenAnimalNet
 
 **Global Animal Data Platform**
 
-OpenAnimalNet is a comprehensive platform for monitoring, analyzing, and exploring animal data from around the world. Track biological, behavioral, ecological, and conservation data for all species.
+[![Next.js](https://img.shields.io/badge/Next.js%2014-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![GBIF](https://img.shields.io/badge/GBIF%20API-55973B?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMCAxMCAxMCAwIDAgMCAwLTIweiIvPjwvc3ZnPg==)](https://www.gbif.org/)
+[![IUCN](https://img.shields.io/badge/IUCN%20Red%20List-1B7A3D)](https://www.iucnredlist.org/)
+[![iNaturalist](https://img.shields.io/badge/iNaturalist-4B9F4F)](https://www.inaturalist.org/)
+[![Vercel](https://img.shields.io/badge/deployed%20on-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com)
+
+*Monitoring, analyzing, and exploring animal data from around the world — with live-source verification.*
+
+</div>
+
+> **Demo** — seasonal migration corridor scrubber on the globe: `docs/demo.gif`
+> (drop a screen recording here; the globe + month scrubber + corridor arcs).
 
 ## Features
 
 - **Interactive Globe**: 3D globe with all 28 species, search, conservation-status
   filters, click-to-focus popups, and animated migration routes.
+- **Live GBIF ingestion**: species pages show a "Last synced from GBIF" badge
+  with recent georeferenced occurrence counts, polled live from the GBIF API
+  (`/api/v1/live/sync`).
 - **Seasonal migration explorer**: a time scrubber animates corridors month by
   month; the migration calendar lists every route with real start/end months,
   distances, and durations — exportable as CSV or an ICS calendar feed.
+- **Predictive AI tools** (`/ai`): a Human–Wildlife Conflict Predictor that
+  scores encounter risk from documented migration corridors, and a Habitat
+  Degradation Simulator with live population projections.
+- **Alert Action Center** (`/monitor`): critical alerts get an interactive
+  workflow — dispatch a ranger notification, generate a mitigation route, and
+  simulate an acoustic deterrent range.
 - **Monitoring & alerts**: per-species dashboards with live alerts, coverage
   maps, and mini route maps on every profile.
 - **Conservation overview**: every species grouped by IUCN status with
   population charts and most-endangered-first lists.
-- **Accurate, source-linked data**: each species is verified against live
-  Wikidata/Wikipedia sources (IUCN assessment ID, status, taxonomy, photo),
-  with source links on every profile and a weekly drift check in CI.
+- **Accurate, source-linked data**: each species is verified against four live
+  sources (Wikidata/IUCN, Wikipedia, GBIF, iNaturalist), with source links on
+  every profile and a weekly drift check in CI.
 - **AI Assistant**: intelligent insights from the dataset via natural language.
 - **Public API**: a documented JSON API under `/api/v1/*` with filters and
   rate limiting (see below).
@@ -68,18 +92,51 @@ OpenAnimalNet is a comprehensive platform for monitoring, analyzing, and explori
 
 ## Getting Started
 
-1. **Install Dependencies**
+**No environment variables or API keys required** — all external data (GBIF,
+Wikidata, Wikipedia, iNaturalist) is fetched server-side from public APIs.
+
 ```bash
 npm install
-```
-
-2. **Run the Development Server**
-```bash
 npm run dev
 ```
 
-3. **Open in Browser**
-   [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000).
+
+> Node ≥ 22.6 required (the data tooling uses type-stripping to import `.ts`
+> modules directly).
+
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph Sources[Live external sources — no API keys]
+        GBIF[GBIF occurrence API]
+        WIKI[Wikipedia / Wikidata]
+        INAT[iNaturalist]
+    end
+
+    subgraph App[Next.js App Router]
+        API[/api/v1/live/sync + /api/v1/*/]
+        VERIFY[refresh-sources.mjs · verify-multisource.mjs · check-taxonomy.mjs]
+        AI[AI Analysis: conflict predictor + habitat simulator]
+    end
+
+    subgraph UI[Frontend UI]
+        GLOBE[Interactive globe + migration scrubber]
+        BADGE[Live sync badges]
+        MONITOR[Alert action center]
+    end
+
+    GBIF -->|recent occurrences| API --> BADGE
+    WIKI -->|IUCN ID · status · taxonomy| VERIFY -->|verified registry| AI
+    INAT -->|observed status| VERIFY
+    AI --> GLOBE
+    API --> MONITOR
+    API --> GLOBE
+```
+
+Data flows in one direction: external sources → Next.js API routes /
+verification tooling → the React frontend. Nothing is written back.
 
 ## Tech Stack
 
@@ -102,6 +159,7 @@ limited to 60 req/min per IP and send cache headers):
 | `GET /api/v1/monitoring/alerts` | Active alerts, filterable by `type` (`critical` \| `warning` \| `info`) |
 | `GET /api/v1/monitoring/stats` | Aggregated dashboard statistics and population trends |
 | `GET /api/v1/locations` | Recent telemetry locations for monitored animals |
+| `GET /api/v1/live/sync?id=<animalId>` | Live GBIF sync for one species: recent georeferenced occurrences + `fetchedAt` timestamp (cached 60s) |
 
 Example:
 
