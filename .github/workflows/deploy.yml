@@ -41,15 +41,19 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      # Diagnostics: the Actions run logs are admin-only, so on failure file
-      # the Vercel CLI output as a repo issue where it's visible to everyone.
+      # Diagnostics: the Actions run logs are admin-only, so on failure upload
+      # the Vercel CLI output as an artifact (listable via the public API).
       - name: Report deploy failure
         if: ${{ always() && steps.deploy.outputs.exit_code != '' && steps.deploy.outputs.exit_code != '0' }}
         run: |
-          tail -120 /tmp/vercel-deploy.log > /tmp/vercel-tail.log
-          body=$(sed 's/^/    /' /tmp/vercel-tail.log)
-          gh api -X POST "repos/${{ github.repository }}/issues" \
-            -f title="Vercel deploy failed on ${{ github.sha }}" \
-            -f body="$body"
-        env:
-          GH_TOKEN: ${{ github.token }}
+          tail -200 /tmp/vercel-deploy.log > /tmp/vercel-tail.log
+          cp /tmp/vercel-tail.log "vercel-deploy-${{ github.sha }}.log"
+        shell: bash
+
+      - name: Upload deploy log artifact
+        if: ${{ always() && steps.deploy.outputs.exit_code != '' && steps.deploy.outputs.exit_code != '0' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vercel-deploy-log
+          path: vercel-deploy-*.log
+          if-no-files-found: error
