@@ -12,6 +12,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { CategoryIcon, DataCategoryIcon, AntennaIcon, GlobeIcon, UsersIcon, PinIcon, ChartIcon, ShieldIcon, BookIcon, CalendarIcon, DataIcon } from '@/components/icons';
+import LiveSyncBadge from '@/components/animal/LiveSyncBadge';
 
 const conservationStatusColors: Record<string, string> = {
   EX: 'bg-danger-500',
@@ -218,8 +219,13 @@ export default function AnimalDetailPage() {
               <p className="text-xl text-secondary-600 dark:text-secondary-400 mb-1">
                 {animal.scientificName}
               </p>
-              <div className="text-secondary-500 dark:text-secondary-400 mb-6">
+              <div className="text-secondary-500 dark:text-secondary-400 mb-3">
                 {animal.taxonomy.kingdom} → {animal.taxonomy.phylum} → {animal.taxonomy.class} → {animal.taxonomy.order}
+              </div>
+
+              {/* Live data sync status */}
+              <div className="mb-6">
+                <LiveSyncBadge animalId={animal.id} commonName={animal.commonName} />
               </div>
 
               {/* Quick Stats */}
