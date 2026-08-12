@@ -5,23 +5,60 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import {
-  sampleShelters,
-  sampleAdoptablePets,
-  sampleLostPets,
-  sampleFoundPets,
-} from '@/data/sample/shelters';
-import type { AdoptablePet, FoundPetReport, LostPetReport } from '@/data/sample/shelters';
+import { sampleShelters, sampleLostPets, sampleFoundPets } from '@/data/sample/shelters';
+import type { FoundPetReport, LostPetReport } from '@/data/sample/shelters';
 import { greatCircleKm } from '@/lib/geo';
-import { PawIcon, PinIcon, PhoneIcon, CheckIcon, SearchIcon, AccessibleIcon } from '@/components/icons';
+import { PawIcon, PinIcon, PhoneIcon, CheckIcon, SearchIcon, AccessibleIcon, BookIcon } from '@/components/icons';
 
-type Tab = 'lost-found' | 'shelters' | 'adoption';
+type Tab = 'lost-found' | 'shelters' | 'adopt';
 
-const SPECIES: { key: AdoptablePet['species']; label: string }[] = [
+type PetSpecies = 'dog' | 'cat' | 'rabbit' | 'bird';
+
+const SPECIES: { key: PetSpecies; label: string }[] = [
   { key: 'dog', label: 'Dog' },
   { key: 'cat', label: 'Cat' },
   { key: 'rabbit', label: 'Rabbit' },
   { key: 'bird', label: 'Bird' },
+];
+
+// External adoption platforms — adoptions happen on these sites, not here.
+const ADOPTION_PLATFORMS = [
+  {
+    name: 'Petfinder',
+    region: 'United States · Canada',
+    description: 'Search adoptable pets from thousands of shelters and rescues across North America.',
+    url: 'https://www.petfinder.com',
+  },
+  {
+    name: 'Adopt a Pet',
+    region: 'United States · Canada',
+    description: 'National listing service connecting adopters with local shelters and rescues.',
+    url: 'https://www.adoptapet.com',
+  },
+  {
+    name: 'ASPCA Adopt',
+    region: 'United States',
+    description: 'The ASPCA\'s adoption hub with listings and guidance for first-time adopters.',
+    url: 'https://www.aspca.org/adopt-pet',
+  },
+  {
+    name: 'Best Friends Animal Society',
+    region: 'United States',
+    description: 'Nationwide adoption network working toward no-kill shelters.',
+    url: 'https://bestfriends.org/adopt',
+  },
+  {
+    name: 'People for Animals',
+    region: 'India',
+    description: 'India\'s largest animal-welfare organisation, with shelter and adoption programs.',
+    url: 'https://www.peopleforanimalsindia.org',
+  },
+  {
+    name: 'KSPCA',
+    region: 'Kenya',
+    description: 'Kenya Society for the Protection and Care of Animals — adoption, rescue, and welfare work.',
+    url: 'https://www.kspca.or.ke',
+  },
 ];
 
 const SERVICES: Record<string, string> = {
@@ -45,28 +82,10 @@ function matchLostToFound(lost: LostPetReport, found: FoundPetReport): number {
 export default function ReunitePage() {
   const [tab, setTab] = useState<Tab>('lost-found');
   const [area, setArea] = useState(DEFAULT_AREA);
-  const [newReport, setNewReport] = useState({ petName: '', species: 'dog' as AdoptablePet['species'], description: '' });
+  const [newReport, setNewReport] = useState({ petName: '', species: 'dog' as PetSpecies, description: '' });
   const [myLostReports, setMyLostReports] = useState<LostPetReport[]>([]);
 
-  // Adoption preferences
-  const [prefs, setPrefs] = useState({ species: 'any' as 'any' | AdoptablePet['species'], size: 'any' as 'any' | AdoptablePet['size'], energy: 'any' as 'any' | AdoptablePet['energy'], goodWithKids: false });
-
   const allLost = useMemo(() => [...myLostReports, ...sampleLostPets], [myLostReports]);
-
-  const adoptions = useMemo(() => {
-    return sampleAdoptablePets
-      .map((pet) => {
-        let score = 60;
-        if (prefs.species !== 'any' && pet.species === prefs.species) score += 25;
-        if (prefs.size !== 'any' && pet.size === prefs.size) score += 5;
-        if (prefs.energy !== 'any' && pet.energy === prefs.energy) score += 5;
-        if (prefs.goodWithKids && pet.goodWithKids) score += 5;
-        const shelter = sampleShelters.find((s) => s.id === pet.shelterId);
-        const distKm = shelter ? greatCircleKm(area, shelter.location) : null;
-        return { pet, shelter, score: Math.min(100, score), distKm };
-      })
-      .sort((a, b) => b.score - a.score);
-  }, [prefs, area]);
 
   const submitReport = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,7 +106,7 @@ export default function ReunitePage() {
   const tabs: { key: Tab; label: string }[] = [
     { key: 'lost-found', label: 'Lost & Found' },
     { key: 'shelters', label: 'Shelters & Rescues' },
-    { key: 'adoption', label: 'Adoption Match' },
+    { key: 'adopt', label: 'Adopt a Pet' },
   ];
 
   return (
@@ -105,8 +124,8 @@ export default function ReunitePage() {
             Companion Animal Hub
           </h1>
           <p className="text-lg text-secondary-600 dark:text-secondary-400 mt-3 max-w-2xl mx-auto">
-            Reuniting lost pets, supporting shelters and rescues, and matching adopters with their
-            next family member. Demo data — coordinates are real, pets are representative.
+            Reuniting lost pets, supporting shelters and rescues, and pointing adopters to the
+            platforms where adoptions actually happen. Demo data — coordinates are real.
           </p>
         </motion.div>
 
@@ -168,7 +187,7 @@ export default function ReunitePage() {
                 />
                 <select
                   value={newReport.species}
-                  onChange={(e) => setNewReport({ ...newReport, species: e.target.value as AdoptablePet['species'] })}
+                  onChange={(e) => setNewReport({ ...newReport, species: e.target.value as PetSpecies })}
                   className="w-full px-3 py-2 rounded-xl bg-secondary-50 dark:bg-secondary-900 border border-secondary-200 dark:border-secondary-700 text-secondary-900 dark:text-white text-sm"
                 >
                   {SPECIES.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
@@ -278,93 +297,41 @@ export default function ReunitePage() {
           </motion.div>
         )}
 
-        {tab === 'adoption' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-5xl mx-auto">
-            {/* Preference survey */}
-            <div className="bg-white dark:bg-secondary-800 rounded-2xl p-6 shadow-lg mb-8">
-              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">Tell us what you&apos;re looking for</h2>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <label className="flex flex-col text-xs text-secondary-500 dark:text-secondary-400">
-                  Species
-                  <select
-                    value={prefs.species}
-                    onChange={(e) => setPrefs({ ...prefs, species: e.target.value as typeof prefs.species })}
-                    className="mt-1 px-3 py-2 rounded-xl bg-secondary-50 dark:bg-secondary-900 border border-secondary-200 dark:border-secondary-700 text-secondary-900 dark:text-white text-sm"
-                  >
-                    <option value="any">Any</option>
-                    {SPECIES.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
-                  </select>
-                </label>
-                <label className="flex flex-col text-xs text-secondary-500 dark:text-secondary-400">
-                  Size
-                  <select
-                    value={prefs.size}
-                    onChange={(e) => setPrefs({ ...prefs, size: e.target.value as typeof prefs.size })}
-                    className="mt-1 px-3 py-2 rounded-xl bg-secondary-50 dark:bg-secondary-900 border border-secondary-200 dark:border-secondary-700 text-secondary-900 dark:text-white text-sm"
-                  >
-                    <option value="any">Any</option>
-                    <option value="small">Small</option>
-                    <option value="medium">Medium</option>
-                    <option value="large">Large</option>
-                  </select>
-                </label>
-                <label className="flex flex-col text-xs text-secondary-500 dark:text-secondary-400">
-                  Energy
-                  <select
-                    value={prefs.energy}
-                    onChange={(e) => setPrefs({ ...prefs, energy: e.target.value as typeof prefs.energy })}
-                    className="mt-1 px-3 py-2 rounded-xl bg-secondary-50 dark:bg-secondary-900 border border-secondary-200 dark:border-secondary-700 text-secondary-900 dark:text-white text-sm"
-                  >
-                    <option value="any">Any</option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                  </select>
-                </label>
-                <label className="flex items-end gap-2 pb-2 text-sm text-secondary-700 dark:text-secondary-300">
-                  <input
-                    type="checkbox"
-                    checked={prefs.goodWithKids}
-                    onChange={(e) => setPrefs({ ...prefs, goodWithKids: e.target.checked })}
-                    className="w-4 h-4 accent-primary-600"
-                  />
-                  Good with kids
-                </label>
-              </div>
+        {tab === 'adopt' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-4xl mx-auto">
+            <div className="bg-primary-50 dark:bg-primary-900/20 rounded-2xl p-5 mb-8 text-sm text-primary-800 dark:text-primary-200">
+              OpenAnimalNet does not process adoptions — every pet is adopted through a shelter or
+              rescue. These are the platforms where you can browse adoptable pets and start the
+              process. Links open on their websites.
             </div>
-
-            {/* Ranked matches */}
-            <div className="space-y-4">
-              {adoptions.map(({ pet, shelter, score, distKm }, i) => (
-                <motion.div
-                  key={pet.id}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-white dark:bg-secondary-800 rounded-2xl p-5 shadow-sm border border-secondary-100 dark:border-secondary-700 flex flex-wrap items-center gap-4"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {ADOPTION_PLATFORMS.map((p) => (
+                <a
+                  key={p.name}
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white dark:bg-secondary-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 group"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0">
-                    <PawIcon className="w-6 h-6 text-white" />
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <h3 className="font-bold text-secondary-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      {p.name}
+                    </h3>
+                    <BookIcon className="w-5 h-5 text-primary-500 shrink-0 mt-0.5" />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-secondary-900 dark:text-white">{pet.name}</span>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-secondary-100 dark:bg-secondary-700 text-secondary-500 capitalize">
-                        {pet.species} · {pet.size} · {pet.energy} energy
-                      </span>
-                    </div>
-                    <p className="text-sm text-secondary-600 dark:text-secondary-400 mt-0.5">{pet.bio}</p>
-                    <p className="text-xs text-secondary-400 dark:text-secondary-500 mt-1">
-                      {pet.ageYears} yr{shelter ? ` · ${shelter.name}, ${shelter.city}${distKm ? ` · ~${Math.round(distKm)} km away` : ''} · ${shelter.phone}` : ''}
-                    </p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <div className="text-2xl font-bold font-data text-primary-600 dark:text-primary-400">{score}%</div>
-                    <div className="text-[11px] text-secondary-400">match</div>
-                  </div>
-                </motion.div>
+                  <p className="text-xs text-primary-600 dark:text-primary-400 font-medium mb-2">{p.region}</p>
+                  <p className="text-sm text-secondary-600 dark:text-secondary-300 mb-4">{p.description}</p>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 dark:text-primary-400">
+                    Visit site
+                    <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+                  </span>
+                </a>
               ))}
             </div>
+            <p className="text-xs text-secondary-400 dark:text-secondary-500 mt-6 text-center">
+              Your local shelter may not be listed here — check the Shelters & Rescues tab for nearby
+              organizations and their contact details.
+            </p>
           </motion.div>
         )}
       </main>

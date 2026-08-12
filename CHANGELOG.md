@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.3] - 2026-08-12
+
+### Changed
+- **Adoption is now external-only**: removed the in-app adoption matcher from
+  /reunite. The Adopt a Pet tab links to real adoption platforms (Petfinder,
+  Adopt-a-Pet, ASPCA, Best Friends, People for Animals, KSPCA — all URLs
+  verified live) — adoptions happen on the shelters' own sites.
+
 ## [1.18.2] - 2026-08-12
 
 ### Added

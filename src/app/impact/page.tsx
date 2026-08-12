@@ -43,8 +43,8 @@ const TOPICS: Topic[] = [
   {
     topic: 'Improving animal adoption, matching, outreach, and post-adoption support',
     status: 'live',
-    coverage: 'Adoption Match scores adoptable pets against adopter preferences (species, size, energy, kids); shelters carry outreach services.',
-    link: { href: '/reunite', label: 'Adoption match' },
+    coverage: 'The Adopt a Pet tab links directly to real adoption platforms (Petfinder, Adopt-a-Pet, ASPCA, Best Friends, People for Animals, KSPCA) and shelters carry outreach services — adoptions happen on the shelters\' own sites.',
+    link: { href: '/reunite', label: 'Adopt a Pet' },
   },
   {
     topic: 'Reuniting lost pets with their families and preventing animals from becoming lost',

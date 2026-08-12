@@ -44,8 +44,8 @@
   every profile and a weekly drift check in CI.
 - **Companion Animal Hub** (`/reunite`): lost-pet reunification (distance-
   matched against found reports), a shelter & rescue directory with foster and
-  accessibility flags, and an adoption matcher that scores pets against
-  adopter preferences.
+  accessibility flags, and an Adopt a Pet tab linking out to real adoption
+  platforms (adoptions happen on the shelters' own sites, never in-app).
 - **Service & Assistance Animal Registry** (`/assistance`): assistance-animal
   organizations (filterable by service type), accessible facilities near you,
   and accurate public-access rights (ADA).

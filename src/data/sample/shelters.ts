@@ -17,21 +17,6 @@ export interface Shelter {
   accessibility?: boolean;
 }
 
-export interface AdoptablePet {
-  id: string;
-  shelterId: string;
-  name: string;
-  species: 'dog' | 'cat' | 'rabbit' | 'bird';
-  breed: string;
-  ageYears: number;
-  size: 'small' | 'medium' | 'large';
-  energy: 'low' | 'medium' | 'high';
-  goodWithKids: boolean;
-  goodWithPets: boolean;
-  trained: boolean;
-  bio: string;
-}
-
 export interface LostPetReport {
   id: string;
   petName: string;
@@ -103,39 +88,6 @@ export const sampleShelters: Shelter[] = [
     phone: '+254 733 908 112',
     services: ['vet-care', 'outreach', 'lost-and-found'],
     petCapacity: 60,
-  },
-];
-
-export const sampleAdoptablePets: AdoptablePet[] = [
-  {
-    id: 'pet-001', shelterId: 'shelter-001', name: 'Kito', species: 'dog', breed: 'Africanis mix',
-    ageYears: 2, size: 'medium', energy: 'high', goodWithKids: true, goodWithPets: true, trained: false,
-    bio: 'Friendly village dog found near the Kimana corridor — loves walks and people.',
-  },
-  {
-    id: 'pet-002', shelterId: 'shelter-002', name: 'Malaika', species: 'cat', breed: 'Domestic shorthair',
-    ageYears: 1, size: 'small', energy: 'medium', goodWithKids: true, goodWithPets: false, trained: true,
-    bio: 'Gentle indoor cat surrendered by a family relocating abroad.',
-  },
-  {
-    id: 'pet-003', shelterId: 'shelter-004', name: 'Chiku', species: 'rabbit', breed: 'Rex',
-    ageYears: 3, size: 'small', energy: 'low', goodWithKids: true, goodWithPets: true, trained: true,
-    bio: 'Calm rex rabbit from a foster home; litter-trained and easygoing.',
-  },
-  {
-    id: 'pet-004', shelterId: 'shelter-002', name: 'Simba Jr', species: 'dog', breed: 'Retriever mix',
-    ageYears: 4, size: 'large', energy: 'medium', goodWithKids: true, goodWithPets: true, trained: true,
-    bio: 'Steady, leash-trained retriever mix looking for a garden to guard.',
-  },
-  {
-    id: 'pet-005', shelterId: 'shelter-004', name: 'Pari', species: 'bird', breed: 'Budgerigar',
-    ageYears: 1, size: 'small', energy: 'medium', goodWithKids: true, goodWithPets: false, trained: false,
-    bio: 'Chatty young budgie from a rescue surrender.',
-  },
-  {
-    id: 'pet-006', shelterId: 'shelter-001', name: 'Tembo', species: 'dog', breed: 'Boerboel cross',
-    ageYears: 5, size: 'large', energy: 'low', goodWithKids: false, goodWithPets: false, trained: true,
-    bio: 'Protective large breed needing an experienced, adult-only home.',
   },
 ];
 
