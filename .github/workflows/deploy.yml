@@ -4,6 +4,10 @@ name: Deploy to Vercel
 #   VERCEL_TOKEN      — Vercel CLI auth token (com.vercel.cli auth.json)
 #   VERCEL_ORG_ID     — from .vercel/project.json (orgId)
 #   VERCEL_PROJECT_ID — from .vercel/project.json (projectId)
+#
+# Deploy via the Vercel CLI directly: the amondnet/vercel-action@v20 action
+# targets Node 20 and broke when GitHub started forcing it onto Node 24
+# ("The process '/usr/local/bin/npx' failed with exit code 1").
 
 on:
   push:
@@ -18,10 +22,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to Vercel (production)
-        uses: amondnet/vercel-action@v20
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+          node-version: 22
+
+      - name: Deploy to Vercel (production)
+        run: npx --yes vercel@latest deploy --prod --token "$VERCEL_TOKEN" --yes
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
