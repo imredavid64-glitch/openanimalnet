@@ -8,6 +8,8 @@ name: Deploy to Vercel
 on:
   push:
     branches: [main]
+  # Manual redeploy without a push (e.g. after rotating VERCEL_TOKEN).
+  workflow_dispatch:
 
 jobs:
   deploy:
