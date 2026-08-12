@@ -179,6 +179,24 @@ export function ScaleIcon({ className }: { className?: string }) {
   );
 }
 
+export function AccessibleIcon({ className }: { className?: string }) {
+  return (
+    <Svg className={className}>
+      <circle cx="12" cy="4.5" r="1.8" />
+      <path d="M10 8.5 8.5 21h2.2l1.3-6.2 2.6 2.4 2.4 4.8 2-.9-2.6-5.3-3.3-3.1.4-2.3A3.4 3.4 0 0 0 12 6.7a3.4 3.4 0 0 0-1.4 1.2l-.6 3.5Z" />
+      <path d="M9 13H5.8L4.5 20h2l1-5.5" />
+    </Svg>
+  );
+}
+
+export function PhoneIcon({ className }: { className?: string }) {
+  return (
+    <Svg className={className}>
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
+    </Svg>
+  );
+}
+
 export function BellIcon({ className }: { className?: string }) {
   return (
     <Svg className={className}>
