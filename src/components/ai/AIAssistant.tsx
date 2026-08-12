@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sampleAnimals, sampleAnimalData } from '@/data/sample/animals';
 import { AnimalData, AnimalFilter, DataCategory } from '@/types/animal/types';
+import { RobotIcon } from '@/components/icons';
 
 interface Message {
   id: string;
@@ -258,7 +259,7 @@ You can also try: "Show me all mammals" or "What animals are in Africa?"`;
       <div className="flex items-center justify-between p-4 border-b border-secondary-200 dark:border-secondary-700">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
-            <span className="text-xl text-white">🤖</span>
+            <RobotIcon className="w-5 h-5 text-white" />
           </div>
           <div>
             <div className="font-semibold text-secondary-900 dark:text-white">AI Assistant</div>

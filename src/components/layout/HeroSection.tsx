@@ -26,7 +26,8 @@ export default function HeroSection() {
   ];
 
   // Deterministic "tracking network" constellation: nodes + connections,
-  // generated from a fixed seed so SSR and client render identically.
+  // generated from a fixed seed so SSR and client render identically. The
+  // node matching the current month pulses — this month's "tracked" node.
   const nodes: { x: number; y: number; r: number }[] = [];
   let seed = 42;
   const rand = () => {
@@ -36,6 +37,7 @@ export default function HeroSection() {
   for (let i = 0; i < 46; i++) {
     nodes.push({ x: rand() * 100, y: rand() * 100, r: 0.6 + rand() * 1.4 });
   }
+  const liveNode = nodes[new Date().getMonth() % nodes.length];
   const links: { x1: number; y1: number; x2: number; y2: number }[] = [];
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
@@ -55,7 +57,7 @@ export default function HeroSection() {
       {/* Tracking-network constellation — the platform's motif: nodes are
           tracked animals, links are the routes between them */}
       <svg
-        className="absolute inset-0 w-full h-full text-white/[0.07]"
+        className="absolute inset-0 w-full h-full text-white/[0.07] constellation-drift"
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid slice"
         aria-hidden="true"
@@ -74,6 +76,11 @@ export default function HeroSection() {
         {nodes.map((n, i) => (
           <circle key={`n${i}`} cx={n.x} cy={n.y} r={n.r} fill="currentColor" />
         ))}
+        {/* The current month's node + a pulsing halo */}
+        <g className="text-white/40">
+          <circle cx={liveNode.x} cy={liveNode.y} r={liveNode.r} fill="currentColor" className="constellation-node-live" />
+          <circle cx={liveNode.x} cy={liveNode.y} r={liveNode.r * 3.2} fill="none" stroke="currentColor" strokeWidth="0.08" className="constellation-node-live" />
+        </g>
       </svg>
 
       {/* Soft radial glow behind the wordmark */}

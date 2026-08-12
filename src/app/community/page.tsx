@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import StaticPage, { Section, PageLink } from '@/components/layout/StaticPage';
+import { MessageIcon, XIcon, GithubIcon, UsersIcon } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: 'Community | OpenAnimalNet',
@@ -8,22 +9,22 @@ export const metadata: Metadata = {
 
 const channels = [
   {
-    icon: '💬',
+    icon: <MessageIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     name: 'Discord',
     detail: 'Real-time discussion with the team and community — data questions, project help, and research chat.',
   },
   {
-    icon: '🐦',
+    icon: <XIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     name: 'Twitter / X',
     detail: 'Announcements, new dataset releases, and conservation news.',
   },
   {
-    icon: '💻',
+    icon: <GithubIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     name: 'GitHub',
     detail: 'Open-source code, issue tracker, and contribution guides.',
   },
   {
-    icon: '🧑‍🤝‍🧑',
+    icon: <UsersIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     name: 'Forum',
     detail: 'Long-form discussions, field reports, and data validation threads.',
   },

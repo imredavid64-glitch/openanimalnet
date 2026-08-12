@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { MigrationRoute, MigrationSeason } from '@/types/animal/types';
 import { routeDistanceKm, formatKm, formatDurationDays } from '@/lib/geo';
+import { CalendarIcon } from '@/components/icons';
 
 // Season scrubber for the mini map — same rule as the globe: year-round
 // routes are always active, seasonal legs only in their season.
@@ -51,7 +52,7 @@ export default function MiniRouteMap({
     <div className="relative">
       {/* Compact season scrubber for this map */}
       <div className="flex items-center gap-1 mb-1.5 flex-wrap">
-        <span className="text-[11px] text-secondary-500 dark:text-secondary-400 font-medium mr-0.5">🗓️</span>
+        <span className="text-secondary-500 dark:text-secondary-400 mr-0.5"><CalendarIcon className="w-3 h-3" /></span>
         <button
           onClick={() => setSeason('all')}
           className={`px-1.5 py-0.5 rounded-md text-[11px] font-medium transition-colors ${

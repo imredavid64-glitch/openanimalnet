@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import StaticPage, { Section, PageLink } from '@/components/layout/StaticPage';
 import { sampleMonitoringData } from '@/data/sample/animals';
+import { AntennaIcon } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: 'Monitoring Coverage | OpenAnimalNet',
@@ -23,7 +24,7 @@ export default function CoveragePage() {
 
   return (
     <StaticPage
-      icon="🛰️"
+      icon={<AntennaIcon className="w-16 h-16 mx-auto text-primary-300" />}
       title="Monitoring Coverage"
       subtitle="Our tracking network spans every continent and ocean basin. Coverage reflects the share of known species in each group with at least one active tracking program."
     >

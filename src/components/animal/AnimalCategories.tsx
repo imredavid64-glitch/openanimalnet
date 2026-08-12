@@ -2,19 +2,14 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { animalCategoryData } from '@/data/sample/animals';
+import { animalCategoryData, sampleAnimals } from '@/data/sample/animals';
 import { AnimalCategory } from '@/types/animal/types';
+import { CategoryIcon, GlobeIcon, PawIcon, AntennaIcon, SeverityIcon, DataCategoryIcon } from '@/components/icons';
 
-const categoryIcons: Record<string, string> = {
-  mammals: '🦁',
-  birds: '🦅',
-  reptiles: '🐍',
-  amphibians: '🐸',
-  fish: '🐟',
-  invertebrates: '🦋',
-  insects: '🐜',
-  marine: '🐋',
-};
+const speciesCount = sampleAnimals.length;
+const corridorCount = sampleAnimals.reduce((t, a) => t + (a.migrationRoutes?.length ?? 0), 0);
+const iucnCount = sampleAnimals.filter((a) => a.conservationStatus !== 'NE').length;
+const monitoredCount = sampleAnimals.filter((a) => a.isMonitored).length;
 
 export default function AnimalCategories() {
   return (
@@ -33,7 +28,7 @@ export default function AnimalCategories() {
           transition={{ duration: 0.5 }}
           className="inline-block"
         >
-          <span className="text-4xl">🌍</span>
+          <GlobeIcon className="w-10 h-10 text-primary-500 dark:text-primary-400 mx-auto" />
         </motion.div>
         <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-white mt-4">
           Explore Animal Categories
@@ -75,7 +70,7 @@ export default function AnimalCategories() {
                   background: `linear-gradient(135deg, ${category.color}30, ${category.color}10)`,
                 }}
               >
-                <span className="text-3xl">{category.icon}</span>
+                <CategoryIcon category={category.category as AnimalCategory} className="w-8 h-8 text-white" />
               </div>
               
               {/* Content */}
@@ -110,17 +105,17 @@ export default function AnimalCategories() {
         className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4"
       >
         {[
-          { label: 'Total Species', value: '1.2M+', icon: '🐾' },
-          { label: 'Monitored', value: '45K+', icon: '📡' },
-          { label: 'Endangered', value: '10K+', icon: '⚠️' },
-          { label: 'Data Points', value: '100M+', icon: '📊' },
+          { label: 'species tracked', value: String(speciesCount), icon: <PawIcon className="w-7 h-7 text-primary-500 dark:text-primary-400" /> },
+          { label: 'migration corridors', value: String(corridorCount), icon: <AntennaIcon className="w-7 h-7 text-primary-500 dark:text-primary-400" /> },
+          { label: 'IUCN-assessed', value: String(iucnCount), icon: <SeverityIcon type="warning" className="w-7 h-7 text-warning-500" /> },
+          { label: 'under monitoring', value: String(monitoredCount), icon: <DataCategoryIcon category="population" className="w-7 h-7 text-primary-500 dark:text-primary-400" /> },
         ].map((stat, index) => (
           <motion.div
             key={index}
             whileHover={{ scale: 1.02, y: -2 }}
             className="bg-white dark:bg-secondary-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
           >
-            <div className="text-3xl mb-2">{stat.icon}</div>
+            <div className="mb-2">{stat.icon}</div>
             <div className="text-2xl font-bold text-secondary-900 dark:text-white">
               {stat.value}
             </div>

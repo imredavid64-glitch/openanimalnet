@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { sampleAnimals, animalCategoryData, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus, AnimalFilter } from '@/types/animal/types';
+import { CategoryIcon, PawIcon } from '@/components/icons';
 import { filterAndSortAnimals, AnimalSortBy } from '@/lib/animalFiltering';
 import AnimalCard from '@/components/animal/AnimalCard';
 import AnimalFilters from '@/components/animal/AnimalFilters';
@@ -98,7 +99,7 @@ export default function AnimalPage() {
             transition={{ duration: 0.5 }}
             className="inline-block"
           >
-            <span className="text-5xl">🐾</span>
+            <PawIcon className="w-16 h-16 text-primary-600 dark:text-primary-400" />
           </motion.div>
           <h1 className="text-5xl md:text-6xl font-bold text-secondary-900 dark:text-white mt-4">
             Animal Database
@@ -122,7 +123,9 @@ export default function AnimalPage() {
               href={`?category=${category.category}`}
               className="bg-white dark:bg-secondary-800 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-shadow duration-300 text-center card-hover"
             >
-              <div className="text-3xl mb-2">{category.icon}</div>
+              <div className="mb-2 flex justify-center">
+                <CategoryIcon category={category.category as AnimalCategory} className="w-7 h-7 text-primary-600 dark:text-primary-400" />
+              </div>
               <div className="text-lg font-bold text-secondary-900 dark:text-white">
                 {categoryCounts[category.category as AnimalCategory] || 0}
               </div>

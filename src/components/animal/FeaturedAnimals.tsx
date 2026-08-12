@@ -4,18 +4,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { sampleAnimals } from '@/data/sample/animals';
-import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
-
-const categoryIcons: Record<AnimalCategory, string> = {
-  mammals: '🦁',
-  birds: '🦅',
-  reptiles: '🐍',
-  amphibians: '🐸',
-  fish: '🐟',
-  invertebrates: '🦋',
-  insects: '🐜',
-  marine: '🐋',
-};
+import { ConservationStatus } from '@/types/animal/types';
+import { CategoryIcon, DataCategoryIcon, UsersIcon, PinIcon, StarIcon } from '@/components/icons';
 
 const conservationStatusColors: Record<ConservationStatus, string> = {
   EX: 'bg-danger-500',
@@ -62,7 +52,7 @@ export default function FeaturedAnimals() {
           transition={{ duration: 0.5 }}
           className="inline-block"
         >
-          <span className="text-4xl">⭐</span>
+          <StarIcon className="w-9 h-9 text-amber-400 mx-auto" />
         </motion.div>
         <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-white mt-4">
           Featured Animals
@@ -109,7 +99,7 @@ export default function FeaturedAnimals() {
               {/* Category Badge */}
               <div className="absolute top-4 left-4 z-10">
                 <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-lg rounded-xl px-3 py-1.5">
-                  <span>{categoryIcons[animal.category]}</span>
+                  <CategoryIcon category={animal.category} className="w-4 h-4 text-white" />
                   <span className="text-white text-sm font-medium">{animal.category}</span>
                 </div>
               </div>
@@ -130,11 +120,11 @@ export default function FeaturedAnimals() {
                   <p className="text-white/80 text-sm mb-3">{animal.scientificName}</p>
                   <div className="flex items-center space-x-4 text-white/90 text-sm">
                     <div className="flex items-center space-x-1">
-                      <span>📍</span>
+                      <PinIcon className="w-4 h-4" />
                       <span>{animal.habitat?.join(', ') || 'Unknown'}</span>
                     </div>
                     <div className="flex items-center space-x-1">
-                      <span>👥</span>
+                      <UsersIcon className="w-4 h-4" />
                       <span>{animal.populationEstimate?.toLocaleString() || 'N/A'}</span>
                     </div>
                   </div>
@@ -143,17 +133,10 @@ export default function FeaturedAnimals() {
                       {animal.dataCategories.slice(0, 3).map((category) => (
                         <span
                           key={category}
-                          className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs"
+                          className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center"
                           title={category}
                         >
-                          {category === 'biological' && '🧬'}
-                          {category === 'behavioral' && '🗺️'}
-                          {category === 'ecological' && '🌿'}
-                          {category === 'population' && '📊'}
-                          {category === 'health' && '🏥'}
-                          {category === 'agricultural' && '🐄'}
-                          {category === 'shelter' && '🏠'}
-                          {category === 'human-interaction' && '⚠️'}
+                          <DataCategoryIcon category={category} className="w-3.5 h-3.5 text-white" />
                         </span>
                       ))}
                     </div>
@@ -250,7 +233,7 @@ export default function FeaturedAnimals() {
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <span className="text-2xl">{categoryIcons[animal.category]}</span>
+                          <CategoryIcon category={animal.category} className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                           <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">
                             {animal.category}
                           </span>
@@ -269,7 +252,8 @@ export default function FeaturedAnimals() {
                         <div className={`px-3 py-1 rounded-xl text-sm font-medium ${
                           animal.isMonitored ? 'bg-success-100 text-success-700' : 'bg-secondary-100 text-secondary-700'
                         }`}>
-                          {animal.isMonitored ? '✅ Monitored' : '❌ Not Monitored'}
+                          <span className={`inline-block w-2 h-2 rounded-full bg-current mr-1.5 ${animal.isMonitored ? 'bg-success-500' : 'bg-secondary-400'}`} />
+                          {animal.isMonitored ? 'Monitored' : 'Not monitored'}
                         </div>
                       </div>
                       

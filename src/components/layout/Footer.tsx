@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import { PawIcon, GithubIcon, XIcon, MessageIcon, LinkedinIcon } from '@/components/icons';
 
 const footerLinks = {
   platform: [
@@ -36,10 +37,10 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { name: 'GitHub', icon: '💻', path: 'https://github.com/openanimalnet' },
-  { name: 'Twitter', icon: '🐦', path: 'https://twitter.com/openanimalnet' },
-  { name: 'Discord', icon: '💬', path: 'https://discord.gg/openanimalnet' },
-  { name: 'LinkedIn', icon: '🔗', path: 'https://linkedin.com/company/openanimalnet' },
+  { name: 'GitHub', icon: <GithubIcon className="w-6 h-6" />, path: 'https://github.com/openanimalnet' },
+  { name: 'X', icon: <XIcon className="w-6 h-6" />, path: 'https://twitter.com/openanimalnet' },
+  { name: 'Discord', icon: <MessageIcon className="w-6 h-6" />, path: 'https://discord.gg/openanimalnet' },
+  { name: 'LinkedIn', icon: <LinkedinIcon className="w-6 h-6" />, path: 'https://linkedin.com/company/openanimalnet' },
 ];
 
 export default function Footer() {
@@ -55,7 +56,7 @@ export default function Footer() {
               whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-3 mb-4"
             >
-              <span className="text-4xl">🐾</span>
+              <PawIcon className="w-9 h-9 text-primary-400" />
               <div>
                 <div className="text-2xl font-bold text-white">OpenAnimalNet</div>
               </div>

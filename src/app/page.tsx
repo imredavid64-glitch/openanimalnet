@@ -8,6 +8,7 @@ import AnimalCategories from '@/components/animal/AnimalCategories';
 import FeaturedAnimals from '@/components/animal/FeaturedAnimals';
 import InteractiveGlobe from '@/components/map/InteractiveGlobe';
 import StatsDashboard from '@/components/visualization/StatsDashboard';
+import { RobotIcon } from '@/components/icons';
 import MonitoringAlerts from '@/components/monitor/MonitoringAlerts';
 import AIAssistant from '@/components/ai/AIAssistant';
 import Navbar from '@/components/layout/Navbar';
@@ -77,7 +78,7 @@ export default function HomePage() {
               onClick={() => setShowAI(true)}
               className="fixed bottom-8 right-8 z-50 bg-primary-600 hover:bg-primary-700 text-white p-4 rounded-full shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:scale-110 active:scale-95"
             >
-              <span className="text-2xl">🤖</span>
+              <RobotIcon className="w-6 h-6" />
               <span className="ml-2 font-medium">AI Assistant</span>
             </motion.button>
           )}

@@ -4,17 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Animal } from '@/types/animal/types';
 import { useState } from 'react';
-
-const categoryIcons: Record<string, string> = {
-  mammals: '🦁',
-  birds: '🦅',
-  reptiles: '🐍',
-  amphibians: '🐸',
-  fish: '🐟',
-  invertebrates: '🦋',
-  insects: '🐜',
-  marine: '🐋',
-};
+import { CategoryIcon, DataCategoryIcon, UsersIcon, PinIcon } from '@/components/icons';
 
 const conservationStatusColors: Record<string, string> = {
   EX: 'bg-danger-500',
@@ -70,7 +60,7 @@ export default function AnimalCard({ animal }: { animal: Animal }) {
           transition={{ duration: 0.3 }}
           className="flex items-center space-x-2 bg-white/20 backdrop-blur-lg rounded-xl px-3 py-1.5"
         >
-          <span>{categoryIcons[animal.category]}</span>
+          <CategoryIcon category={animal.category} className="w-4 h-4 text-white" />
           <span className="text-white text-sm font-medium">{animal.category}</span>
         </motion.div>
       </div>
@@ -104,11 +94,11 @@ export default function AnimalCard({ animal }: { animal: Animal }) {
           {/* Quick Stats */}
           <div className="flex items-center space-x-4 text-white/90 text-sm mb-4">
             <div className="flex items-center space-x-1">
-              <span>👥</span>
+              <UsersIcon className="w-4 h-4" />
               <span>{animal.populationEstimate?.toLocaleString() || 'N/A'}</span>
             </div>
             <div className="flex items-center space-x-1">
-              <span>📍</span>
+              <PinIcon className="w-4 h-4" />
               <span>{animal.habitat?.slice(0, 2).join(', ') || 'Unknown'}</span>
             </div>
           </div>
@@ -120,17 +110,10 @@ export default function AnimalCard({ animal }: { animal: Animal }) {
                 <motion.span
                   key={category}
                   whileHover={{ scale: 1.2 }}
-                  className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs"
+                  className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center"
                   title={category}
                 >
-                  {category === 'biological' && '🧬'}
-                  {category === 'behavioral' && '🗺️'}
-                  {category === 'ecological' && '🌿'}
-                  {category === 'population' && '📊'}
-                  {category === 'health' && '🏥'}
-                  {category === 'agricultural' && '🐄'}
-                  {category === 'shelter' && '🏠'}
-                  {category === 'human-interaction' && '⚠️'}
+                  <DataCategoryIcon category={category} className="w-3.5 h-3.5 text-white" />
                 </motion.span>
               ))}
               {animal.dataCategories.length > 4 && (

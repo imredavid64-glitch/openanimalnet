@@ -8,6 +8,7 @@ import StatsDashboard from '@/components/visualization/StatsDashboard';
 import MonitoringAlerts from '@/components/monitor/MonitoringAlerts';
 import AnimalCategories from '@/components/animal/AnimalCategories';
 import FeaturedAnimals from '@/components/animal/FeaturedAnimals';
+import { PawIcon, AntennaIcon, RobotIcon, ChartIcon } from '@/components/icons';
 import AIAssistant from '@/components/ai/AIAssistant';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -52,10 +53,10 @@ export default function DashboardPage() {
           className="flex flex-wrap justify-center gap-4 mb-12"
         >
           {[
-            { name: 'Animals', path: '/animal', icon: '🐾' },
-            { name: 'Monitor', path: '/monitor', icon: '📡' },
-            { name: 'AI Analysis', path: '/ai', icon: '🤖' },
-            { name: 'Data Explorer', path: '/data', icon: '🗂️' },
+            { name: 'Animals', path: '/animal', icon: <PawIcon className="w-6 h-6" /> },
+            { name: 'Monitor', path: '/monitor', icon: <AntennaIcon className="w-6 h-6" /> },
+            { name: 'AI Analysis', path: '/ai', icon: <RobotIcon className="w-6 h-6" /> },
+            { name: 'Data Explorer', path: '/data', icon: <ChartIcon className="w-6 h-6" /> },
           ].map((nav, index) => (
             <motion.div
               key={nav.path}
@@ -66,7 +67,7 @@ export default function DashboardPage() {
                 href={nav.path}
                 className="flex items-center space-x-3"
               >
-                <span className="text-2xl">{nav.icon}</span>
+                <span className="text-primary-600 dark:text-primary-400">{nav.icon}</span>
                 <span className="font-semibold text-secondary-900 dark:text-white">{nav.name}</span>
               </Link>
             </motion.div>
@@ -126,7 +127,7 @@ export default function DashboardPage() {
         onClick={() => setShowAI(true)}
         className="fixed bottom-8 right-8 z-50 bg-primary-600 hover:bg-primary-700 text-white p-4 rounded-full shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:scale-110 active:scale-95"
       >
-        <span className="text-2xl">🤖</span>
+        <RobotIcon className="w-6 h-6" />
         <span className="ml-2 font-medium">AI Assistant</span>
       </motion.button>
 

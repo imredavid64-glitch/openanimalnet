@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
+import { PawIcon, SunIcon, MoonIcon } from '@/components/icons';
 
 const navItems = [
   { name: 'Home', path: '/' },
@@ -68,7 +69,9 @@ export default function Navbar() {
               transition={{ duration: 0.3 }}
               className="relative"
             >
-              <span className="text-3xl group-hover:text-primary-600 transition-colors duration-300">🐾</span>
+              <span className="text-3xl group-hover:text-primary-600 transition-colors duration-300 block">
+                <PawIcon className="w-8 h-8" />
+              </span>
               <motion.span
                 className="absolute -top-1 -right-1 text-xs bg-primary-500 text-white px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 initial={{ scale: 0.5 }}
@@ -119,9 +122,9 @@ export default function Navbar() {
             <button
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              className="p-2 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300"
+              className="p-2 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300 text-secondary-600 dark:text-secondary-300"
             >
-              <span className="text-xl">{theme === 'dark' ? '☀️' : '🌙'}</span>
+              {theme === 'dark' ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
             </button>
             <Link
               href="/dashboard"
@@ -180,7 +183,7 @@ export default function Navbar() {
                     onClick={toggleTheme}
                     className="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300"
                   >
-                    <span className="text-xl">{theme === 'dark' ? '☀️' : '🌙'}</span>
+                    {theme === 'dark' ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
                     <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
                   </button>
                 </div>

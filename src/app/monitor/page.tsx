@@ -8,6 +8,7 @@ import MonitoringAlerts from '@/components/monitor/MonitoringAlerts';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { sampleAnimals, sampleMonitoringData } from '@/data/sample/animals';
+import { AntennaIcon, BellIcon, PawIcon, GlobeIcon, PinIcon } from '@/components/icons';
 
 export default function MonitorPage() {
   const [selectedAnimal, setSelectedAnimal] = useState<string | null>(null);
@@ -55,25 +56,25 @@ export default function MonitorPage() {
             {
               label: 'Total Monitored',
               value: sampleMonitoringData.totalAnimals.toLocaleString(),
-              icon: '📡',
+              icon: <AntennaIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
               color: 'primary',
             },
             {
               label: 'Active Alerts',
               value: sampleMonitoringData.activeAlerts.toLocaleString(),
-              icon: '🔔',
+              icon: <BellIcon className="w-7 h-7 text-danger-500" />,
               color: 'danger',
             },
             {
               label: 'Species Tracked',
               value: monitoredAnimals.length.toLocaleString(),
-              icon: '🐾',
+              icon: <PawIcon className="w-7 h-7 text-success-600 dark:text-success-400" />,
               color: 'success',
             },
             {
               label: 'Coverage',
               value: `${(sampleMonitoringData.monitoredAnimals / sampleMonitoringData.totalAnimals * 100).toFixed(1)}%`,
-              icon: '🌍',
+              icon: <GlobeIcon className="w-7 h-7 text-accent-600 dark:text-accent-400" />,
               color: 'accent',
             },
           ].map((stat, index) => (
@@ -230,8 +231,8 @@ export default function MonitorPage() {
                       </p>
                       <div className="flex items-center space-x-2 mt-2">
                         <div className="flex items-center space-x-1 text-sm text-secondary-500 dark:text-secondary-400">
-                          <span>📍</span>
-                          <span>{animal.location.latitude.toFixed(2)}, {animal.location.longitude.toFixed(2)}</span>
+                          <PinIcon className="w-3.5 h-3.5" />
+                          <span className="font-data">{animal.location.latitude.toFixed(2)}, {animal.location.longitude.toFixed(2)}</span>
                         </div>
                         <div className="flex items-center space-x-1 text-sm text-success-600 dark:text-success-400">
                           <span className="w-2 h-2 rounded-full bg-current"></span>

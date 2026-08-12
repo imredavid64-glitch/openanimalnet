@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 interface StaticPageProps {
-  icon?: string;
+  icon?: React.ReactNode;
   title: string;
   subtitle?: string;
   children: React.ReactNode;

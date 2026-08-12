@@ -4,40 +4,11 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimalFilter, AnimalCategory, ConservationStatus, DataCategory } from '@/types/animal/types';
 import { animalCategoryData, conservationStatusData, dataCategoryData } from '@/data/sample/animals';
+import { CategoryIcon, DataCategoryIcon, FilterIcon, PawIcon, ShieldIcon, AntennaIcon, SeverityIcon } from '@/components/icons';
 
-const categoryIcons: Record<AnimalCategory, string> = {
-  mammals: '🦁',
-  birds: '🦅',
-  reptiles: '🐍',
-  amphibians: '🐸',
-  fish: '🐟',
-  invertebrates: '🦋',
-  insects: '🐜',
-  marine: '🐋',
-};
-
-const conservationIcons: Record<ConservationStatus, string> = {
-  EX: '❌',
-  EW: '❌',
-  CR: '🚨',
-  EN: '⚠️',
-  VU: '⚠️',
-  NT: 'ℹ️',
-  LC: '✅',
-  DD: '❓',
-  NE: '❓',
-};
-
-const dataCategoryIcons: Record<DataCategory, string> = {
-  biological: '🧬',
-  behavioral: '🗺️',
-  ecological: '🌿',
-  population: '📊',
-  health: '🏥',
-  agricultural: '🐄',
-  shelter: '🏠',
-  'human-interaction': '⚠️',
-};
+// Status chips use the IUCN color dot instead of an emoji.
+const statusColor = (status: ConservationStatus): string =>
+  conservationStatusData.find((s) => s.status === status)?.color ?? '#94a3b8';
 
 interface AnimalFiltersProps {
   filters: AnimalFilter;
@@ -100,7 +71,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
         className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-secondary-200 dark:border-secondary-600 bg-white dark:bg-secondary-800 text-secondary-900 dark:text-secondary-100 hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-300"
       >
         <div className="flex items-center space-x-2">
-          <span>🔧</span>
+          <FilterIcon className="w-4 h-4 text-secondary-500 dark:text-secondary-400" />
           <span>Filters</span>
           {activeFilterCount > 0 && (
             <span className="bg-primary-500 text-white text-xs px-2 py-0.5 rounded-full">
@@ -151,7 +122,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
                   className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary-100 dark:bg-secondary-700 hover:bg-secondary-200 dark:hover:bg-secondary-600 text-secondary-700 dark:text-secondary-200 transition-colors duration-300"
                 >
                   <div className="flex items-center space-x-2">
-                    <span>🐾</span>
+                    <PawIcon className="w-4 h-4 text-secondary-500 dark:text-secondary-400" />
                     <span>Categories</span>
                   </div>
                   <span>{activeFilter === 'categories' ? '↑' : '↓'}</span>
@@ -176,7 +147,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
                               : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-200 hover:bg-secondary-200 dark:hover:bg-secondary-600'
                           }`}
                         >
-                          <span>{categoryIcons[category]}</span>
+                          <CategoryIcon category={category} className="w-4 h-4" />
                           <span>{category}</span>
                         </button>
                       ))}
@@ -192,7 +163,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
                   className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary-100 dark:bg-secondary-700 hover:bg-secondary-200 dark:hover:bg-secondary-600 text-secondary-700 dark:text-secondary-200 transition-colors duration-300"
                 >
                   <div className="flex items-center space-x-2">
-                    <span>🛡️</span>
+                    <ShieldIcon className="w-4 h-4 text-secondary-500 dark:text-secondary-400" />
                     <span>Conservation Status</span>
                   </div>
                   <span>{activeFilter === 'status' ? '↑' : '↓'}</span>
@@ -217,7 +188,10 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
                               : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-200 hover:bg-secondary-200 dark:hover:bg-secondary-600'
                           }`}
                         >
-                          <span>{conservationIcons[status]}</span>
+                          <span
+                            className="w-2.5 h-2.5 rounded-full shrink-0"
+                            style={{ backgroundColor: statusColor(status) }}
+                          />
                           <span>{status}</span>
                         </button>
                       ))}
@@ -233,7 +207,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
                   className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary-100 dark:bg-secondary-700 hover:bg-secondary-200 dark:hover:bg-secondary-600 text-secondary-700 dark:text-secondary-200 transition-colors duration-300"
                 >
                   <div className="flex items-center space-x-2">
-                    <span>📊</span>
+                    <DataCategoryIcon category="population" className="w-4 h-4 text-secondary-500 dark:text-secondary-400" />
                     <span>Data Categories</span>
                   </div>
                   <span>{activeFilter === 'data' ? '↑' : '↓'}</span>
@@ -258,7 +232,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
                               : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-200 hover:bg-secondary-200 dark:hover:bg-secondary-600'
                           }`}
                         >
-                          <span>{dataCategoryIcons[category]}</span>
+                          <DataCategoryIcon category={category} className="w-4 h-4" />
                           <span>{category.replace('-', ' ')}</span>
                         </button>
                       ))}
@@ -274,7 +248,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
                   className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-secondary-100 dark:bg-secondary-700 hover:bg-secondary-200 dark:hover:bg-secondary-600 text-secondary-700 dark:text-secondary-200 transition-colors duration-300"
                 >
                   <div className="flex items-center space-x-2">
-                    <span>📡</span>
+                    <AntennaIcon className="w-4 h-4 text-secondary-500 dark:text-secondary-400" />
                     <span>Monitored Status</span>
                   </div>
                   <span>{activeFilter === 'monitored' ? '↑' : '↓'}</span>
@@ -297,7 +271,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
                             : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-200 hover:bg-secondary-200 dark:hover:bg-secondary-600'
                         }`}
                       >
-                        <span>✅</span>
+                        <SeverityIcon type="info" className="w-4 h-4" />
                         <span>Monitored</span>
                       </button>
                       <button
@@ -308,7 +282,7 @@ export default function AnimalFilters({ filters, onFilterChange }: AnimalFilters
                             : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-200 hover:bg-secondary-200 dark:hover:bg-secondary-600'
                         }`}
                       >
-                        <span>❌</span>
+                        <SeverityIcon type="warning" className="w-4 h-4" />
                         <span>Not Monitored</span>
                       </button>
                     </motion.div>

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 import { routeDistanceKm, formatKm, formatDurationDays } from '@/lib/geo';
+import { CategoryIcon, CalendarIcon, UsersIcon } from '@/components/icons';
 import type { SeasonFilter } from './GlobeComponent';
 
 // Dynamically import Three.js components to avoid SSR issues
@@ -90,17 +91,6 @@ const animalCategoryColors: Record<AnimalCategory, string> = {
   invertebrates: '#1d4ed8',
   insects: '#7c3aed',
   marine: '#1e40af',
-};
-
-const categoryIcons: Record<AnimalCategory, string> = {
-  mammals: '🦁',
-  birds: '🦅',
-  reptiles: '🐍',
-  amphibians: '🐸',
-  fish: '🐟',
-  invertebrates: '🦋',
-  insects: '🐜',
-  marine: '🐋',
 };
 
 const conservationStatusColors: Record<string, string> = {
@@ -243,7 +233,6 @@ export default function InteractiveGlobe() {
     lng: animal.location.longitude,
     size: animal.populationEstimate ? Math.log(animal.populationEstimate) / 4 : 0.5,
     color: animalCategoryColors[animal.category],
-    icon: categoryIcons[animal.category],
     conservationStatus: animal.conservationStatus,
     isMonitored: animal.isMonitored,
     migrationRoutes: animal.migrationRoutes,
@@ -322,9 +311,8 @@ export default function InteractiveGlobe() {
                   selectedCategory === category
                     ? 'bg-white text-primary-600 shadow-lg'
                     : 'bg-white/20 text-white hover:bg-white/30'
-                }`}
-              >
-                <span>{categoryIcons[category]}</span>
+                }`}                >
+                <CategoryIcon category={category} className="w-4 h-4" />
                 <span>{category}</span>
               </button>
             ))}
@@ -395,8 +383,8 @@ export default function InteractiveGlobe() {
                 return (
                   <>
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-                        <span className="text-2xl">{categoryIcons[animal.category]}</span>
+                      <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white">
+                        <CategoryIcon category={animal.category} className="w-6 h-6" />
                       </div>
                       <div>
                         <div className="text-white font-semibold">{animal.commonName}</div>
@@ -476,8 +464,8 @@ export default function InteractiveGlobe() {
                   {animal.images?.[0] ? (
                     <img src={animal.images[0]} alt={animal.commonName} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-2xl">
-                      {categoryIcons[animal.category]}
+                    <div className="w-full h-full flex items-center justify-center text-secondary-400">
+                      <CategoryIcon category={animal.category} className="w-6 h-6" />
                     </div>
                   )}
                 </div>
@@ -492,8 +480,9 @@ export default function InteractiveGlobe() {
                     }`}>
                       {animal.conservationStatus}
                     </span>
-                    <span className="text-xs text-secondary-600 dark:text-secondary-300">
-                      👥 {animal.populationEstimate?.toLocaleString() || 'N/A'}
+                    <span className="inline-flex items-center gap-1 text-xs text-secondary-600 dark:text-secondary-300">
+                      <UsersIcon className="w-3.5 h-3.5" />
+                      {animal.populationEstimate?.toLocaleString() || 'N/A'}
                     </span>
                   </div>
                 </div>
@@ -697,7 +686,7 @@ export default function InteractiveGlobe() {
               selectedCategory === category ? 'ring-2 ring-primary-500' : ''
             }`}
           >
-            <span className="text-xl">{categoryIcons[category]}</span>
+            <CategoryIcon category={category} className="w-5 h-5 text-secondary-600 dark:text-secondary-300" />
             <span className="text-sm font-medium text-secondary-700 dark:text-secondary-200">
               {category}
             </span>
@@ -760,8 +749,8 @@ export default function InteractiveGlobe() {
           <span className="w-2 h-2 rounded-full bg-primary-400" />
           click a marker to focus
         </span>
-        <span className="inline-flex items-center gap-1">
-          🗓️
+        <span className="inline-flex items-center gap-1.5">
+          <CalendarIcon className="w-3.5 h-3.5" />
           scrub seasons to watch migrations
         </span>
       </div>

@@ -11,17 +11,7 @@ import { Animal, AnimalData } from '@/types/animal/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-
-const categoryIcons: Record<string, string> = {
-  mammals: '🦁',
-  birds: '🦅',
-  reptiles: '🐍',
-  amphibians: '🐸',
-  fish: '🐟',
-  invertebrates: '🦋',
-  insects: '🐜',
-  marine: '🐋',
-};
+import { CategoryIcon, DataCategoryIcon, AntennaIcon, GlobeIcon, UsersIcon, PinIcon } from '@/components/icons';
 
 const conservationStatusColors: Record<string, string> = {
   EX: 'bg-danger-500',
@@ -137,13 +127,13 @@ export default function AnimalDetailPage() {
   }
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: '📋' },
-    { id: 'biological', label: 'Biological Data', icon: '🧬' },
-    { id: 'behavioral', label: 'Behavioral Data', icon: '🗺️' },
-    { id: 'ecological', label: 'Ecological Data', icon: '🌿' },
-    { id: 'population', label: 'Population Data', icon: '📊' },
-    { id: 'health', label: 'Health Data', icon: '🏥' },
-    { id: 'monitoring', label: 'Monitoring', icon: '📡' },
+    { id: 'overview', label: 'Overview', icon: <GlobeIcon className="w-4 h-4" /> },
+    { id: 'biological', label: 'Biological Data', icon: <DataCategoryIcon category="biological" className="w-4 h-4" /> },
+    { id: 'behavioral', label: 'Behavioral Data', icon: <DataCategoryIcon category="behavioral" className="w-4 h-4" /> },
+    { id: 'ecological', label: 'Ecological Data', icon: <DataCategoryIcon category="ecological" className="w-4 h-4" /> },
+    { id: 'population', label: 'Population Data', icon: <DataCategoryIcon category="population" className="w-4 h-4" /> },
+    { id: 'health', label: 'Health Data', icon: <DataCategoryIcon category="health" className="w-4 h-4" /> },
+    { id: 'monitoring', label: 'Monitoring', icon: <AntennaIcon className="w-4 h-4" /> },
   ];
 
   return (
@@ -188,7 +178,7 @@ export default function AnimalDetailPage() {
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex space-x-2">
                   <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-lg rounded-xl px-3 py-1.5">
-                    <span>{categoryIcons[animal.category]}</span>
+                    <CategoryIcon category={animal.category} className="w-4 h-4 text-white" />
                     <span className="text-white text-sm font-medium">{animal.category}</span>
                   </div>
                   <div className={`px-3 py-1.5 rounded-xl text-white text-sm font-medium ${
@@ -245,15 +235,15 @@ export default function AnimalDetailPage() {
               {/* Quick Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4">
-                  <div className="text-2xl mb-1">👥</div>
-                  <div className="text-lg font-bold text-secondary-900 dark:text-white">
+                  <div className="mb-1"><UsersIcon className="w-5 h-5 text-primary-600 dark:text-primary-400" /></div>
+                  <div className="text-lg font-bold text-secondary-900 dark:text-white font-data">
                     {animal.populationEstimate?.toLocaleString() || 'N/A'}
                   </div>
                   <div className="text-xs text-secondary-500 dark:text-secondary-400">Population</div>
                 </div>
                 <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4">
-                  <div className="text-2xl mb-1">📍</div>
-                  <div className="text-lg font-bold text-secondary-900 dark:text-white">
+                  <div className="mb-1"><PinIcon className="w-5 h-5 text-primary-600 dark:text-primary-400" /></div>
+                  <div className="text-lg font-bold text-secondary-900 dark:text-white font-data">
                     {animal.location.latitude.toFixed(2)}, {animal.location.longitude.toFixed(2)}
                   </div>
                   <div className="text-xs text-secondary-500 dark:text-secondary-400">Location</div>

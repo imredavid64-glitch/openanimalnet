@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import StaticPage, { Section, PageLink } from '@/components/layout/StaticPage';
+import { GlobeIcon, DownloadIcon, MessageIcon, ChartIcon, AntennaIcon, RobotIcon } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: 'Documentation | OpenAnimalNet',
@@ -8,37 +9,37 @@ export const metadata: Metadata = {
 
 const guides = [
   {
-    icon: '🗺️',
+    icon: <GlobeIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'Exploring the Platform',
     detail: 'Tour the interactive globe, dashboards, and species profiles.',
     link: '/dashboard',
   },
   {
-    icon: '📥',
+    icon: <DownloadIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'Contributing Data',
     detail: 'How to submit field observations and tracking data to the network.',
     link: '/methodology',
   },
   {
-    icon: '🔌',
+    icon: <MessageIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'API Quickstart',
     detail: 'Authenticate and pull species, population, and monitoring datasets.',
     link: '/api',
   },
   {
-    icon: '📊',
+    icon: <ChartIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'Understanding the Data Model',
     detail: 'The five data categories and how records are structured.',
     link: '/data',
   },
   {
-    icon: '🛰️',
+    icon: <AntennaIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'Monitoring Coverage',
     detail: 'Where our tracking network operates and how to interpret coverage.',
     link: '/monitor/coverage',
   },
   {
-    icon: '🧠',
+    icon: <RobotIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'AI Analysis',
     detail: 'Using the AI assistant for population and behavior insights.',
     link: '/ai',

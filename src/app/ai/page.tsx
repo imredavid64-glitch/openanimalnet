@@ -6,7 +6,8 @@ import Link from 'next/link';
 import AIAssistant from '@/components/ai/AIAssistant';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { sampleAnimals, sampleAnimalData } from '@/data/sample/animals';
+import { sampleAnimals, sampleAnimalData, dataCategoryData } from '@/data/sample/animals';
+import { RobotIcon, PawIcon, AntennaIcon, DataCategoryIcon, ShieldIcon, MessageIcon, ChartIcon, SearchIcon, ScaleIcon, StarIcon } from '@/components/icons';
 
 export default function AIPage() {
   const [showFullScreenAI, setShowFullScreenAI] = useState(false);
@@ -15,37 +16,37 @@ export default function AIPage() {
     {
       title: 'Natural Language Queries',
       description: 'Ask questions in plain English and get intelligent responses about animal data.',
-      icon: '💬',
+      icon: <MessageIcon className="w-8 h-8 mx-auto text-primary-300" />,
       example: '"What are the most endangered mammals in Africa?"',
     },
     {
       title: 'Data Analysis',
       description: 'Analyze complex datasets across species, categories, and time periods.',
-      icon: '📊',
+      icon: <ChartIcon className="w-8 h-8 mx-auto text-primary-300" />,
       example: '"Show me population trends for big cats over the last decade."',
     },
     {
       title: 'Species Identification',
       description: 'Identify animals based on descriptions, habitats, or characteristics.',
-      icon: '🔍',
+      icon: <SearchIcon className="w-8 h-8 mx-auto text-primary-300" />,
       example: '"Which large cat has a mane and lives in Africa?"',
     },
     {
       title: 'Conservation Insights',
       description: 'Get insights into conservation status, threats, and protection efforts.',
-      icon: '🛡️',
+      icon: <ShieldIcon className="w-8 h-8 mx-auto text-primary-300" />,
       example: '"What are the main threats to sea turtles?"',
     },
     {
       title: 'Comparative Analysis',
       description: 'Compare data across different species, regions, or time periods.',
-      icon: '⚖️',
+      icon: <ScaleIcon className="w-8 h-8 mx-auto text-primary-300" />,
       example: '"Compare the populations of African and Asian elephants."',
     },
     {
       title: 'Predictive Analytics',
       description: 'Get predictions about population trends, migration patterns, and conservation outcomes.',
-      icon: '🔮',
+      icon: <StarIcon className="w-8 h-8 mx-auto text-primary-300" />,
       example: '"Predict the population of tigers in 2030."',
     },
   ];
@@ -77,7 +78,7 @@ export default function AIPage() {
             transition={{ duration: 0.5 }}
             className="inline-block"
           >
-            <span className="text-5xl">🤖</span>
+            <RobotIcon className="w-14 h-14 text-primary-300" />
           </motion.div>
           <h1 className="text-5xl md:text-6xl font-bold text-white mt-4">
             AI-Powered Animal Intelligence
@@ -128,7 +129,7 @@ export default function AIPage() {
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-500 flex items-center justify-center">
-                      <span className="text-2xl text-white">🤖</span>
+                      <RobotIcon className="w-6 h-6 text-white" />
                     </div>
                     <div>
                       <h2 className="text-2xl font-bold text-white">AI Assistant</h2>
@@ -176,18 +177,34 @@ export default function AIPage() {
               className="grid grid-cols-2 md:grid-cols-4 gap-4"
             >
               {[
-                { label: 'Species in Database', value: sampleAnimals.length.toLocaleString(), icon: '🐾' },
-                { label: 'AI Processed Queries', value: '100K+', icon: '💭' },
-                { label: 'Data Points Analyzed', value: '100M+', icon: '📊' },
-                { label: 'Languages Supported', value: '100+', icon: '🌍' },
+                {
+                  label: 'Species in Database',
+                  value: sampleAnimals.length.toLocaleString(),
+                  icon: <PawIcon className="w-7 h-7 mx-auto text-primary-300" />,
+                },
+                {
+                  label: 'Migration Corridors',
+                  value: sampleAnimals.reduce((t, a) => t + (a.migrationRoutes?.length ?? 0), 0).toLocaleString(),
+                  icon: <AntennaIcon className="w-7 h-7 mx-auto text-primary-300" />,
+                },
+                {
+                  label: 'Data Categories Tracked',
+                  value: dataCategoryData.length.toLocaleString(),
+                  icon: <DataCategoryIcon category="population" className="w-7 h-7 mx-auto text-primary-300" />,
+                },
+                {
+                  label: 'IUCN-assessed',
+                  value: sampleAnimals.filter((a) => a.conservationStatus !== 'NE').length.toLocaleString(),
+                  icon: <ShieldIcon className="w-7 h-7 mx-auto text-primary-300" />,
+                },
               ].map((stat, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05, y: -5 }}
                   className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 text-center"
                 >
-                  <div className="text-3xl mb-2">{stat.icon}</div>
-                  <div className="text-2xl font-bold text-white">{stat.value}</div>
+                  <div className="mb-2">{stat.icon}</div>
+                  <div className="text-2xl font-bold text-white font-data">{stat.value}</div>
                   <div className="text-sm text-white/60">{stat.label}</div>
                 </motion.div>
               ))}
@@ -212,7 +229,7 @@ export default function AIPage() {
               <div className="flex items-center justify-between p-4 border-b border-secondary-200 dark:border-secondary-700">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
-                    <span className="text-xl text-white">🤖</span>
+                    <RobotIcon className="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <div className="font-semibold text-secondary-900 dark:text-white">AI Assistant</div>

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
+import { CategoryIcon } from '@/components/icons';
 import type { SeasonFilter } from './GlobeComponent';
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
@@ -17,17 +18,6 @@ const animalCategoryColors: Record<AnimalCategory, string> = {
   invertebrates: '#1d4ed8',
   insects: '#7c3aed',
   marine: '#1e40af',
-};
-
-const categoryIcons: Record<AnimalCategory, string> = {
-  mammals: '🦁',
-  birds: '🦅',
-  reptiles: '🐍',
-  amphibians: '🐸',
-  fish: '🐟',
-  invertebrates: '🦋',
-  insects: '🐜',
-  marine: '🐋',
 };
 
 // IUCN status color per species, for the marker ring / hover badge.
@@ -49,7 +39,6 @@ interface MapPoint {
   y: number;
   size: number;
   color: string;
-  icon: string;
   isMonitored: boolean;
   status: ConservationStatus;
   statusColor: string;
@@ -92,7 +81,6 @@ export default function SimpleWorldMap({
         y,
         size: animal.isMonitored ? 2 : 1,
         color: animalCategoryColors[animal.category],
-        icon: categoryIcons[animal.category],
         isMonitored: animal.isMonitored,
         status: animal.conservationStatus,
         statusColor: statusColor(animal.conservationStatus),
@@ -193,15 +181,11 @@ export default function SimpleWorldMap({
         ctx.lineWidth = 2;
         ctx.stroke();
         
-        // Draw icon for hovered point
+        // Status badge pill above the hovered marker
         if (hoveredPoint === point.id) {
           ctx.font = '16px Arial';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillStyle = '#ffffff';
-          ctx.fillText(point.icon, point.x * canvas.width / 100, point.y * canvas.height / 100);
-
-          // Status badge pill above the marker
           const badgeY = point.y * canvas.height / 100 - radius - 12;
           const badgeW = point.status.length * 7 + 8;
           ctx.font = 'bold 9px Arial';
@@ -363,8 +347,8 @@ export default function SimpleWorldMap({
             return (
               <>
                 <div className="flex items-center space-x-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
-                    <span className="text-xl">{categoryIcons[animal.category]}</span>
+                  <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center text-primary-600 dark:text-primary-400">
+                    <CategoryIcon category={animal.category} className="w-5 h-5" />
                   </div>
                   <div>
                     <div className="font-semibold text-secondary-900 dark:text-white">{animal.commonName}</div>

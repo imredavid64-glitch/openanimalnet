@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { sampleAlerts } from '@/data/sample/alerts';
 import { ConservationStatus } from '@/types/animal/types';
+import { SeverityIcon, BellIcon, PinIcon, CheckIcon } from '@/components/icons';
 
 const conservationStatusColors: Record<ConservationStatus, string> = {
   EX: 'bg-danger-500',
@@ -19,9 +20,9 @@ const conservationStatusColors: Record<ConservationStatus, string> = {
 };
 
 const alertTypes = [
-  { type: 'critical', name: 'Critical', icon: '🚨', color: 'bg-danger-500' },
-  { type: 'warning', name: 'Warning', icon: '⚠️', color: 'bg-warning-500' },
-  { type: 'info', name: 'Info', icon: 'ℹ️', color: 'bg-primary-500' },
+  { type: 'critical', name: 'Critical', color: 'bg-danger-500' },
+  { type: 'warning', name: 'Warning', color: 'bg-warning-500' },
+  { type: 'info', name: 'Info', color: 'bg-primary-500' },
 ] as const;
 
 
@@ -65,7 +66,7 @@ export default function MonitoringAlerts() {
           transition={{ duration: 0.5 }}
           className="inline-block"
         >
-          <span className="text-4xl">🔔</span>
+          <BellIcon className="w-10 h-10 text-primary-600 dark:text-primary-400" />
         </motion.div>
         <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-white mt-4">
           Real-Time Monitoring Alerts
@@ -89,7 +90,7 @@ export default function MonitoringAlerts() {
                   : 'bg-white/20 dark:bg-secondary-800/50 text-white dark:text-secondary-300 hover:bg-white/30 dark:hover:bg-secondary-700/50'
               }`}
             >
-              <span>{alertType.icon}</span>
+              <SeverityIcon type={alertType.type} className="w-4 h-4 text-white" />
               <span>{alertType.name}</span>
             </button>
           ))}
@@ -149,9 +150,7 @@ export default function MonitoringAlerts() {
                     alert.type === 'warning' ? 'bg-warning-500' :
                     'bg-primary-500'
                   }`}>
-                    <span className="text-xl text-white">
-                      {alertTypes.find(a => a.type === alert.type)?.icon}
-                    </span>
+                    <SeverityIcon type={alert.type} className="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <div className="font-semibold text-secondary-900 dark:text-white">
@@ -194,8 +193,8 @@ export default function MonitoringAlerts() {
                 </p>
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center space-x-1 text-secondary-500 dark:text-secondary-400">
-                    <span>📍</span>
-                    <span>{alert.location.lat.toFixed(2)}, {alert.location.lng.toFixed(2)}</span>
+                    <PinIcon className="w-4 h-4" />
+                    <span className="font-data">{alert.location.lat.toFixed(2)}, {alert.location.lng.toFixed(2)}</span>
                   </div>
                   <div className="text-primary-600 dark:text-primary-400 font-medium">
                     {alert.action}
@@ -263,9 +262,7 @@ export default function MonitoringAlerts() {
                             alert.type === 'warning' ? 'bg-warning-500' :
                             'bg-primary-500'
                           }`}>
-                            <span className="text-3xl text-white">
-                              {alertTypes.find(a => a.type === alert.type)?.icon}
-                            </span>
+                            <SeverityIcon type={alert.type} className="w-8 h-8 text-white" />
                           </div>
                           <div>
                             <h2 className="text-2xl font-bold text-secondary-900 dark:text-white">
@@ -315,7 +312,11 @@ export default function MonitoringAlerts() {
                             <div className={`px-2 py-1 rounded-lg text-xs font-medium ${
                               alert.animal.isMonitored ? 'bg-success-500 text-white' : 'bg-secondary-500 text-white'
                             }`}>
-                              {alert.animal.isMonitored ? '✅ Monitored' : '❌ Not Monitored'}
+                              {alert.animal.isMonitored ? (
+                                <span className="flex items-center gap-1"><CheckIcon className="w-3 h-3" /> Monitored</span>
+                              ) : (
+                                'Not Monitored'
+                              )}
                             </div>
                           </div>
                         </div>

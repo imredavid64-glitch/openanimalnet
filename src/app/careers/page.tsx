@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import StaticPage, { Section, PageLink } from '@/components/layout/StaticPage';
+import { RobotIcon, ShieldIcon, AntennaIcon, StarIcon, MessageIcon } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: 'Careers | OpenAnimalNet',
@@ -8,31 +9,31 @@ export const metadata: Metadata = {
 
 const roles = [
   {
-    icon: '🧑‍💻',
+    icon: <RobotIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'Senior Software Engineer',
     team: 'Engineering',
     detail: 'Build the platform, visualization tools, and data pipelines that power OpenAnimalNet.',
   },
   {
-    icon: '🔬',
+    icon: <ShieldIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'Data Scientist — Ecology',
     team: 'Science',
     detail: 'Develop models for population trends, migration patterns, and conservation risk.',
   },
   {
-    icon: '🛰️',
+    icon: <AntennaIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'Field Monitoring Coordinator',
     team: 'Operations',
     detail: 'Coordinate tracking deployments and partner sensor networks across regions.',
   },
   {
-    icon: '🎨',
+    icon: <StarIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'Product Designer',
     team: 'Design',
     detail: 'Design intuitive interfaces for scientists and the public exploring animal data.',
   },
   {
-    icon: '📣',
+    icon: <MessageIcon className="w-7 h-7 text-primary-600 dark:text-primary-400" />,
     title: 'Community & Outreach Lead',
     team: 'Growth',
     detail: 'Grow our community of researchers, citizen scientists, and supporters.',

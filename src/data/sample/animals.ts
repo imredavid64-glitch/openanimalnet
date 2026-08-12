@@ -1437,15 +1437,22 @@ export const conservationStatusData = [
 ];
 
 // Animal category data
+// Counts are derived from the actual species in `sampleAnimals` above — never
+// hand-written totals (the dataset is 28 species, not a million).
+const categoryCounts = sampleAnimals.reduce((m, a) => {
+  m[a.category] = (m[a.category] ?? 0) + 1;
+  return m;
+}, {} as Record<string, number>);
+
 export const animalCategoryData = [
-  { category: 'mammals', name: 'Mammals', icon: '🦁', count: 6495, color: '#0ea5e9' },
-  { category: 'birds', name: 'Birds', icon: '🦅', count: 10721, color: '#38bdf8' },
-  { category: 'reptiles', name: 'Reptiles', icon: '🐍', count: 11570, color: '#06b6d4' },
-  { category: 'amphibians', name: 'Amphibians', icon: '🐸', count: 8401, color: '#0891b2' },
-  { category: 'fish', name: 'Fish', icon: '🐟', count: 35838, color: '#0e7490' },
-  { category: 'invertebrates', name: 'Invertebrates', icon: '🦋', count: 1303086, color: '#1d4ed8' },
-  { category: 'insects', name: 'Insects', icon: '🐜', count: 1000000, color: '#7c3aed' },
-  { category: 'marine', name: 'Marine', icon: '🐋', count: 240000, color: '#1e40af' },
+  { category: 'mammals', name: 'Mammals', icon: 'mammals', count: categoryCounts['mammals'] ?? 0, color: '#0ea5e9' },
+  { category: 'birds', name: 'Birds', icon: 'birds', count: categoryCounts['birds'] ?? 0, color: '#38bdf8' },
+  { category: 'reptiles', name: 'Reptiles', icon: 'reptiles', count: categoryCounts['reptiles'] ?? 0, color: '#06b6d4' },
+  { category: 'amphibians', name: 'Amphibians', icon: 'amphibians', count: categoryCounts['amphibians'] ?? 0, color: '#0891b2' },
+  { category: 'fish', name: 'Fish', icon: 'fish', count: categoryCounts['fish'] ?? 0, color: '#0e7490' },
+  { category: 'invertebrates', name: 'Invertebrates', icon: 'invertebrates', count: categoryCounts['invertebrates'] ?? 0, color: '#1d4ed8' },
+  { category: 'insects', name: 'Insects', icon: 'insects', count: categoryCounts['insects'] ?? 0, color: '#7c3aed' },
+  { category: 'marine', name: 'Marine', icon: 'marine', count: categoryCounts['marine'] ?? 0, color: '#1e40af' },
 ];
 
 // Data category data
@@ -1460,11 +1467,13 @@ export const dataCategoryData = [
   { category: 'human-interaction', name: 'Human-Animal Interaction', icon: '⚠️', description: 'Conflict, crime, and infrastructure hazards' },
 ];
 
-// Sample monitoring data
+// Sample monitoring data — totals derived from the real dataset. activeAlerts
+// matches the 6 alerts in `src/data/sample/alerts.ts` (kept literal to avoid a
+// circular import; the alerts file imports sampleAnimals from this module).
 export const sampleMonitoringData = {
-  totalAnimals: 1258723,
-  monitoredAnimals: 45823,
-  activeAlerts: 124,
+  totalAnimals: sampleAnimals.length,
+  monitoredAnimals: sampleAnimals.filter((a) => a.isMonitored).length,
+  activeAlerts: 6,
   populationTrend: [
     { date: '2020', mammals: 45000, birds: 95000, reptiles: 85000, amphibians: 65000 },
     { date: '2021', mammals: 46000, birds: 96000, reptiles: 86000, amphibians: 64000 },

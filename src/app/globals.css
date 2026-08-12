@@ -59,6 +59,37 @@ h2 {
   }
 }
 
+/* Hero tracking-network constellation: a very slow drift, and a pulse for
+   the node that tracks the current month */
+@keyframes constellation-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.015);
+  }
+}
+
+.constellation-drift {
+  animation: constellation-drift 90s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes node-live {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.constellation-node-live {
+  animation: node-live 3s ease-in-out infinite;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

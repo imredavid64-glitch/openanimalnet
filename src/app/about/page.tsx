@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import StaticPage, { Section, PageLink } from '@/components/layout/StaticPage';
+import { PawIcon } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: 'About Us | OpenAnimalNet',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <StaticPage
-      icon="🐾"
+      icon={<PawIcon className="w-16 h-16 mx-auto text-primary-300" />}
       title="About OpenAnimalNet"
       subtitle="A global platform for monitoring, analyzing, and exploring comprehensive animal data — built for researchers, conservationists, and animal lovers."
     >

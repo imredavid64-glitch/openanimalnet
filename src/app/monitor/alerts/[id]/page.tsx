@@ -124,12 +124,12 @@ export default function AlertDetailPage({ params }: PageProps) {
             </div>
 
             <div className={`${style.soft} rounded-2xl shadow-soft p-6`}>
-              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">🎯 Recommended Action</h2>
+              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">Recommended Action</h2>
               <p className="text-secondary-700 dark:text-secondary-300 leading-relaxed">{alert.action}</p>
             </div>
 
             <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-soft p-6">
-              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">📍 Location</h2>
+              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">Location</h2>
               <div className="rounded-xl bg-secondary-50 dark:bg-secondary-900 p-5 font-mono text-sm space-y-1">
                 <div className="flex justify-between">
                   <span className="text-secondary-500 dark:text-secondary-400">Latitude</span>
@@ -150,7 +150,7 @@ export default function AlertDetailPage({ params }: PageProps) {
           {/* Sidebar */}
           <aside className="space-y-6">
             <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-soft p-6">
-              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">🐾 Animal</h2>
+              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">Animal</h2>
               <div className="flex items-center space-x-4 mb-5">
                 <div
                   className="w-20 h-20 rounded-2xl bg-cover bg-center"
@@ -193,7 +193,7 @@ export default function AlertDetailPage({ params }: PageProps) {
             </div>
 
             <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-soft p-6 space-y-3">
-              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">🔗 Actions</h2>
+              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">Actions</h2>
               <Link
                 href={`/animal/${alert.animal.id}`}
                 className="block w-full text-center px-4 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-medium transition-colors"

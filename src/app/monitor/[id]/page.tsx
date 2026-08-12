@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { sampleAnimals, sampleAnimalData } from '@/data/sample/animals';
 import MiniRouteMap from '@/components/map/MiniRouteMap';
 import { ConservationStatus } from '@/types/animal/types';
+import { UsersIcon, PinIcon, AntennaIcon } from '@/components/icons';
 
 const statusBadge: Record<ConservationStatus, { label: string; className: string }> = {
   EX: { label: 'Extinct', className: 'bg-danger-500' },
@@ -84,16 +85,16 @@ export default function AnimalMonitorPage({ params }: PageProps) {
         {/* Stat cards */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
-            { icon: '👥', label: 'Population', value: animal.populationEstimate?.toLocaleString() ?? 'N/A' },
-            { icon: '📍', label: 'Latitude', value: animal.location.latitude.toFixed(4) },
-            { icon: '📍', label: 'Longitude', value: animal.location.longitude.toFixed(4) },
-            { icon: '🛰️', label: 'Telemetry Fixes', value: telemetry?.gpsCoordinates.length.toLocaleString() ?? 'N/A' },
+            { icon: <UsersIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />, label: 'Population', value: animal.populationEstimate?.toLocaleString() ?? 'N/A' },
+            { icon: <PinIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />, label: 'Latitude', value: animal.location.latitude.toFixed(4) },
+            { icon: <PinIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />, label: 'Longitude', value: animal.location.longitude.toFixed(4) },
+            { icon: <AntennaIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />, label: 'Telemetry Fixes', value: telemetry?.gpsCoordinates.length.toLocaleString() ?? 'N/A' },
           ].map((stat) => (
             <div
               key={stat.label}
               className="bg-white dark:bg-secondary-800 rounded-2xl p-5 shadow-soft border-l-4 border-primary-500"
             >
-              <div className="text-2xl mb-2">{stat.icon}</div>
+              <div className="mb-2">{stat.icon}</div>
               <div className="text-xl font-bold text-secondary-900 dark:text-white">{stat.value}</div>
               <div className="text-sm text-secondary-500 dark:text-secondary-400">{stat.label}</div>
             </div>
@@ -104,7 +105,7 @@ export default function AnimalMonitorPage({ params }: PageProps) {
           {/* Telemetry */}
           <section className="lg:col-span-2 space-y-6">
             <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-soft p-6">
-              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">📡 Telemetry</h2>
+              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">Telemetry</h2>
               {telemetry?.gpsCoordinates?.length ? (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
@@ -227,7 +228,7 @@ export default function AnimalMonitorPage({ params }: PageProps) {
             </div>
 
             <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-soft p-6 space-y-3">
-              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">🔗 Related</h2>
+              <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">Related</h2>
               <Link
                 href={`/animal/${animal.id}`}
                 className="block w-full text-center px-4 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-medium transition-colors"

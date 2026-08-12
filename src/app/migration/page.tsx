@@ -4,7 +4,9 @@ import StaticPage, { Section } from '@/components/layout/StaticPage';
 import { sampleAnimals } from '@/data/sample/animals';
 import { MigrationRoute } from '@/types/animal/types';
 import { routeDistanceKm, formatKm, formatDurationDays } from '@/lib/geo';
+import { CalendarIcon } from '@/components/icons';
 import ExportButton, { ExportRow } from './ExportButton';
+import ExportIcs from './ExportIcs';
 
 // Calendar season: the four seasons plus year-round. Migration legs are
 // spring/fall/year-round; summer/winter cells come from year-round corridors.
@@ -93,7 +95,7 @@ const currentMonth = new Date().getMonth() + 1;
 export default function MigrationPage() {
   return (
     <StaticPage
-      icon="🗓️"
+      icon={<CalendarIcon className="w-16 h-16 mx-auto text-primary-300" />}
       title="Migration Calendar"
       subtitle="The great migrations don't happen all at once — this calendar shows which tracked corridors are on the move in each month of the year. Distances are great-circle approximations along each corridor's waypoints."
     >
@@ -130,19 +132,34 @@ export default function MigrationPage() {
 
       <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
         <Section>Corridor Timeline</Section>
-        <ExportButton
-          rows={migrators.flatMap<ExportRow>(({ animal, routes }) =>
-            routes.map((route) => ({
-              commonName: animal.commonName,
-              scientificName: animal.scientificName,
-              corridor: route.name,
-              season: route.season,
-              months: monthsOfRoute(route),
-              distanceKm: routeDistanceKm(route.points),
-              durationDays: route.durationDays,
-            })),
-          )}
-        />
+        <div className="flex gap-2">
+          <ExportButton
+            rows={migrators.flatMap<ExportRow>(({ animal, routes }) =>
+              routes.map((route) => ({
+                commonName: animal.commonName,
+                scientificName: animal.scientificName,
+                corridor: route.name,
+                season: route.season,
+                months: monthsOfRoute(route),
+                distanceKm: routeDistanceKm(route.points),
+                durationDays: route.durationDays,
+              })),
+            )}
+          />
+          <ExportIcs
+            rows={migrators.flatMap<ExportRow>(({ animal, routes }) =>
+              routes.map((route) => ({
+                commonName: animal.commonName,
+                scientificName: animal.scientificName,
+                corridor: route.name,
+                season: route.season,
+                months: monthsOfRoute(route),
+                distanceKm: routeDistanceKm(route.points),
+                durationDays: route.durationDays,
+              })),
+            )}
+          />
+        </div>
       </div>
       <p className="mb-4">
         Each row is one corridor with its actual recorded months of movement:

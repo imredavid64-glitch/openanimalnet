@@ -11,6 +11,7 @@ import {
 } from '@/data/sample/animals';
 import { ConservationStatus, AnimalCategory, DataCategory } from '@/types/animal/types';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { PawIcon, AntennaIcon, ShieldIcon, DataCategoryIcon, SeverityIcon, CalendarIcon, ChartIcon } from '@/components/icons';
 
 const COLORS = ['#0ea5e9', '#38bdf8', '#06b6d4', '#0891b2', '#0e7490', '#1d4ed8', '#7c3aed', '#1e40af'];
 const CONSERVATION_COLORS: Record<ConservationStatus, string> = {
@@ -36,16 +37,6 @@ const categoryColors: Record<AnimalCategory, string> = {
   marine: '#1e40af',
 };
 
-const categoryIcons: Record<AnimalCategory, string> = {
-  mammals: '🦁',
-  birds: '🦅',
-  reptiles: '🐍',
-  amphibians: '🐸',
-  fish: '🐟',
-  invertebrates: '🦋',
-  insects: '🐜',
-  marine: '🐋',
-};
 
 interface MonitoringStats {
   totalAnimals: number;
@@ -114,10 +105,10 @@ export default function StatsDashboard() {
   }));
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'categories', label: 'Categories', icon: '🐾' },
-    { id: 'conservation', label: 'Conservation', icon: '🛡️' },
-    { id: 'monitoring', label: 'Monitoring', icon: '📡' },
+    { id: 'overview', label: 'Overview', icon: <DataCategoryIcon category="population" className="w-4 h-4" /> },
+    { id: 'categories', label: 'Categories', icon: <PawIcon className="w-4 h-4" /> },
+    { id: 'conservation', label: 'Conservation', icon: <ShieldIcon className="w-4 h-4" /> },
+    { id: 'monitoring', label: 'Monitoring', icon: <AntennaIcon className="w-4 h-4" /> },
   ];
 
   return (
@@ -193,29 +184,25 @@ export default function StatsDashboard() {
                   {
                     label: 'Total Species',
                     value: liveStats.totalAnimals.toLocaleString(),
-                    icon: '🐾',
-                    change: '+12%',
+                    icon: <PawIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />,
                     color: 'primary',
                   },
                   {
                     label: 'Monitored Animals',
                     value: liveStats.monitoredAnimals.toLocaleString(),
-                    icon: '📡',
-                    change: '+8%',
+                    icon: <AntennaIcon className="w-6 h-6 text-success-600 dark:text-success-400" />,
                     color: 'success',
                   },
                   {
                     label: 'Active Alerts',
                     value: liveStats.activeAlerts.toLocaleString(),
-                    icon: '⚠️',
-                    change: '-5%',
+                    icon: <SeverityIcon type="warning" className="w-6 h-6 text-warning-600 dark:text-warning-400" />,
                     color: 'warning',
                   },
                   {
-                    label: 'Data Points',
-                    value: '100M+',
-                    icon: '💾',
-                    change: '+15%',
+                    label: 'Data Categories Tracked',
+                    value: dataCategoryData.length.toString(),
+                    icon: <DataCategoryIcon category="population" className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />,
                     color: 'accent',
                   },
                 ].map((metric, index) => (
@@ -229,11 +216,8 @@ export default function StatsDashboard() {
                   >
                     <div className="flex items-center justify-between mb-4">
                       <div className={`w-12 h-12 rounded-2xl bg-${metric.color}-100 dark:bg-${metric.color}-900/20 flex items-center justify-center`}>
-                        <span className="text-2xl">{metric.icon}</span>
+                        {metric.icon}
                       </div>
-                      <span className={`text-sm font-medium px-2 py-1 rounded-xl bg-${metric.color}-100 dark:bg-${metric.color}-900/20 text-${metric.color}-600 dark:text-${metric.color}-400`}>
-                        {metric.change}
-                      </span>
                     </div>
                     <div className="text-3xl font-bold text-secondary-900 dark:text-white mb-1">
                       {metric.value}
@@ -257,11 +241,11 @@ export default function StatsDashboard() {
                     Population Trends
                   </h3>
                   <div className="flex space-x-2">
-                    <button className="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors duration-300">
-                      <span className="text-secondary-500 dark:text-secondary-400">📅</span>
+                    <button aria-label="Calendar view" className="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors duration-300">
+                      <CalendarIcon className="w-5 h-5 text-secondary-500 dark:text-secondary-400" />
                     </button>
-                    <button className="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors duration-300">
-                      <span className="text-secondary-500 dark:text-secondary-400">📊</span>
+                    <button aria-label="Chart view" className="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors duration-300">
+                      <ChartIcon className="w-5 h-5 text-secondary-500 dark:text-secondary-400" />
                     </button>
                   </div>
                 </div>
@@ -546,7 +530,7 @@ export default function StatsDashboard() {
                       className="flex items-center justify-between p-3 rounded-xl bg-secondary-50 dark:bg-secondary-700/50"
                     >
                       <div className="flex items-center space-x-3">
-                        <span className="text-xl">{categoryIcons[category as AnimalCategory]}</span>
+                        <DataCategoryIcon category={category as DataCategory} className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                         <span className="font-medium text-secondary-900 dark:text-white">
                           {category}
                         </span>
