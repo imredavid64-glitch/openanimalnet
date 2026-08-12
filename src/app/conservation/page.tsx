@@ -106,7 +106,7 @@ export default function ConservationPage() {
               <XAxis type="number" allowDecimals={false} tick={{ fontSize: 12 }} stroke="#94a3b8" />
               <YAxis type="category" dataKey="name" width={36} tick={{ fontSize: 12, fontWeight: 600 }} stroke="#94a3b8" />
               <Tooltip
-                formatter={(value: number, _name: string, entry: { payload: { fullName: string } }) => [value, entry.payload.fullName]}
+                formatter={(value: number) => [value, 'species']}
                 contentStyle={{ borderRadius: 12, border: '1px solid #334155', background: '#0f172a', color: '#fff', fontSize: 12 }}
               />
               <Bar dataKey="count" radius={[0, 6, 6, 0]} label={{ position: 'right', fontSize: 12, fill: '#94a3b8' }}>
@@ -127,7 +127,6 @@ export default function ConservationPage() {
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value: number, name: string) => [value, name]}
                 contentStyle={{ borderRadius: 12, border: '1px solid #334155', background: '#0f172a', color: '#fff', fontSize: 12 }}
               />
             </PieChart>
