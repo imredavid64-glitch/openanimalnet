@@ -131,9 +131,14 @@ hand-written — taxonomy, IUCN assessment ID, status, photo, and description
 are pulled automatically (census figures are reviewed by hand):
 
 ```bash
-node .freebuff/generate-species.mjs "Panthera uncia"     # print a preview
-node .freebuff/generate-species.mjs --apply "Panthera uncia" # write files + fetch photo
-``` Continuous
+npm run species:add -- "Panthera uncia"        # print a preview
+npm run species:add -- --apply "Panthera uncia" # write files + fetch the photo
+# --apply then auto-runs the freshness checker (npm run refresh:data -- --fail)
+```
+
+Multiple species at once: `npm run species:add -- --apply "Phocoena sinus" "Ailurus fulgens"`.
+After a successful apply the registry is re-verified against live sources in
+the same command, so a bad edit fails immediately. Continuous
 integration (lint, unit tests, build, API integration tests) runs on GitHub
 Actions for every push and pull request — see `.github/workflows/ci.yml`.
 

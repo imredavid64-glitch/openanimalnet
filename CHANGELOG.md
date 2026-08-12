@@ -2,6 +2,36 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.5.0] - 2026-08-12
+
+### Added
+- **Bulk species generation**: 8 new species (27 total) added with the
+  generator — Red Panda (EN), Axolotl (CR, first amphibian), African Penguin
+  (CR, first bird), Leatherback Sea Turtle (VU), Proboscis Monkey (EN),
+  Saiga Antelope (NT), Golden Lion Tamarin (EN), and Vaquita (CR, ~10
+  remaining). Each has a real photo, a Wikidata-verified IUCN assessment,
+  and current census figures checked against 2023–2026 sources. Population
+  timeline series added for the vaquita's collapse (567→8), saiga's
+  recovery (21k→4.6M), African penguin (70k→8.75k pairs), leatherback nests
+  (90.6k→54.3k), axolotl (6,000→36), and golden lion tamarin (200→4,800).
+- **`npm run species:add`** — the generator is now wired into a command:
+  `npm run species:add -- "Panthera uncia"` (add `-- --apply` to write the
+  files). Auto-verifies the registry against live Wikidata after applying.
+- **Generator robustness**: when the lead image is an SVG diagram (e.g. the
+  vaquita's size chart), the generator now falls back to the article's first
+  real JPEG photo. Images are deduplicated and human-review fields
+  (population, habitat, location) get filled in after generation.
+
+### Fixed
+- **Two more wrong IUCN status QIDs in the checker/generator**: Q214984 is
+  the taxonomy rank "division", not Near Threatened (correct: Q719675);
+  Q209175 is the actress Kim Cattrall, not Extinct (correct: Q237350);
+  Q552752 is a cardinal, not Extinct in the Wild (correct: Q239509). The
+  old values were never exercised until the Saiga (NT) was added.
+- African penguin was generated with class Reptilia and category "reptiles"
+  (Wikidata's P171 chain passes birds through Reptilia); corrected to Aves
+  / "birds". Leatherback's synonym name "Trunkback Turtle" corrected.
+
 ## [1.4.0] - 2026-08-11
 
 ### Added

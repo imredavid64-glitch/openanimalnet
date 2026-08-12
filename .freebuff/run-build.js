@@ -4,7 +4,8 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const root = '/Users/imredavid/Documents/OpenAnimalNet';
+// Optional first arg: project root (defaults to the main checkout).
+const root = process.argv[2] || '/Users/imredavid/Documents/OpenAnimalNet';
 const logPath = '/tmp/build-final.log';
 const out = fs.openSync(logPath, 'a');
 const err = fs.openSync(logPath, 'a');

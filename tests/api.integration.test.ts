@@ -33,8 +33,8 @@ test('GET /api/v1/animals returns paginated animals', async () => {
   assert.deepEqual(body.pagination, {
     page: 1,
     limit: 5,
-    total: 19,
-    totalPages: 4,
+    total: 27,
+    totalPages: 6,
   });
 });
 
@@ -42,7 +42,7 @@ test('GET /api/v1/animals filters by category', async () => {
   const { status, body } = await getJson('/api/v1/animals?category=mammals&limit=50');
   assert.equal(status, 200);
   const animals = body.data as { category: string }[];
-  assert.equal(animals.length, 12);
+  assert.equal(animals.length, 17);
   assert.ok(animals.every((a) => a.category === 'mammals'));
 });
 
@@ -82,7 +82,7 @@ test('GET /api/v1/populations returns records for all species', async () => {
     commonName: string;
     conservationStatus: string;
   }[];
-  assert.equal(records.length, 19);
+  assert.equal(records.length, 27);
   const lion = records.find((r) => r.animalId === 'lion-001');
   assert.equal(lion?.commonName, 'African Lion');
   assert.equal(lion?.conservationStatus, 'VU');

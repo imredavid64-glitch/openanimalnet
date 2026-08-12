@@ -205,6 +205,30 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
 - Preview rebuilt in the scratch tree as usual; `gh run list` shows CI green
   (Node 22) and the Deploy workflow succeeding.
 
+## Round 6 (Aug 12 2026): +8 species → 27, status-QID fixes, generator fallback
+
+- **27 species** (was 19): Red Panda (EN), Axolotl (CR, first amphibian),
+  African Penguin (CR, first bird), Leatherback Sea Turtle (VU), Proboscis
+  Monkey (EN), Saiga Antelope (NT), Golden Lion Tamarin (EN), Vaquita (CR,
+  ~10 remaining). All census figures checked against 2023–2026 sources;
+  timeline series added for vaquita (567→8), saiga (21k→4.6M), penguin
+  (70k→8.75k pairs), leatherback (nests 90.6k→54.3k), axolotl (6,000→36),
+  tamarin (200→4,800).
+- **Three wrong IUCN status QIDs fixed in BOTH the generator and the refresh
+  checker**: NT is Q719675 (Q214984 is the taxonomy rank "division"), EX is
+  Q237350 (Q209175 is the actress Kim Cattrall), EW is Q239509 (Q552752 is a
+  cardinal). They never fired before because no NT/EX/EW species existed.
+- **Generator fallback**: when the lead image is an SVG diagram (e.g. the
+  vaquita's size chart), it now lists the article's images and downloads the
+  first real JPEG photo (Vaquita2 Olson NOAA.jpg for the vaquita).
+- Post-generation review renames: vaquita-gulf-porpoise → vaquita, western-
+  saiga-antelope → saiga, south-african-penguin → african-penguin (class
+  Reptilia → Aves, category reptiles → birds), trunkback-turtle → leatherback.
+- Tests updated (unit 19/19, integration 13/13); version 1.5.0. Launcher
+  gotcha: `start-preview.js` reads its root from **argv[3]**, so the correct
+  invocation is `node .freebuff/start-preview.js start /tmp/oan-fresh` —
+  passing the root as argv[2] silently serves the main checkout's stale build.
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview

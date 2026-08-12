@@ -27,11 +27,11 @@ const STATUS_BY_QID = {
   Q219127: 'CR',   // Critically Endangered
   Q96377276: 'EN', // Endangered
   Q278113: 'VU',   // Vulnerable
-  Q214984: 'NT',   // Near Threatened
+  Q719675: 'NT',   // Near Threatened (Q214984 is the taxonomy rank "division", NOT NT)
   Q211005: 'LC',   // Least Concern
   Q3245245: 'DD',  // Data Deficient
-  Q209175: 'EX',   // Extinct
-  Q552752: 'EW',   // Extinct in the Wild
+  Q237350: 'EX',   // Extinct (Q209175 is an actress, NOT extinct)
+  Q239509: 'EW',   // Extinct in the Wild (Q552752 is a cardinal, NOT EW)
 };
 
 // Documented exceptions where Wikidata's P141 is stale or absent, verified

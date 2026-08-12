@@ -26,6 +26,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -42,11 +43,11 @@ const STATUS_BY_QID = {
   Q219127: 'CR',
   Q96377276: 'EN',
   Q278113: 'VU',
-  Q214984: 'NT',
+  Q719675: 'NT',
   Q211005: 'LC',
   Q3245245: 'DD',
-  Q209175: 'EX',
-  Q552752: 'EW',
+  Q237350: 'EX',
+  Q239509: 'EW',
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -134,11 +135,10 @@ async function wikipediaSummary(title) {
 }
 
 /** Download the article's lead image at the largest available rendition. */
-async function fetchImage(summary, dest) {
+async function fetchImage(summary, dest, title) {
   const thumb = summary?.thumbnail?.source;
   if (!thumb) throw new Error('no thumbnail in Wikipedia summary');
   const clean = thumb.split('?')[0];
-  let url = clean;
   let buf = null;
   for (const w of [500, 330, 0]) {
     const candidate = w === 0 ? clean : clean.replace(/(\d+)px-/, `${w}px-`);
@@ -148,13 +148,50 @@ async function fetchImage(summary, dest) {
     // Only accept real JPEGs; otherwise try the next rendition down.
     if (candidateBuf.subarray(0, 3).toString('hex').startsWith('ffd8')) {
       buf = candidateBuf;
-      url = candidate;
       break;
     }
   }
-  if (!buf) throw new Error('no valid JPEG rendition (all sizes failed the magic check)');
+  // The lead image can be an SVG diagram (e.g. a size-comparison chart) rather
+  // than a photo. Fall back to the article's own images: prefer a real JPEG
+  // photo over a diagram so the species card shows an actual animal.
+  if (!buf && title) {
+    buf = await fetchArticlePhoto(title);
+  }
+  if (!buf) throw new Error('no valid JPEG rendition (lead image is a diagram and no article photo found)');
   fs.writeFileSync(dest, buf);
-  return { url, bytes: buf.length };
+  return { url: 'fallback://article-photo', bytes: buf.length };
+}
+
+/** Find the first real JPEG photo in an article's image list (skips SVG/range maps). */
+async function fetchArticlePhoto(title) {
+  const listRes = await fetch(
+    `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=images&imlimit=100&format=json`,
+    { headers: { 'User-Agent': UA } },
+  );
+  if (!listRes.ok) throw new Error(`image-list HTTP ${listRes.status}`);
+  const listJson = await listRes.json();
+  const pages = Object.values(listJson.query?.pages ?? {});
+  const images = pages.flatMap((p) => p.images ?? []).map((i) => i.title);
+  // Skip diagrams/maps (SVG, range-map PNGs) — we want photos of the animal.
+  const candidates = images.filter((t) => /\.jpe?g$/i.test(t));
+  if (candidates.length === 0) return null;
+  // Resolve URLs for all candidates in one request, then download the first that is a real JPEG.
+  const infoRes = await fetch(
+    `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(candidates.join('|'))}&prop=imageinfo&iiprop=url&format=json`,
+    { headers: { 'User-Agent': UA } },
+  );
+  if (!infoRes.ok) throw new Error(`imageinfo HTTP ${infoRes.status}`);
+  const infoJson = await infoRes.json();
+  const urls = Object.values(infoJson.query?.pages ?? {})
+    .map((p) => p.imageinfo?.[0]?.url)
+    .filter(Boolean);
+  for (const url of urls) {
+    const res = await fetch(url, { redirect: 'follow', headers: { 'User-Agent': UA } });
+    if (!res.ok) continue;
+    const b = Buffer.from(await res.arrayBuffer());
+    if (b.subarray(0, 3).toString('hex').startsWith('ffd8')) return b;
+  }
+  return null;
 }
 
 /** Existing animal ids, for collision-free slug generation. */
@@ -255,12 +292,13 @@ async function main() {
     process.exit(1);
   }
 
+  let applied = 0;
   for (const name of names) {
     try {
       const { animal, source, wiki, id } = await generate(name);
       if (apply) {
         fs.mkdirSync(IMG_DIR, { recursive: true });
-        const { bytes } = await fetchImage(wiki, path.join(IMG_DIR, `${id}.jpg`));
+        const { bytes } = await fetchImage(wiki, path.join(IMG_DIR, `${id}.jpg`), wiki.title);
         console.log(`image: ${id}.jpg (${bytes} bytes)`);
 
         // Append to animals.ts (sampleAnimals is the first array in the file).
@@ -276,6 +314,7 @@ async function main() {
         fs.writeFileSync(SOURCES_PATH, end.slice(0, end.lastIndexOf('];')) + `${sourceEntry}];\n`);
 
         console.log(`APPLIED ${id} → animals.ts, sources.ts, public/images/animals/${id}.jpg`);
+        applied++;
       } else {
         console.log(`\n// ── ${animal.commonName} (${animal.scientificName}) — edit placeholders marked TODO ──`);
         console.log(`Animal entry:\n${formatTs(animal)},`);
@@ -284,6 +323,22 @@ async function main() {
       }
     } catch (err) {
       console.error(`FAIL ${name}: ${err.message}`);
+    }
+  }
+
+  if (apply && applied > 0) {
+    // One flow: after applying, re-verify the whole registry against live
+    // sources so drift (or a bad edit) fails the command immediately.
+    console.log(`\n${applied} species applied — verifying the registry against live sources…`);
+    const result = spawnSync(process.execPath, ['.freebuff/refresh-sources.mjs', '--fail'], {
+      cwd: ROOT,
+      stdio: 'inherit',
+    });
+    if (result.status !== 0) {
+      console.error('\n⚠ Freshness verification found drift — review the entries above.');
+      process.exitCode = 1;
+    } else {
+      console.log('✓ All sources current.');
     }
   }
 }

@@ -67,6 +67,21 @@ export default function MethodologyPage() {
           ~233,000 in 2023-24, down from millions).</li>
         <li>Komodo dragon ~3,500 incl. juveniles, ~1,383 mature (IUCN 2021; Endangered).</li>
         <li>Snow leopard ~7,500 (latest IUCN CatSG estimate; Vulnerable).</li>
+        <li>Red panda &lt;10,000 mature individuals (IUCN 2015; possibly as few as 2,500;
+          Endangered).</li>
+        <li>Axolotl 50–1,000 mature (IUCN 2019; Xochimilco surveys fell from ~6,000 in 1998 to
+          36 in 2013; Critically Endangered).</li>
+        <li>African penguin ~8,750 breeding pairs in South Africa (2023); fewer than 10,000 pairs
+          globally; Critically Endangered (2024 uplisting).</li>
+        <li>Leatherback sea turtle ~34,000–36,000 nesting females (IUCN 2013); global nest
+          abundance down ~40% since the 1980s; Vulnerable.</li>
+        <li>Proboscis monkey ~16,000 (IUCN 2015 estimate; Endangered).</li>
+        <li>Saiga antelope ~4.6M (Kazakhstan aerial census 2026); ~990,000 mature globally
+          (IUCN 2023); Near Threatened after recovery from the 2015 mass die-off.</li>
+        <li>Golden lion tamarin ~4,800 wild (2022–23 census; up from ~200 in the 1970s;
+          Endangered).</li>
+        <li>Vaquita ~10 remaining (2023–24 surveys, 6–8 in 2024; 567 in 1997; Critically
+          Endangered).</li>
       </ul>
       <p>
         New species are added with the generator (<code>node .freebuff/generate-species.mjs</code>),
