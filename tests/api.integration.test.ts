@@ -121,10 +121,10 @@ test('GET /api/v1/monitoring/stats returns dashboard stats', async () => {
     populationTrend: unknown[];
   };
   // Totals are derived from the real 28-species dataset — every species is
-  // monitored, and the 6 sample alerts match src/data/sample/alerts.ts.
+  // monitored, and the 8 sample alerts match src/data/sample/alerts.ts.
   assert.equal(stats.totalAnimals, 28);
   assert.equal(stats.monitoredAnimals, stats.totalAnimals);
-  assert.equal(stats.activeAlerts, 6);
+  assert.equal(stats.activeAlerts, 8);
   assert.equal(stats.populationTrend.length, 5);
 });
 

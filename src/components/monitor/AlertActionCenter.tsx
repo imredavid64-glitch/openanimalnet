@@ -30,6 +30,7 @@ export default function AlertActionCenter({ alert }: { alert: SampleAlert }) {
   const [dispatchState, setDispatchState] = useState<'idle' | 'dispatched' | 'enroute' | 'onsite'>('idle');
   const [showRoute, setShowRoute] = useState(false);
   const [showDeterrent, setShowDeterrent] = useState(false);
+  const [crimeReported, setCrimeReported] = useState(false);
 
   const append = (text: string) => {
     setLog((prev) => [{ time: new Date().toLocaleTimeString(), text }, ...prev].slice(0, 6));
@@ -81,6 +82,13 @@ export default function AlertActionCenter({ alert }: { alert: SampleAlert }) {
     append(showDeterrent ? 'Acoustic deterrent simulation off' : 'Acoustic deterrent range active (~5 km radius)');
   };
 
+  const reportCrime = () => {
+    setCrimeReported(true);
+    append(
+      `Wildlife crime report filed with the authorities at ${alert.location.lat.toFixed(4)}, ${alert.location.lng.toFixed(4)} — reference ${alert.id.toUpperCase()}`
+    );
+  };
+
   const statusColor =
     alert.type === 'critical' ? 'bg-danger-500' : alert.type === 'warning' ? 'bg-warning-500' : 'bg-primary-500';
 
@@ -118,6 +126,20 @@ export default function AlertActionCenter({ alert }: { alert: SampleAlert }) {
             <PinIcon className="w-3.5 h-3.5" />
             {showRoute ? 'Clear Mitigation Route' : 'Generate Mitigation Route'}
           </button>
+          {alert.crime && (
+            <button
+              onClick={reportCrime}
+              disabled={crimeReported}
+              className={`px-3 py-2 rounded-xl text-xs font-medium transition-colors duration-300 flex items-center gap-1.5 ${
+                crimeReported
+                  ? 'bg-success-100 dark:bg-success-900/30 text-success-700 dark:text-success-300'
+                  : 'bg-danger-600 hover:bg-danger-700 text-white'
+              } disabled:opacity-70`}
+            >
+              <ShieldIcon className="w-3.5 h-3.5" />
+              {crimeReported ? 'Crime report filed' : 'Report Wildlife Crime'}
+            </button>
+          )}
           <button
             onClick={toggleDeterrent}
             className={`px-3 py-2 rounded-xl text-xs font-medium transition-colors duration-300 flex items-center gap-1.5 ${

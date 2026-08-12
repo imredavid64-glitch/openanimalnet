@@ -1511,12 +1511,12 @@ export const dataCategoryData = [
 ];
 
 // Sample monitoring data — totals derived from the real dataset. activeAlerts
-// matches the 6 alerts in `src/data/sample/alerts.ts` (kept literal to avoid a
+// matches the 8 alerts in `src/data/sample/alerts.ts` (kept literal to avoid a
 // circular import; the alerts file imports sampleAnimals from this module).
 export const sampleMonitoringData = {
   totalAnimals: sampleAnimals.length,
   monitoredAnimals: sampleAnimals.filter((a) => a.isMonitored).length,
-  activeAlerts: 6,
+  activeAlerts: 8,
   populationTrend: [
     { date: '2020', mammals: 45000, birds: 95000, reptiles: 85000, amphibians: 65000 },
     { date: '2021', mammals: 46000, birds: 96000, reptiles: 86000, amphibians: 64000 },

@@ -10,6 +10,8 @@ export interface SampleAlert {
   severity: number;
   location: { lat: number; lng: number };
   action: string;
+  /** Flag for wildlife crime / trafficking alerts — unlocks the report workflow. */
+  crime?: boolean;
 }
 
 // Sample alerts — timestamps are fixed so server-rendered HTML matches the
@@ -64,5 +66,27 @@ export const sampleAlerts: SampleAlert[] = [
     severity: 7,
     location: { lat: -30.0, lng: -120.0 },
     action: 'Investigate environmental factors',
+  },
+  {
+    id: 'alert-006',
+    type: 'warning',
+    animal: sampleAnimals[1],
+    message: 'Suspected ivory trafficking movement near the Tsavo–Amboseli corridor',
+    timestamp: new Date('2026-08-11T06:30:00'),
+    severity: 8,
+    location: { lat: -3.0, lng: 38.0 },
+    action: 'Report to wildlife authorities (trafficking watch)',
+    crime: true,
+  },
+  {
+    id: 'alert-007',
+    type: 'warning',
+    animal: sampleAnimals[2],
+    message: 'Snare found on known tiger dispersal route near Corbett–Rajaji',
+    timestamp: new Date('2026-08-11T05:15:00'),
+    severity: 7,
+    location: { lat: 29.55, lng: 78.9 },
+    action: 'Remove snare and report poaching activity',
+    crime: true,
   },
 ];
