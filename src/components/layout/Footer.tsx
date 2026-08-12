@@ -33,6 +33,7 @@ const footerLinks = {
   support: [
     { name: 'Documentation', path: '/docs' },
     { name: 'API Reference', path: '/api' },
+    { name: 'Service Animals', path: '/assistance' },
     { name: 'Community', path: '/community' },
     { name: 'Contact', path: '/contact' },
   ],

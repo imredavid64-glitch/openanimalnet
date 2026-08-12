@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.1] - 2026-08-12
+
+### Added
+- **Service & Assistance Animal Registry** (`/assistance`): assistance-animal
+  organizations filterable by service type (guide dogs, mobility, medical
+  alert, psychiatric, therapy, training), accessible facilities near the user,
+  and a "Know Your Rights" section with accurate ADA public-access guidance.
+  Linked from the footer, /impact, and accessibility-flagged shelters.
+
 ## [1.18.0] - 2026-08-12
 
 ### Added

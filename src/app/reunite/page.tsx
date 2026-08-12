@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import {
@@ -264,9 +265,12 @@ export default function ReunitePage() {
                     {distKm < 5 ? 'in your area' : `~${Math.round(distKm)} km from you`} · capacity {s.petCapacity}
                   </div>
                   {s.accessibility && (
-                    <div className="mt-2 text-[11px] text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/30 rounded-lg px-2 py-1 inline-block flex items-center gap-1">
+                    <Link
+                      href="/assistance"
+                      className="mt-2 text-[11px] text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/30 rounded-lg px-2 py-1 inline-flex items-center gap-1 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
+                    >
                       <AccessibleIcon className="w-3.5 h-3.5" /> Accessible · service-animal support
-                    </div>
+                    </Link>
                   )}
                 </div>
               );

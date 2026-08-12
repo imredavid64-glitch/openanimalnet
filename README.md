@@ -46,6 +46,9 @@
   matched against found reports), a shelter & rescue directory with foster and
   accessibility flags, and an adoption matcher that scores pets against
   adopter preferences.
+- **Service & Assistance Animal Registry** (`/assistance`): assistance-animal
+  organizations (filterable by service type), accessible facilities near you,
+  and accurate public-access rights (ADA).
 - **Wildlife crime watch**: ivory-trafficking and poaching alerts with a
   Report Wildlife Crime workflow in the alert action center.
 - **Impact map** (`/impact`): every expected program topic mapped to the

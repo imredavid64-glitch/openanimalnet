@@ -90,8 +90,8 @@ const TOPICS: Topic[] = [
   {
     topic: 'Improving accessibility and support involving service or assistance animals',
     status: 'live',
-    coverage: 'Shelters are flagged for wheelchair accessibility and service-animal support; a dedicated service-animal registry is on the roadmap.',
-    link: { href: '/reunite', label: 'Accessible shelters' },
+    coverage: 'A service & assistance animal registry lists training organizations, accessible facilities, and public-access rights — plus accessibility-flagged shelters.',
+    link: { href: '/assistance', label: 'Service-animal registry' },
   },
   {
     topic: 'Educating the public about animals, ecosystems, and responsible animal care',
