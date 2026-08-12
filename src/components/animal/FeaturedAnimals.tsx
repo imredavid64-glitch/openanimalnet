@@ -252,7 +252,7 @@ export default function FeaturedAnimals() {
                         <div className={`px-3 py-1 rounded-xl text-sm font-medium ${
                           animal.isMonitored ? 'bg-success-100 text-success-700' : 'bg-secondary-100 text-secondary-700'
                         }`}>
-                          <span className={`inline-block w-2 h-2 rounded-full bg-current mr-1.5 ${animal.isMonitored ? 'bg-success-500' : 'bg-secondary-400'}`} />
+                          <span className="inline-block w-2 h-2 rounded-full bg-current mr-1.5" />
                           {animal.isMonitored ? 'Monitored' : 'Not monitored'}
                         </div>
                       </div>

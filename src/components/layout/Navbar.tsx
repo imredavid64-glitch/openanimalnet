@@ -35,6 +35,9 @@ export default function Navbar() {
     const stored = localStorage.getItem('theme');
     const isDark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
     setTheme(isDark ? 'dark' : 'light');
+    // Apply the class on mount too — the inline head script handles the very
+    // first paint, this keeps it correct for subsequent client-side loads.
+    document.documentElement.classList.toggle('dark', isDark);
   }, []);
 
   const toggleTheme = () => {
