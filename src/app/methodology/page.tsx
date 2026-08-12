@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import StaticPage, { Section, PageLink } from '@/components/layout/StaticPage';
+import { ScaleIcon } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: 'Methodology | OpenAnimalNet',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 export default function MethodologyPage() {
   return (
     <StaticPage
-      icon="🔬"
+      icon={<ScaleIcon className="w-16 h-16 mx-auto text-primary-300" />}
       title="Our Methodology"
       subtitle="How we collect, validate, and publish animal data — transparently and science-first."
     >

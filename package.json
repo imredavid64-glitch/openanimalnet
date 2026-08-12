@@ -1,6 +1,6 @@
 {
   "name": "openanimalnet",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "private": true,
   "engines": {
     "node": ">=22.6"
@@ -13,6 +13,7 @@
     "test": "node --test src/lib/animalFiltering.test.ts src/lib/rateLimit.test.ts src/lib/geo.test.ts",
     "test:api": "node --test tests/api.integration.test.ts",
     "refresh:data": "node .freebuff/refresh-sources.mjs",
+    "verify:data": "node .freebuff/verify-multisource.mjs",
     "check:taxonomy": "node .freebuff/check-taxonomy.mjs",
     "species:add": "node .freebuff/generate-species.mjs"
   },

@@ -56,6 +56,16 @@ export function MoonIcon({ className }: { className?: string }) {
   );
 }
 
+export function DataIcon({ className }: { className?: string }) {
+  return (
+    <Svg className={className}>
+      <ellipse cx="12" cy="5.5" rx="8" ry="2.5" />
+      <path d="M4 5.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6" />
+      <path d="M4 11.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6" />
+    </Svg>
+  );
+}
+
 export function PinIcon({ className }: { className?: string }) {
   return (
     <Svg className={className}>

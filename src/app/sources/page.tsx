@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import StaticPage, { Section, PageLink } from '@/components/layout/StaticPage';
+import { BookIcon } from '@/components/icons';
 import { speciesSources } from '@/data/sample/sources';
 import { conservationStatusData } from '@/data/sample/animals';
 
@@ -16,7 +17,7 @@ function statusColor(status: string): string {
 export default function SourcesPage() {
   return (
     <StaticPage
-      icon="📚"
+      icon={<BookIcon className="w-16 h-16 mx-auto text-primary-300" />}
       title="Data Sources"
       subtitle="Every figure on this platform traces back to a primary source. This index links each species to its Wikipedia article and its official IUCN Red List assessment."
     >
@@ -43,6 +44,8 @@ export default function SourcesPage() {
               const color = statusColor(source.conservationStatus);
               const wikipediaUrl = `https://en.wikipedia.org/wiki/${source.wikipediaTitle.replace(/ /g, '_')}`;
               const iucnUrl = source.iucnId ? `https://www.iucnredlist.org/species/${source.iucnId}/0` : null;
+              const gbifUrl = source.gbifKey ? `https://www.gbif.org/species/${source.gbifKey}` : null;
+              const inatUrl = source.inaturalistId ? `https://www.inaturalist.org/taxa/${source.inaturalistId}` : null;
               return (
                 <tr key={source.animalId} className="border-b border-secondary-100 dark:border-secondary-800/60 align-top">
                   <td className="py-4 pr-4">
@@ -88,6 +91,20 @@ export default function SourcesPage() {
                           <span className="text-secondary-400 dark:text-secondary-500">No IUCN assessment</span>
                         )}
                       </li>
+                      {gbifUrl && (
+                        <li>
+                          <a className="text-primary-600 dark:text-primary-400 hover:underline" href={gbifUrl} target="_blank" rel="noopener noreferrer">
+                            GBIF taxonomy ↗
+                          </a>
+                        </li>
+                      )}
+                      {inatUrl && (
+                        <li>
+                          <a className="text-primary-600 dark:text-primary-400 hover:underline" href={inatUrl} target="_blank" rel="noopener noreferrer">
+                            iNaturalist observations ↗
+                          </a>
+                        </li>
+                      )}
                     </ul>
                   </td>
                 </tr>
@@ -99,11 +116,12 @@ export default function SourcesPage() {
 
       <Section>How to Cite</Section>
       <p>
-        Each source link points to the canonical record: Wikipedia for species overviews and the
-        IUCN Red List for conservation status. Statuses are double-checked against Wikidata&apos;s
-        IUCN taxon ID property (P627) so the assessment links stay current — run{' '}
-        <code className="text-xs bg-secondary-100 dark:bg-secondary-800 px-1.5 py-0.5 rounded">npm run refresh:data</code>{' '}
-        to re-verify them against live sources.
+        Every record is cross-checked against four independent sources: Wikipedia for species
+        overviews, the IUCN Red List (assessment ID verified via Wikidata property P627) for
+        conservation status, GBIF for backbone taxonomy, and iNaturalist for independently
+        observed conservation status. Run{' '}
+        <code className="text-xs bg-secondary-100 dark:bg-secondary-800 px-1.5 py-0.5 rounded">npm run verify:data</code>{' '}
+        to re-verify every species against all four live sources.
       </p>
 
       <p>

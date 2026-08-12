@@ -11,7 +11,7 @@ import { Animal, AnimalData } from '@/types/animal/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { CategoryIcon, DataCategoryIcon, AntennaIcon, GlobeIcon, UsersIcon, PinIcon, ChartIcon, ShieldIcon, BookIcon, CalendarIcon } from '@/components/icons';
+import { CategoryIcon, DataCategoryIcon, AntennaIcon, GlobeIcon, UsersIcon, PinIcon, ChartIcon, ShieldIcon, BookIcon, CalendarIcon, DataIcon } from '@/components/icons';
 
 const conservationStatusColors: Record<string, string> = {
   EX: 'bg-danger-500',
@@ -321,31 +321,35 @@ export default function AnimalDetailPage() {
                 if (!source) return null;
                 const wikipediaUrl = `https://en.wikipedia.org/wiki/${source.wikipediaTitle.replace(/ /g, '_')}`;
                 const iucnUrl = source.iucnId ? `https://www.iucnredlist.org/species/${source.iucnId}/0` : null;
+                const gbifUrl = source.gbifKey ? `https://www.gbif.org/species/${source.gbifKey}` : null;
+                const inatUrl = source.inaturalistId ? `https://www.inaturalist.org/taxa/${source.inaturalistId}` : null;
+                const sourceLinks = [
+                  { href: wikipediaUrl, label: `Wikipedia — ${source.commonName}`, icon: BookIcon },
+                  ...(iucnUrl ? [{ href: iucnUrl, label: 'IUCN Red List assessment', icon: ShieldIcon }] : []),
+                  ...(gbifUrl ? [{ href: gbifUrl, label: 'GBIF taxonomy record', icon: DataIcon }] : []),
+                  ...(inatUrl ? [{ href: inatUrl, label: 'iNaturalist observations', icon: PinIcon }] : []),
+                ];
                 return (
                   <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4 mt-4">
                     <h3 className="font-semibold text-secondary-900 dark:text-white mb-2">Sources</h3>
                     <p className="text-sm text-secondary-500 dark:text-secondary-400 mb-3">
                       {source.populationNote}
                     </p>
+                    <p className="text-xs text-secondary-400 dark:text-secondary-500 mb-3">
+                      Verified across Wikipedia, Wikidata/IUCN, GBIF, and iNaturalist.
+                    </p>
                     <div className="flex flex-col gap-2">
-                      <a
-                        href={wikipediaUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3 py-2 rounded-xl bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 text-sm hover:bg-secondary-200 dark:hover:bg-secondary-600 transition-colors duration-300 flex items-center gap-2"
-                      >
-                        <BookIcon className="w-4 h-4 shrink-0" /> Wikipedia — {source.commonName}
-                      </a>
-                      {iucnUrl && (
+                      {sourceLinks.map(({ href, label, icon: Icon }) => (
                         <a
-                          href={iucnUrl}
+                          key={href}
+                          href={href}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="px-3 py-2 rounded-xl bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 text-sm hover:bg-secondary-200 dark:hover:bg-secondary-600 transition-colors duration-300 flex items-center gap-2"
                         >
-                          <ShieldIcon className="w-4 h-4 shrink-0" /> IUCN Red List assessment
+                          <Icon className="w-4 h-4 shrink-0" /> {label}
                         </a>
-                      )}
+                      ))}
                     </div>
                   </div>
                 );

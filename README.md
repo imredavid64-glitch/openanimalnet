@@ -123,11 +123,15 @@ point it elsewhere with `API_BASE_URL`:
 API_BASE_URL=http://localhost:3000 npm run test:api
 ```
 
-Data freshness — re-verify every species' IUCN assessment ID, status, and
-Wikipedia article against live sources (Wikidata + Wikipedia, no API keys):
+Data freshness — re-verify every species against live sources. Each species is
+cross-checked across four independent services (no API keys): Wikidata/IUCN
+(assessment ID + status), Wikipedia (article), GBIF (backbone taxonomy), and
+iNaturalist (observed conservation status):
 
 ```bash
-npm run refresh:data
+npm run refresh:data     # Wikidata + Wikipedia
+npm run verify:data      # Wikidata + Wikipedia + GBIF + iNaturalist
+npm run verify:data -- --apply  # also write resolved GBIF/iNaturalist keys
 ```
 
 Every species links to its primary sources on the
@@ -157,8 +161,8 @@ Actions for every push and pull request — see `.github/workflows/ci.yml`.
 - **Auto-deploy**: every push to `main` deploys production to Vercel via
   GitHub Actions (`.github/workflows/deploy.yml`).
 - **Data drift watch**: a weekly scheduled check (`.github/workflows/data-drift.yml`)
-  re-verifies every species' IUCN ID/status and Wikipedia article against live
-  sources and fails if anything drifted.
+  re-verifies every species' IUCN ID/status, Wikipedia article, GBIF taxonomy,
+  and iNaturalist status against live sources and fails if anything drifted.
 
 ## Project Structure
 

@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.16.1] - 2026-08-12
+
+### Added
+- **Multi-source data verification**: every species is now cross-checked
+  against four independent live sources — Wikidata/IUCN (assessment ID +
+  status), Wikipedia (article), GBIF (backbone taxonomy), and iNaturalist
+  (observed IUCN status). `npm run verify:data` runs the full check
+  (28/28 passing) and the weekly data-drift CI job now includes it.
+- **GBIF + iNaturalist links**: each species registry entry carries a stable
+  GBIF taxon key and iNaturalist taxon ID, surfaced as source links on
+  animal profiles and the /sources index (new DataIcon).
+
+### Changed
+- GBIF synonyms resolve to their accepted record (e.g. Panthera uncia →
+  Uncia uncia in GBIF's backbone) so the link and the check stay correct.
+- /sources and /methodology headers use the shared SVG icon set.
+
 ## [1.16.0] - 2026-08-12
 
 ### Added

@@ -31,6 +31,9 @@ jobs:
       - name: Verify sources against live Wikidata/Wikipedia
         run: npm run refresh:data -- --fail
 
+      - name: Verify every species across Wikidata, Wikipedia, GBIF, and iNaturalist
+        run: npm run verify:data -- --fail
+
   taxonomy:
     runs-on: ubuntu-latest
     steps:
