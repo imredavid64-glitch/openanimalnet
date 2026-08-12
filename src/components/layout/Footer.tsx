@@ -9,9 +9,11 @@ const footerLinks = {
   platform: [
     { name: 'Home', path: '/' },
     { name: 'Animals', path: '/animal' },
-    { name: 'Dashboard', path: '/dashboard' },
+    { name: 'Migrations', path: '/migration' },
     { name: 'Monitor', path: '/monitor' },
     { name: 'AI Analysis', path: '/ai' },
+    { name: 'Companion Animals', path: '/reunite' },
+    { name: 'Impact', path: '/impact' },
   ],
   data: [
     { name: 'Biological', path: '/data/biological' },
