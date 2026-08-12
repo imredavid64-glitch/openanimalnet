@@ -326,6 +326,37 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
   sweep) before confirming in the preview.
 - Version 1.10.0; tests 19/19 + 12/12.
 
+## Round 12 (Aug 12 2026): OpenGrid-style globe, seasonal colors, arrows, +Arctic tern
+
+- **Globe interactivity (OpenGrid-style)**: marker click flies the camera to
+  the species and opens a details popup (photo/status/population + View
+  profile/Monitor); 🔍 search finds a species and flies to it; control bar
+  has layer toggles for markers 📍 / routes 🧭 / clouds ☁️ (all wired through
+  GlobeComponent + the 2D fallback). Fly-to is an eased lerp of camera
+  position + OrbitControls target in the animation loop.
+- **Seasonal arc colors**: routes are colored by leg season (spring green /
+  fall amber / year-round slate) with a legend; `MigrationRoute.season` is a
+  new optional field. 2D fallback matches.
+- **Directional arrows**: three cones per route travel along the curve,
+  oriented to its tangent; they scale on hover.
+- **+Arctic tern (28 species, LC)**: the longest migration on Earth
+  (~70,900 km round trip). Real photo, IUCN 22694629, >2M individuals,
+  Charadriiformes order (see guard below), and spring + fall legs (both
+  drawn). Freshness check passed ALL CURRENT with it included.
+- **Generator bug found + fixed**: the SPARQL P171+ ancestor list comes back
+  unordered, so `ranks.order` picked a random order node — the tern got
+  "Saurischia" (a dinosaur clade Wikidata tags as an order). Bird orders are
+  now resolved from a whitelist (BIRD_ORDERS) with a correction warning;
+  verified: `Sterna paradisaea` preview now warns "order Saurischia →
+  Charadriiformes" and emits the right order.
+- **Monitor page**: species with migrationRoutes show a Seasonal Migration
+  card (SVG arcs + season + waypoints).
+- **CSS cleanup**: removed unused utilities (glass, text-balance, text-shadow,
+  input-field, shimmer, text-gradient) from globals.css and the dead 📊
+  button in the globe panel; conservation-page hints now derive the species
+  count instead of hardcoding it.
+- Version 1.11.0; tests 19/19 + 12/12 (integration counts updated to 28).
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview

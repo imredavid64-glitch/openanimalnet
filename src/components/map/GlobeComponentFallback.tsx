@@ -11,12 +11,14 @@ interface GlobeProps {
   selectedCategory: AnimalCategory | null;
   onAnimalClick?: (animalId: string) => void;
   showRoutes?: boolean;
+  showMarkers?: boolean;
+  showClouds?: boolean;
   onRouteHover?: (info: RouteHoverInfo | null) => void;
   onRouteClick?: (info: RouteHoverInfo) => void;
 }
 
 export default forwardRef(function GlobeComponentFallback(
-  { onAnimalClick, showRoutes = true }: GlobeProps,
+  { onAnimalClick, showRoutes = true, showMarkers = true }: GlobeProps,
   ref
 ) {
   const [isClient, setIsClient] = useState(false);
@@ -43,7 +45,7 @@ export default forwardRef(function GlobeComponentFallback(
 
   return (
     <div className="w-full h-full">
-      <SimpleWorldMap onAnimalClick={onAnimalClick} showRoutes={showRoutes} />
+      <SimpleWorldMap onAnimalClick={onAnimalClick} showRoutes={showRoutes} showMarkers={showMarkers} />
     </div>
   );
 });

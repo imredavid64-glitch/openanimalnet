@@ -2,6 +2,42 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.11.0] - 2026-08-12
+
+### Added
+- **OpenGrid-style globe**: clicking a species marker now flies the camera to
+  it and opens a details popup (photo, status, population, View profile /
+  Monitor buttons); a search box (🔍 in the controls) finds a species by
+  common or scientific name and flies to it; the bottom control bar gained
+  layer toggles for species markers (📍), migration corridors (🧭), and the
+  clouds layer (☁️). The globe now has 28 species.
+- **Seasonal migration colors**: corridors are colored by leg season — spring
+  (northward/breeding leg) green, fall (southward/wintering leg) amber,
+  year-round slate — with a legend, on both the 3D globe and the 2D
+  fallback map. The Arctic tern's new routes showcase it: a green spring
+  leg and an amber fall leg spanning pole-to-pole.
+- **Directional arrow flow**: three small cones travel each corridor pointing
+  along the curve tangent, so the migration direction reads at a glance;
+  they scale up when the route is hovered.
+- **Arctic tern** (28th species, LC): the longest migration in the animal
+  kingdom (~70,900 km round trip, Iceland–Antarctic). Real photo, verified
+  IUCN assessment (22694629), population >2 million individuals (1–2M
+  breeding pairs), Charadriiformes order, and both migration legs.
+- **Migration on the monitor page**: species with corridors (monarch, blue
+  whale, leatherback, saiga, Arctic tern) show a Seasonal Migration card
+  with per-leg SVG arc sketches, season labels, and waypoint ranges.
+- **Generator accuracy guard**: the SPARQL ancestor list is unordered, and a
+  random pick once produced "Saurischia" (a dinosaur clade Wikidata tags as
+  an order) for a bird's order. Bird orders are now resolved from a
+  whitelist with a warning when a correction fires.
+
+### Fixed
+- Conservation page hints hardcoded the species count ("27 tracked
+  profiles"); they now use the live total (28).
+- Removed six unused CSS utilities (`glass`, `text-balance`, `text-shadow`,
+  `input-field`, `shimmer`, `text-gradient`) and the dead 📊 button in the
+  globe info panel.
+
 ## [1.10.0] - 2026-08-12
 
 ### Added

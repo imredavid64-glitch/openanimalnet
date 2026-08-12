@@ -188,6 +188,7 @@ export const sampleAnimals: Animal[] = [
     migrationRoutes: [
       {
         name: 'Eastern Pacific — feeding off California to breeding at the Costa Rica Dome',
+        season: 'fall',
         points: [
           { latitude: 36.5, longitude: -122.5 },
           { latitude: 20, longitude: -115 },
@@ -609,6 +610,7 @@ export const sampleAnimals: Animal[] = [
     migrationRoutes: [
       {
         name: 'Eastern population — overwintering in Michoacán, Mexico to summer breeding in the Great Lakes',
+        season: 'spring',
         points: [
           { latitude: 19.6, longitude: -100.3 },
           { latitude: 30, longitude: -98 },
@@ -838,6 +840,7 @@ export const sampleAnimals: Animal[] = [
     migrationRoutes: [
       {
         name: 'Western Pacific — nesting at Jamursba-Medi, Papua to foraging off California',
+        season: 'year-round',
         points: [
           { latitude: -2.6, longitude: 140.7 },
           { latitude: 20, longitude: -155 },
@@ -921,6 +924,7 @@ export const sampleAnimals: Animal[] = [
     migrationRoutes: [
       {
         name: 'Betpak-Dala — wintering grounds in the south to calving grounds in the north',
+        season: 'spring',
         points: [
           { latitude: 44.5, longitude: 67 },
           { latitude: 47.5, longitude: 70 },
@@ -1009,6 +1013,69 @@ export const sampleAnimals: Animal[] = [
     dataCategories: ['biological', 'behavioral', 'ecological', 'population', 'health'],
   },
 
+
+  {
+  id: "arctic-tern-001",
+  commonName: "Arctic Tern",
+  scientificName: "Sterna paradisaea",
+  category: "birds",
+  description: "The Arctic tern is a tern in the family Laridae. This bird has a circumpolar breeding distribution covering the Arctic and subarctic regions of Europe, Asia, and North America. The species is strongly migratory, seeing two summers each year as it migrates along a convoluted route from its northern breeding grounds to the Antarctic coast for the southern summer and back again about six months later. Recent studies have shown average annual round-trip lengths of about 70,900 km (38,300 nmi) for birds nesting in Iceland and Greenland, and about 48,700 km (26,300 nmi) for birds nesting in the Netherlands, while an individual from the Farne Islands in Northumberland with a light level geolocator tag covered a staggering 96,000 km (52,000 nmi) in ten months from the end of one breeding season to the start of the next. These are by far the longest migrations known in the animal kingdom.",
+  images: [
+    "/images/animals/arctic-tern-001.jpg"
+  ],
+  conservationStatus: "LC",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Aves",
+    order: "Charadriiformes",
+    family: "Sternidae",
+    genus: "Sterna",
+    species: "paradisaea"
+  },
+  location: {
+    latitude: 64.1,
+    longitude: -21.9,
+    altitude: 0,
+    accuracy: 1000,
+    timestamp: new Date('2026-08-12'),
+    source: "Breeding range reference (Iceland)"
+  },
+  habitat: ['coastal', 'pelagic', 'open ocean', 'Arctic tundra'],
+  populationEstimate: 2000000,
+  populationHistoryNote: 'Over 2 million individuals worldwide (1–2 million breeding pairs); global trend assessed as decreasing (IUCN 2018)',
+  migrationRoutes: [
+    {
+      name: 'Fall — Arctic breeding grounds to Antarctic wintering grounds',
+      season: 'fall',
+      points: [
+        { latitude: 64.1, longitude: -21.9 },
+        { latitude: 30, longitude: -30 },
+        { latitude: -20, longitude: -10 },
+        { latitude: -65, longitude: -30 },
+      ],
+    },
+    {
+      name: 'Spring — Antarctic wintering grounds back to Arctic breeding grounds',
+      season: 'spring',
+      points: [
+        { latitude: -65, longitude: -30 },
+        { latitude: -20, longitude: -35 },
+        { latitude: 30, longitude: -40 },
+        { latitude: 64.1, longitude: -21.9 },
+      ],
+    },
+  ],
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-12'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
 
 ];
 

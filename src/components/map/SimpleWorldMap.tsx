@@ -33,6 +33,13 @@ const categoryIcons: Record<AnimalCategory, string> = {
 const statusColor = (status: string): string =>
   conservationStatusData.find((s) => s.status === status)?.color ?? '#94a3b8';
 
+// Migration arc color by season (spring = green, fall = amber, year-round = slate)
+const seasonColor = (season?: string): string => {
+  if (season === 'spring') return '#22c55e';
+  if (season === 'fall') return '#f59e0b';
+  return '#94a3b8';
+};
+
 interface MapPoint {
   id: string;
   name: string;
@@ -55,9 +62,11 @@ interface MapRoute {
 export default function SimpleWorldMap({
   onAnimalClick,
   showRoutes = true,
+  showMarkers = true,
 }: {
   onAnimalClick?: (animalId: string) => void;
   showRoutes?: boolean;
+  showMarkers?: boolean;
 }) {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -94,7 +103,7 @@ export default function SimpleWorldMap({
     sampleAnimals.forEach((animal) => {
       (animal.migrationRoutes || []).forEach((route) => {
         mapRoutes.push({
-          color: statusColor(animal.conservationStatus),
+          color: seasonColor(route.season),
           points: route.points.map((p) => ({
             x: ((p.longitude + 180) / 360) * 100,
             y: ((90 - p.latitude) / 180) * 100,
@@ -141,8 +150,9 @@ export default function SimpleWorldMap({
       drawContinent(ctx, [50, 60, 70, 80], [70, 80, 75, 85], 'Asia');
       drawContinent(ctx, [20, 30, 40, 50], [90, 95, 92, 98], 'Australia');
       
-      // Draw points
+      // Draw points (skipped when the markers layer is hidden)
       points.forEach(point => {
+        if (!showMarkers) return;
         const radius = point.size * 3;
         
         // Draw glow effect for monitored animals
@@ -272,7 +282,7 @@ export default function SimpleWorldMap({
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [points, routes, hoveredPoint, showRoutes]);
+  }, [points, routes, hoveredPoint, showRoutes, showMarkers]);
 
   // Find the closest map point to given canvas coordinates (in % of canvas)
   const findClosestPoint = (x: number, y: number): MapPoint | null => {

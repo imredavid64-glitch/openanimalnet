@@ -80,6 +80,24 @@ async function lookupSpecies(scientificName) {
  * pick the taxa at the standard ranks. Prefers the scientific name (P225);
  * falls back to the item label.
  */
+// Known bird orders. Wikidata's P171 chain is paraphyletic and tags some
+// dinosaur clades (e.g. Saurischia) as "order", and the endpoint returns the
+// ancestor list in arbitrary order — so for birds the real order is found by
+// whitelist instead of "last one returned".
+const BIRD_ORDERS = new Set([
+  'struthioniformes', 'rheiformes', 'casuariiformes', 'apterygiformes',
+  'tinamiformes', 'anseriformes', 'galliformes', 'gaviiformes',
+  'podicipediformes', 'procellariiformes', 'sphenisciformes',
+  'pelecaniformes', 'suliformes', 'ciconiiformes', 'phoenicopteriformes',
+  'accipitriformes', 'falconiformes', 'gruiformes', 'charadriiformes',
+  'pteroclidiformes', 'columbiformes', 'psittaciformes', 'cuculiformes',
+  'strigiformes', 'caprimulgiformes', 'apodiformes', 'coliformes',
+  'trogoniformes', 'coraciiformes', 'piciformes', 'passeriformes',
+  'opisthocomiformes', 'musophagiformes', 'mesitornithiformes',
+  'eurypygiformes', 'phaeothontiformes', 'nyctibiiformes',
+  'podargiformes', 'aegotheliformes', 'leptosomiformes',
+]);
+
 async function walkTaxonomy(qid) {
   const bindings = await sparql(`SELECT ?anc ?sciname ?rankLabel WHERE {
     wd:${qid} wdt:P171+ ?anc .
@@ -89,13 +107,26 @@ async function walkTaxonomy(qid) {
   }`);
   const ranks = {};
   const classRanks = [];
+  const orderRanks = [];
   for (const row of bindings) {
     const key = row.rankLabel?.value?.toLowerCase();
     if (!key) continue;
     const name = row.sciname?.value ?? row.anc.value.split('/').pop();
     if (key === 'class') classRanks.push(name);
+    if (key === 'order') orderRanks.push(name);
     ranks[key] = name;
   }
+  const isBird = classRanks.some((c) => c.toLowerCase() === 'aves');
+  // For birds the chain contains non-avian "order" nodes (Saurischia,
+  // Theropoda…): pick the first name that is a real bird order.
+  let order = null;
+  if (isBird) {
+    order = orderRanks.find((o) => BIRD_ORDERS.has(o.toLowerCase())) ?? null;
+    if (order && ranks.order && order.toLowerCase() !== ranks.order.toLowerCase()) {
+      console.log(`⚠ taxonomy guard: order ${ranks.order} → ${order} (preferred avian order in the P171 chain)`);
+    }
+  }
+  if (!order) order = ranks.order ?? null;
   return {
     kingdom: ranks.kingdom ?? null,
     phylum: ranks.phylum ?? null,
@@ -103,7 +134,7 @@ async function walkTaxonomy(qid) {
     class: bestClass(classRanks) ?? ranks.class ?? null,
     // The raw class Wikidata reported last, for the correction warning.
     classRaw: ranks.class ?? null,
-    order: ranks.order ?? null,
+    order,
     family: ranks.family ?? null,
     genus: ranks.genus ?? null,
   };

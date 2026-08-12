@@ -595,9 +595,15 @@ export interface MigrationRoutePoint {
   longitude: number;
 }
 
+// Season of a migration leg, used to color the corridor on the globe
+// (spring = northward/breeding leg, fall = southward/wintering leg).
+export type MigrationSeason = 'spring' | 'fall' | 'year-round';
+
 // A named seasonal migration corridor (e.g. "Eastern monarch — Mexico to Great Lakes").
 export interface MigrationRoute {
   name: string;
+  /** Leg season for arc coloring on the globe. */
+  season?: MigrationSeason;
   points: MigrationRoutePoint[];
 }
 

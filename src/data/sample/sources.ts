@@ -263,4 +263,13 @@ export const speciesSources: SpeciesSource[] = [
     conservationStatus: 'CR',
     populationNote: '~10 remaining (2023–24 surveys; 6–8 in 2024); 567 in 1997, 245 in 2008',
   },
+  {
+  animalId: "arctic-tern-001",
+  commonName: "Arctic Tern",
+  scientificName: "Sterna paradisaea",
+  wikipediaTitle: "Arctic tern",
+  iucnId: 22694629,
+  conservationStatus: "LC",
+  populationNote: "Over 2 million individuals worldwide (1–2 million breeding pairs); global trend assessed as decreasing (IUCN 2018)"
+},
 ];

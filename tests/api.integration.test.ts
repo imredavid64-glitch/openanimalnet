@@ -33,7 +33,7 @@ test('GET /api/v1/animals returns paginated animals', async () => {
   assert.deepEqual(body.pagination, {
     page: 1,
     limit: 5,
-    total: 27,
+    total: 28,
     totalPages: 6,
   });
 });
@@ -82,7 +82,7 @@ test('GET /api/v1/populations returns records for all species', async () => {
     commonName: string;
     conservationStatus: string;
   }[];
-  assert.equal(records.length, 27);
+  assert.equal(records.length, 28);
   const lion = records.find((r) => r.animalId === 'lion-001');
   assert.equal(lion?.commonName, 'African Lion');
   assert.equal(lion?.conservationStatus, 'VU');

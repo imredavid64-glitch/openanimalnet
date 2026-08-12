@@ -10,6 +10,12 @@ interface RoutePoint {
   longitude: number;
 }
 
+interface RouteData {
+  name: string;
+  season?: 'spring' | 'fall' | 'year-round';
+  points: RoutePoint[];
+}
+
 interface GlobeData {
   id: string;
   name: string;
@@ -23,8 +29,22 @@ interface GlobeData {
   conservationStatus: ConservationStatus;
   isMonitored: boolean;
   /** Seasonal migration corridors, drawn as animated arcs. */
-  migrationRoutes?: { name: string; points: RoutePoint[] }[];
+  migrationRoutes?: RouteData[];
 }
+
+// Arc color by migration-leg season (spring north = green, fall south = amber,
+// year-round = neutral slate).
+const seasonColors: Record<string, string> = {
+  spring: '#22c55e',
+  fall: '#f59e0b',
+  'year-round': '#94a3b8',
+};
+
+const routeSeason = (r: RouteData): string => seasonColors[r.season ?? 'year-round'] ?? '#94a3b8';
+
+// Cone geometry's local +Y axis is aligned to the curve tangent to orient the
+// directional arrows along the migration flow.
+const UP_VECTOR = new THREE.Vector3(0, 1, 0);
 
 export interface RouteHoverInfo {
   animalId: string;
@@ -40,6 +60,10 @@ interface GlobeProps {
   onAnimalClick?: (animalId: string) => void;
   /** Whether migration corridors should be drawn. */
   showRoutes?: boolean;
+  /** Whether species markers should be drawn. */
+  showMarkers?: boolean;
+  /** Whether the clouds layer should be shown. */
+  showClouds?: boolean;
   /** Fired when the pointer moves over/off a migration corridor. */
   onRouteHover?: (info: RouteHoverInfo | null) => void;
   /** Fired when a migration corridor is clicked. */
@@ -70,7 +94,17 @@ const conservationStatusColors: Record<ConservationStatus, string> = {
 };
 
 export default forwardRef(function GlobeComponent(
-  { data, onAnimalHover, selectedCategory, onAnimalClick, showRoutes = true, onRouteHover, onRouteClick }: GlobeProps,
+  {
+    data,
+    onAnimalHover,
+    selectedCategory,
+    onAnimalClick,
+    showRoutes = true,
+    showMarkers = true,
+    showClouds = true,
+    onRouteHover,
+    onRouteClick,
+  }: GlobeProps,
   ref
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,6 +130,7 @@ export default forwardRef(function GlobeComponent(
     {
       curve: THREE.CatmullRomCurve3;
       dot: THREE.Mesh;
+      arrows: THREE.Mesh[];
       speed: number;
       phase: number;
       material: RouteMaterial;
@@ -105,6 +140,15 @@ export default forwardRef(function GlobeComponent(
   >([]);
   // Hovered route, mirrored in a ref so the animation loop can highlight it
   const hoveredRouteRef = useRef<RouteHoverInfo | null>(null);
+  // Camera fly-to animation state (target point on the globe)
+  const flyRef = useRef<{
+    fromCam: THREE.Vector3;
+    fromTarget: THREE.Vector3;
+    destCam: THREE.Vector3;
+    destTarget: THREE.Vector3;
+    t: number;
+    dur: number;
+  } | null>(null);
   
   // Animation state
   const [isRotating, setIsRotating] = useState(true);
@@ -198,8 +242,8 @@ export default forwardRef(function GlobeComponent(
         cloudsRef.current.rotation.y += rotationSpeed * 0.35;
       }
       
-      // Advance migration dots along their routes; scroll the dash so the
-      // corridors visibly flow, and pulse/highlight on hover
+      // Advance migration dots + arrows along their routes; scroll the dash
+      // so the corridors visibly flow, and pulse/highlight on hover
       const now = performance.now() / 1000;
       for (const anim of routeAnimsRef.current) {
         const t = (now * anim.speed + anim.phase) % 1;
@@ -212,6 +256,28 @@ export default forwardRef(function GlobeComponent(
           ? 0.95
           : 0.4 + 0.08 * Math.sin(now * 1.6 + anim.phase * 9);
         anim.dot.scale.setScalar(hovered ? 1.8 : 1);
+        // Directional arrows: three cones spaced along the route, oriented to
+        // the curve tangent so the flow direction is obvious
+        for (let a = 0; a < anim.arrows.length; a++) {
+          const at = (now * anim.speed * 0.9 + anim.phase + a / anim.arrows.length) % 1;
+          const pos = anim.curve.getPointAt(at);
+          const tangent = anim.curve.getTangentAt(at);
+          anim.arrows[a].position.copy(pos);
+          anim.arrows[a].quaternion.setFromUnitVectors(UP_VECTOR, tangent);
+          anim.arrows[a].scale.setScalar(hovered ? 1.5 : 1);
+        }
+      }
+      
+      // Camera fly-to animation (OpenGrid-style focus on a selected marker)
+      if (flyRef.current && cameraRef.current && controlsRef.current) {
+        const f = flyRef.current;
+        f.t += 0.025;
+        const e = Math.min(1, f.t / f.dur);
+        const ease = 1 - Math.pow(1 - e, 3); // easeOutCubic
+        controlsRef.current.target.lerpVectors(f.fromTarget, f.destTarget, ease);
+        cameraRef.current.position.lerpVectors(f.fromCam, f.destCam, ease);
+        controlsRef.current.update();
+        if (e >= 1) flyRef.current = null;
       }
       
       if (controlsRef.current) {
@@ -240,7 +306,12 @@ export default forwardRef(function GlobeComponent(
     // One-time scene setup: createGlobe/createPoints are intentionally
     // captured once; data changes are handled by the dedicated effect below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);    // Update points + routes when data or the routes toggle changes
+  }, []);    // Toggle the clouds layer visibility
+  useEffect(() => {
+    if (cloudsRef.current) cloudsRef.current.visible = showClouds;
+  }, [showClouds]);
+  
+    // Update points + routes when data or a layer toggle changes
   useEffect(() => {
     if (!sceneRef.current) return;
     
@@ -279,14 +350,16 @@ export default forwardRef(function GlobeComponent(
     routeAnimsRef.current = [];
     
     // Create new points + routes
-    createPoints(sceneRef.current, data);
+    if (showMarkers) {
+      createPoints(sceneRef.current, data);
+    }
     if (showRoutes) {
       createRoutes(sceneRef.current, data);
     }
     // createPoints/createRoutes are component-scope helpers; their only input
     // is `data`, which is already the dependency.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, showRoutes]);
+  }, [data, showRoutes, showMarkers]);
   
   // Handle mouse events for hover + click
   useEffect(() => {
@@ -374,10 +447,12 @@ export default forwardRef(function GlobeComponent(
         cameraRef.current.position.set(0, 0, 5);
         cameraRef.current.lookAt(0, 0, 0);
         if (controlsRef.current) {
+          controlsRef.current.target.set(0, 0, 0);
           controlsRef.current.reset();
         }
       }
     },
+    flyTo: (lat: number, lng: number) => flyTo(lat, lng),
     zoomIn: () => {
       if (cameraRef.current) {
         cameraRef.current.position.z = Math.max(2.5, cameraRef.current.position.z - 0.5);
@@ -517,6 +592,25 @@ export default forwardRef(function GlobeComponent(
     );
   };
 
+  // Smoothly fly the camera to look at a point on the globe (used when a
+  // marker is selected from the map or the search box).
+  const flyTo = (lat: number, lng: number, radius = 4.3) => {
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+    if (!camera || !controls) return;
+    const destTarget = latLngToVector3(lat, lng, 2);
+    const dir = destTarget.clone().normalize();
+    const destCam = dir.multiplyScalar(radius);
+    flyRef.current = {
+      fromCam: camera.position.clone(),
+      fromTarget: controls.target.clone(),
+      destCam,
+      destTarget,
+      t: 0,
+      dur: 60, // frames (~1s)
+    };
+  };
+
   // Build the animated migration arcs for every species with a route.
   const createRoutes = (scene: THREE.Scene, data: GlobeData[]) => {
     const routesWithData = data.filter((d) => d.migrationRoutes && d.migrationRoutes.length > 0);
@@ -526,6 +620,7 @@ export default forwardRef(function GlobeComponent(
     const anims: {
       curve: THREE.CatmullRomCurve3;
       dot: THREE.Mesh;
+      arrows: THREE.Mesh[];
       speed: number;
       phase: number;
       material: RouteMaterial;
@@ -535,9 +630,10 @@ export default forwardRef(function GlobeComponent(
     const surfaceRadius = 2;
 
     routesWithData.forEach((d, animalIdx) => {
-      const color = new THREE.Color(conservationStatusColors[d.conservationStatus] || d.color);
       d.migrationRoutes!.forEach((route, routeIdx) => {
         if (route.points.length < 2) return;
+        // Color the corridor by migration-leg season, not species status
+        const color = new THREE.Color(routeSeason(route));
 
         // Build control points: surface endpoints + lifted segment midpoints so
         // every arc (even a 2-point one) bulges above the globe instead of
@@ -579,9 +675,22 @@ export default forwardRef(function GlobeComponent(
         const dot = new THREE.Mesh(dotGeo, dotMat);
         group.add(dot);
 
+        // Directional arrows: small cones that travel the route pointing along
+        // the tangent, so the migration direction reads at a glance
+        const arrows: THREE.Mesh[] = [];
+        const coneGeo = new THREE.ConeGeometry(0.035, 0.11, 8);
+        const coneMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.95 });
+        for (let a = 0; a < 3; a++) {
+          const cone = new THREE.Mesh(coneGeo, coneMat);
+          cone.visible = false; // positioned by the animation loop
+          arrows.push(cone);
+          group.add(cone);
+        }
+
         anims.push({
           curve,
           dot,
+          arrows,
           speed: 0.035 + (animalIdx * 0.007 + routeIdx * 0.005) % 0.02,
           phase: animalIdx * 0.21 + routeIdx * 0.37,
           material: lineMat as RouteMaterial,

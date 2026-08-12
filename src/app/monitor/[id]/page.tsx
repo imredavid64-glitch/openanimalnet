@@ -162,6 +162,59 @@ export default function AnimalMonitorPage({ params }: PageProps) {
                 </div>
               </div>
             </div>
+
+            {/* Seasonal Migration — for species with documented corridors */}
+            {animal.migrationRoutes && animal.migrationRoutes.length > 0 && (
+              <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-soft p-6">
+                <h2 className="text-xl font-bold text-secondary-900 dark:text-white mb-1">🧭 Seasonal Migration</h2>
+                <p className="text-sm text-secondary-500 dark:text-secondary-400 mb-4">
+                  Documented seasonal corridors — also drawn on the global globe (green = spring, amber = fall, slate = year-round).
+                </p>
+                <div className="space-y-3">
+                  {animal.migrationRoutes.map((route, i) => {
+                    const color =
+                      route.season === 'spring' ? '#22c55e' :
+                      route.season === 'fall' ? '#f59e0b' :
+                      '#94a3b8';
+                    const n = route.points.length;
+                    const start = route.points[0];
+                    const end = route.points[n - 1];
+                    const fmt = (p: { latitude: number; longitude: number }) =>
+                      `${Math.abs(p.latitude).toFixed(1)}°${p.latitude >= 0 ? 'N' : 'S'} ${Math.abs(p.longitude).toFixed(1)}°${p.longitude >= 0 ? 'E' : 'W'}`;
+                    return (
+                      <div
+                        key={i}
+                        className="rounded-xl bg-secondary-50 dark:bg-secondary-900 p-3 flex items-center gap-4"
+                      >
+                        <svg viewBox="0 0 120 40" className="w-24 h-10 shrink-0" aria-hidden="true">
+                          <path
+                            d="M5 32 Q 60 0 115 32"
+                            fill="none"
+                            stroke={color}
+                            strokeWidth="2"
+                            strokeDasharray="5 3"
+                          />
+                          {route.points.map((p, j) => {
+                            const t = n === 1 ? 0 : j / (n - 1);
+                            const x = (1 - t) * (1 - t) * 5 + 2 * (1 - t) * t * 60 + t * t * 115;
+                            const y = (1 - t) * (1 - t) * 32 + 2 * (1 - t) * t * 0 + t * t * 32;
+                            return <circle key={j} cx={x} cy={y} r="2.5" fill={color} />;
+                          })}
+                        </svg>
+                        <div className="min-w-0">
+                          <div className="text-sm font-medium text-secondary-900 dark:text-white">
+                            {route.name}
+                          </div>
+                          <div className="text-xs text-secondary-500 dark:text-secondary-400 mt-0.5 capitalize">
+                            {route.season ?? 'year-round'} · {n} waypoints · {fmt(start)} → {fmt(end)}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </section>
 
           {/* Sidebar */}

@@ -111,10 +111,10 @@ export default function ConservationPage() {
     >
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Species in dataset', value: total, hint: '27 tracked profiles' },
+          { label: 'Species in dataset', value: total, hint: `${total} tracked profiles` },
           { label: 'Critically Endangered + Endangered', value: threatened, hint: 'at immediate risk', color: '#dc2626' },
           { label: 'Vulnerable', value: vulnerable, hint: 'facing extinction risk', color: '#f59e0b' },
-          { label: 'IUCN-assessed', value: assessed, hint: 'of 27 (rest are Not Evaluated)', color: '#22c55e' },
+          { label: 'IUCN-assessed', value: assessed, hint: `of ${total} (rest are Not Evaluated)`, color: '#22c55e' },
         ].map((card) => (
           <div key={card.label} className="rounded-2xl border border-secondary-200 dark:border-secondary-800 bg-white dark:bg-secondary-900 p-4">
             <div className="text-xs text-secondary-500 dark:text-secondary-400">{card.label}</div>
@@ -167,7 +167,7 @@ export default function ConservationPage() {
 
       <Section>Dataset Distribution by Status</Section>
       <p>
-        Counts below reflect the species currently in this sample dataset (27 profiles). The
+        Counts below reflect the species currently in this sample dataset ({total} profiles). The
         IUCN assesses roughly 160,000 species globally; the status <em>names</em> and colors follow
         the Red List, but these figures are our own sample — see the{' '}
         <Link href="/sources" className="text-primary-600 dark:text-primary-400 hover:underline">
