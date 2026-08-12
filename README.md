@@ -42,6 +42,14 @@
 - **Accurate, source-linked data**: each species is verified against four live
   sources (Wikidata/IUCN, Wikipedia, GBIF, iNaturalist), with source links on
   every profile and a weekly drift check in CI.
+- **Companion Animal Hub** (`/reunite`): lost-pet reunification (distance-
+  matched against found reports), a shelter & rescue directory with foster and
+  accessibility flags, and an adoption matcher that scores pets against
+  adopter preferences.
+- **Wildlife crime watch**: ivory-trafficking and poaching alerts with a
+  Report Wildlife Crime workflow in the alert action center.
+- **Impact map** (`/impact`): every expected program topic mapped to the
+  platform features that address it.
 - **AI Assistant**: intelligent insights from the dataset via natural language.
 - **Public API**: a documented JSON API under `/api/v1/*` with filters and
   rate limiting (see below).

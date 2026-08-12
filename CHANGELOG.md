@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.0] - 2026-08-12
+
+### Added
+- **Companion Animal Hub** (`/reunite`): report a lost pet and match against
+  found reports by species and distance (≤60 km); shelter & rescue directory
+  with services, foster programs, phone contacts, and accessibility flags;
+  adoption matcher that scores pets against adopter preferences.
+- **Wildlife crime watch**: ivory-trafficking and poaching-snare alerts with a
+  Report Wildlife Crime workflow in the alert action center (crime-flagged
+  alerts).
+- **Impact map** (`/impact`): every expected program topic mapped to the
+  platform features that address it, marked live vs roadmap.
+- **New icons**: PhoneIcon, AccessibleIcon.
+
 ## [1.17.0] - 2026-08-12
 
 ### Added
