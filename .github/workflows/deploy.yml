@@ -6,8 +6,7 @@ name: Deploy to Vercel
 #   VERCEL_PROJECT_ID — from .vercel/project.json (projectId)
 #
 # Deploy via the Vercel CLI directly: the amondnet/vercel-action@v20 action
-# targets Node 20 and broke when GitHub started forcing it onto Node 24
-# ("The process '/usr/local/bin/npx' failed with exit code 1").
+# targets Node 20 and broke when GitHub started forcing it onto Node 24.
 
 on:
   push:
@@ -28,32 +27,8 @@ jobs:
           node-version: 22
 
       - name: Deploy to Vercel (production)
-        id: deploy
-        run: |
-          set +e
-          npx --yes vercel@latest deploy --prod --token "$VERCEL_TOKEN" --yes > /tmp/vercel-deploy.log 2>&1
-          code=$?
-          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
-          cat /tmp/vercel-deploy.log
-          exit $code
+        run: npx --yes vercel@latest deploy --prod --token "$VERCEL_TOKEN" --yes
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      # Diagnostics: the Actions run logs are admin-only, so on failure upload
-      # the Vercel CLI output as an artifact (listable via the public API).
-      - name: Report deploy failure
-        if: ${{ always() && steps.deploy.outputs.exit_code != '' && steps.deploy.outputs.exit_code != '0' }}
-        run: |
-          tail -200 /tmp/vercel-deploy.log > /tmp/vercel-tail.log
-          cp /tmp/vercel-tail.log "vercel-deploy-${{ github.sha }}.log"
-        shell: bash
-
-      - name: Upload deploy log artifact
-        if: ${{ always() && steps.deploy.outputs.exit_code != '' && steps.deploy.outputs.exit_code != '0' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: vercel-deploy-log
-          path: vercel-deploy-*.log
-          if-no-files-found: error
