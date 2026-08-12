@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { sampleAnimals, sampleAnimalData } from '@/data/sample/animals';
+import MiniRouteMap from '@/components/map/MiniRouteMap';
 import { speciesSources } from '@/data/sample/sources';
 import { Animal, AnimalData } from '@/types/animal/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -302,44 +303,31 @@ export default function AnimalDetailPage() {
                 <div className="bg-white dark:bg-secondary-800 rounded-2xl p-4 mt-4">
                   <h3 className="font-semibold text-secondary-900 dark:text-white mb-1">🗺️ Seasonal Migration</h3>
                   <p className="text-sm text-secondary-500 dark:text-secondary-400 mb-3">
-                    Documented seasonal corridors — shown as animated arcs on the globe.
+                    Documented seasonal corridors — shown as animated arcs on the globe and traced on the map below.
                   </p>
-                  <div className="space-y-3">
+                  <MiniRouteMap routes={animal.migrationRoutes} height="h-44" />
+                  <div className="space-y-2 mt-3">
                     {animal.migrationRoutes.map((route, i) => {
-                      const color = conservationStatusHex[animal.conservationStatus] || '#38bdf8';
                       const n = route.points.length;
                       const start = route.points[0];
                       const end = route.points[n - 1];
                       const fmt = (p: { latitude: number; longitude: number }) =>
                         `${Math.abs(p.latitude).toFixed(1)}°${p.latitude >= 0 ? 'N' : 'S'} ${Math.abs(p.longitude).toFixed(1)}°${p.longitude >= 0 ? 'E' : 'W'}`;
                       return (
-                        <div
-                          key={i}
-                          className="rounded-xl bg-secondary-50 dark:bg-secondary-700/40 p-3 flex items-center gap-4"
-                        >
-                          <svg viewBox="0 0 120 40" className="w-24 h-10 shrink-0" aria-hidden="true">
-                            <path
-                              d="M5 32 Q 60 0 115 32"
-                              fill="none"
-                              stroke={color}
-                              strokeWidth="2"
-                              strokeDasharray="5 3"
-                            />
-                            {route.points.map((p, j) => {
-                              const t = n === 1 ? 0 : j / (n - 1);
-                              const x = (1 - t) * (1 - t) * 5 + 2 * (1 - t) * t * 60 + t * t * 115;
-                              const y = (1 - t) * (1 - t) * 32 + 2 * (1 - t) * t * 0 + t * t * 32;
-                              return <circle key={j} cx={x} cy={y} r="2.5" fill={color} />;
-                            })}
-                          </svg>
-                          <div className="min-w-0">
-                            <div className="text-sm font-medium text-secondary-900 dark:text-white">
-                              {route.name}
-                            </div>
-                            <div className="text-xs text-secondary-500 dark:text-secondary-400 mt-0.5">
-                              {n} waypoints · {fmt(start)} → {fmt(end)}
-                            </div>
-                          </div>
+                        <div key={i} className="flex items-center gap-2 text-sm">
+                          <span
+                            className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                              route.season === 'spring' ? 'bg-success-500' :
+                              route.season === 'fall' ? 'bg-warning-500' :
+                              'bg-secondary-400'
+                            }`}
+                          />
+                          <span className="text-secondary-700 dark:text-secondary-300 font-medium capitalize">
+                            {route.season ?? 'year-round'}
+                          </span>
+                          <span className="text-secondary-500 dark:text-secondary-400 truncate">
+                            {route.name} · {fmt(start)} → {fmt(end)}
+                          </span>
                         </div>
                       );
                     })}

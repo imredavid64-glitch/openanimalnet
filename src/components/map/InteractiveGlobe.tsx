@@ -124,7 +124,21 @@ export default function InteractiveGlobe() {
   };
 
   const handleRouteClick = (info: RouteInfo) => {
-    router.push(`/animal/${info.animalId}`);
+    // Focus like a marker click (popup + fly-to) — the corridor also traces
+    // itself on the globe. The popup's profile button navigates.
+    const animal = sampleAnimals.find(a => a.id === info.animalId);
+    if (!animal) return;
+    setSelectedAnimal(info.animalId);
+    globeRef.current?.flyTo?.(animal.location.latitude, animal.location.longitude);
+  };
+
+  // Popup gallery: step through the species in the current filtered view
+  const stepGallery = (dir: 1 | -1) => {
+    if (filteredData.length === 0) return;
+    const idx = filteredData.findIndex((d) => d.id === selectedAnimal);
+    const next = filteredData[(idx + dir + filteredData.length) % filteredData.length];
+    setSelectedAnimal(next.id);
+    globeRef.current?.flyTo?.(next.lat, next.lng);
   };
 
   // Convert sample animals to format suitable for globe
@@ -340,8 +354,9 @@ export default function InteractiveGlobe() {
         {selectedAnimal && (() => {
           const animal = sampleAnimals.find(a => a.id === selectedAnimal);
           if (!animal) return null;
+          const galleryIdx = filteredData.findIndex((d) => d.id === selectedAnimal);
           return (
-            <div className="absolute bottom-24 left-6 z-20 bg-white/95 dark:bg-secondary-900/95 backdrop-blur-xl rounded-2xl p-4 shadow-2xl w-72 border border-white/20">
+            <div className="absolute bottom-24 left-6 z-20 bg-white/95 dark:bg-secondary-900/95 backdrop-blur-xl rounded-2xl p-4 shadow-2xl w-80 border border-white/20">
               <div className="flex items-start gap-3">
                 <div className="w-14 h-14 rounded-xl overflow-hidden bg-secondary-200 dark:bg-secondary-700 shrink-0">
                   {animal.images?.[0] ? (
@@ -376,7 +391,15 @@ export default function InteractiveGlobe() {
                   ×
                 </button>
               </div>
-              <div className="flex gap-2 mt-3">
+              <div className="flex items-center gap-2 mt-3">
+                <button
+                  onClick={() => stepGallery(-1)}
+                  className="p-2 rounded-xl bg-secondary-100 dark:bg-secondary-700 hover:bg-secondary-200 dark:hover:bg-secondary-600 text-secondary-700 dark:text-secondary-100 text-sm transition-colors"
+                  title="Previous species in view"
+                  aria-label="Previous species"
+                >
+                  ‹
+                </button>
                 <button
                   onClick={() => router.push(`/animal/${animal.id}`)}
                   className="flex-1 px-3 py-2 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium transition-colors"
@@ -389,7 +412,20 @@ export default function InteractiveGlobe() {
                 >
                   Monitor
                 </button>
+                <button
+                  onClick={() => stepGallery(1)}
+                  className="p-2 rounded-xl bg-secondary-100 dark:bg-secondary-700 hover:bg-secondary-200 dark:hover:bg-secondary-600 text-secondary-700 dark:text-secondary-100 text-sm transition-colors"
+                  title="Next species in view"
+                  aria-label="Next species"
+                >
+                  ›
+                </button>
               </div>
+              {filteredData.length > 1 && (
+                <div className="mt-2 text-[11px] text-secondary-400 dark:text-secondary-500 text-center">
+                  {galleryIdx >= 0 ? galleryIdx + 1 : '—'} of {filteredData.length} in view
+                </div>
+              )}
             </div>
           );
         })()}

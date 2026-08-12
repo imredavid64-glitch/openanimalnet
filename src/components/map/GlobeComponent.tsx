@@ -134,6 +134,9 @@ export default forwardRef(function GlobeComponent(
       speed: number;
       phase: number;
       material: RouteMaterial;
+      geo: THREE.BufferGeometry;
+      // Route-trace reveal: 0 = idle, else progress 0→1 (line draws itself)
+      trace: number;
       animalId: string;
       routeName: string;
     }[]
@@ -256,6 +259,17 @@ export default forwardRef(function GlobeComponent(
           ? 0.95
           : 0.4 + 0.08 * Math.sin(now * 1.6 + anim.phase * 9);
         anim.dot.scale.setScalar(hovered ? 1.8 : 1);
+        // Route-trace reveal: draw the line progressively, then return it to
+        // the full corridor (a comet lap runs alongside)
+        if (anim.trace > 0) {
+          anim.trace += 0.008;
+          if (anim.trace >= 1) {
+            anim.trace = 0;
+            anim.geo.setDrawRange(0, Infinity);
+          } else {
+            anim.geo.setDrawRange(0, Math.floor(anim.trace * 97));
+          }
+        }
         // Directional arrows: three cones spaced along the route, oriented to
         // the curve tangent so the flow direction is obvious
         for (let a = 0; a < anim.arrows.length; a++) {
@@ -425,6 +439,11 @@ export default forwardRef(function GlobeComponent(
       const route = pickRoute(event);
       if (route) {
         onRouteClick?.(route);
+        // Route-trace reveal: make the corridor draw itself from start to end
+        const anim = routeAnimsRef.current.find(
+          (a) => a.animalId === route.animalId && a.routeName === route.routeName,
+        );
+        if (anim) anim.trace = 0.0001;
         return;
       }
       const id = pickMarker(event);
@@ -624,6 +643,8 @@ export default forwardRef(function GlobeComponent(
       speed: number;
       phase: number;
       material: RouteMaterial;
+      geo: THREE.BufferGeometry;
+      trace: number;
       animalId: string;
       routeName: string;
     }[] = [];
@@ -655,7 +676,8 @@ export default forwardRef(function GlobeComponent(
         const curve = new THREE.CatmullRomCurve3(controls, false, 'catmullrom', 0.5);
 
         // Route line — dashed and animated (flowing dash) so it reads as a
-        // directional corridor; carries its identity for picking/highlighting
+        // directional corridor; carries its identity for picking/highlighting.
+        // Its drawRange is used for the click-to-trace reveal animation.
         const lineGeo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(96));
         const lineMat = new THREE.LineDashedMaterial({
           color,
@@ -694,6 +716,8 @@ export default forwardRef(function GlobeComponent(
           speed: 0.035 + (animalIdx * 0.007 + routeIdx * 0.005) % 0.02,
           phase: animalIdx * 0.21 + routeIdx * 0.37,
           material: lineMat as RouteMaterial,
+          geo: lineGeo,
+          trace: 0,
           animalId: d.id,
           routeName: route.name,
         });

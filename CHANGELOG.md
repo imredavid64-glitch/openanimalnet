@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.12.0] - 2026-08-12
+
+### Added
+- **Route trace animation**: clicking a migration corridor now draws it from
+  start to end (the line's drawRange reveals progressively over ~2s) while
+  the camera focuses the species — a clear "here is the path" moment. Route
+  clicks now focus the species (popup + fly-to) instead of navigating away,
+  matching the marker-click behavior.
+- **Mini route maps on profiles**: the Seasonal Migration cards on animal
+  detail and monitor pages now show a real equirectangular world map
+  (NASA earth texture base) with each corridor drawn as a dashed,
+  season-colored polyline over its true geographic path, waypoint dots, and
+  a season legend (`src/components/map/MiniRouteMap.tsx`).
+- **Popup gallery mode**: the globe's details popup gained ‹ › buttons that
+  cycle through the species in the current filtered view (flying to each)
+  with a "N of M in view" counter.
+
 ## [1.11.0] - 2026-08-12
 
 ### Added

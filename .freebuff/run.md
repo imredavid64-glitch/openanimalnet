@@ -357,6 +357,21 @@ node .freebuff/start-preview.js   # spawns `next start -p 3100` detached
   count instead of hardcoding it.
 - Version 1.11.0; tests 19/19 + 12/12 (integration counts updated to 28).
 
+## Round 13 (Aug 12 2026): route trace, mini route maps, popup gallery
+
+- **Route trace**: clicking a corridor reveals it progressively (drawRange
+  of the dashed Line animated 0→97 verts over ~2s) and focuses the species
+  (popup + fly-to) instead of navigating away — consistent with marker
+  clicks. Trace restarts on repeat clicks; the reveal resets cleanly.
+- **Mini route maps**: `src/components/map/MiniRouteMap.tsx` renders an
+  equirectangular world map (earth.jpg as the base layer) with dashed
+  season-colored polylines + waypoint dots; used on the animal detail and
+  monitor pages' Seasonal Migration cards (replaced the old decorative SVG
+  arcs).
+- **Popup gallery**: ‹ › buttons on the details popup cycle through the
+  current filtered view with a "N of M in view" counter, flying to each.
+- Version 1.12.0; tests 19/19 + 12/12.
+
 ## Remaining environment note
 
 - Some Unsplash images are ORB-blocked inside the Freebuff preview webview
