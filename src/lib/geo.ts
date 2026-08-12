@@ -41,3 +41,40 @@ export function formatDurationDays(days: number): string {
   if (days >= 60) return `~${(days / 30).toFixed(0)} months`;
   return `~${Math.round(days)} days`;
 }
+
+// --- Point-to-route distance (for conflict risk scoring) ---
+
+function toRad(deg: number): number {
+  return (deg * Math.PI) / 180;
+}
+
+/**
+ * Distance (km) from a point to a great-circle segment, approximated with
+ * equirectangular projection (accurate enough at corridor scale, far cheaper
+ * than full great-circle segment math).
+ */
+export function distanceToSegmentKm(p: GeoPoint, a: GeoPoint, b: GeoPoint): number {
+  const lat = toRad(p.latitude);
+  const x = (b.longitude - a.longitude) * Math.cos(lat);
+  const y = b.latitude - a.latitude;
+  const len2 = x * x + y * y;
+  let t = 0;
+  if (len2 > 0) {
+    t = ((p.longitude - a.longitude) * Math.cos(lat) * x + (p.latitude - a.latitude) * y) / len2;
+    t = Math.max(0, Math.min(1, t));
+  }
+  const projLat = a.latitude + t * y;
+  const projLng = a.longitude + t * x / Math.cos(lat);
+  return greatCircleKm(p, { latitude: projLat, longitude: projLng });
+}
+
+/** Minimum distance (km) from a point to any segment of a route polyline. */
+export function distanceToRouteKm(p: GeoPoint, points: GeoPoint[]): number {
+  if (points.length === 0) return Number.POSITIVE_INFINITY;
+  if (points.length === 1) return greatCircleKm(p, points[0]);
+  let min = Number.POSITIVE_INFINITY;
+  for (let i = 0; i < points.length - 1; i++) {
+    min = Math.min(min, distanceToSegmentKm(p, points[i], points[i + 1]));
+  }
+  return min;
+}

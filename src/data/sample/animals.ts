@@ -35,6 +35,21 @@ export const sampleAnimals: Animal[] = [
       { year: 2023, estimate: 23000 },
     ],
     populationHistoryNote: 'Africa-wide estimates: ~23,000–39,000 (2004), ~20,000–35,000 (2015), ~23,000 (2023 IUCN)',
+    migrationRoutes: [
+      {
+        name: 'Serengeti–Masai Mara corridor, Tanzania/Kenya — annual wildebeest-herd movement',
+        season: 'year-round',
+        startMonth: 1,
+        endMonth: 12,
+        points: [
+          { latitude: -2.6, longitude: 34.9 },
+          { latitude: -2.33, longitude: 34.83 },
+          { latitude: -1.9, longitude: 34.95 },
+          { latitude: -1.5, longitude: 35.0 },
+          { latitude: -1.4, longitude: 35.1 },
+        ],
+      },
+    ],
     isMonitored: true,
     lastUpdated: new Date('2026-08-01'),
     dataCategories: ['biological', 'behavioral', 'ecological', 'population', 'health'],
@@ -72,6 +87,20 @@ export const sampleAnimals: Animal[] = [
       { year: 2016, estimate: 415000 },
     ],
     populationHistoryNote: 'Africa-wide totals: 1.3M (1979), ~600k (1989), 415k (2016 Great Elephant Census)',
+    migrationRoutes: [
+      {
+        name: 'Amboseli–Tsavo (Kimana) corridor, Kenya — between Kilimanjaro and the Chyulu Hills',
+        season: 'year-round',
+        startMonth: 1,
+        endMonth: 12,
+        points: [
+          { latitude: -2.65, longitude: 37.25 },
+          { latitude: -2.78, longitude: 37.55 },
+          { latitude: -2.6, longitude: 37.9 },
+          { latitude: -3.0, longitude: 38.0 },
+        ],
+      },
+    ],
     isMonitored: true,
     lastUpdated: new Date('2026-08-01'),
     dataCategories: ['biological', 'behavioral', 'ecological', 'population', 'health', 'human-interaction'],
@@ -111,6 +140,20 @@ export const sampleAnimals: Animal[] = [
       { year: 2022, estimate: 3682 },
     ],
     populationHistoryNote: 'India-only census totals (All-India Tiger Census); the global count is higher',
+    migrationRoutes: [
+      {
+        name: 'Corbett–Rajaji corridor, Uttarakhand, India — dispersal route across the Ganges',
+        season: 'year-round',
+        startMonth: 1,
+        endMonth: 12,
+        points: [
+          { latitude: 29.9, longitude: 78.6 },
+          { latitude: 29.7, longitude: 78.8 },
+          { latitude: 29.55, longitude: 78.9 },
+          { latitude: 29.45, longitude: 79.05 },
+        ],
+      },
+    ],
     isMonitored: true,
     lastUpdated: new Date('2026-08-01'),
     dataCategories: ['biological', 'behavioral', 'ecological', 'population', 'health', 'human-interaction'],

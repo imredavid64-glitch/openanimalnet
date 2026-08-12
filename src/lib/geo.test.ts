@@ -1,6 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { greatCircleKm, routeDistanceKm, formatKm, formatDurationDays } from './geo.ts';
+import {
+  greatCircleKm,
+  routeDistanceKm,
+  formatKm,
+  formatDurationDays,
+  distanceToSegmentKm,
+  distanceToRouteKm,
+} from './geo.ts';
 
 test('greatCircleKm: zero distance for identical points', () => {
   assert.equal(greatCircleKm({ latitude: 10, longitude: 20 }, { latitude: 10, longitude: 20 }), 0);
@@ -60,4 +67,30 @@ test('formatDurationDays: days and months', () => {
   assert.equal(formatDurationDays(30), '~30 days');
   assert.equal(formatDurationDays(90), '~3 months');
   assert.equal(formatDurationDays(75), '~3 months');
+});
+
+test('distanceToSegmentKm: point on the segment is ~0', () => {
+  const a = { latitude: 0, longitude: 0 };
+  const b = { latitude: 0, longitude: 10 };
+  const on = { latitude: 0, longitude: 5 };
+  assert.ok(distanceToSegmentKm(on, a, b) < 1);
+});
+
+test('distanceToSegmentKm: offset from a parallel is the meridian distance', () => {
+  const a = { latitude: 0, longitude: 0 };
+  const b = { latitude: 0, longitude: 10 };
+  const off = { latitude: 1, longitude: 5 }; // ~111 km north of the segment
+  const d = distanceToSegmentKm(off, a, b);
+  assert.ok(d > 100 && d < 125, `expected ~111 km, got ${d}`);
+});
+
+test('distanceToRouteKm: nearest point beyond the segment clamps to the endpoint', () => {
+  const pts = [{ latitude: 0, longitude: 0 }, { latitude: 0, longitude: 10 }];
+  const beyond = { latitude: 0, longitude: 15 }; // 5° east of the far endpoint ≈ 556 km
+  const d = distanceToRouteKm(beyond, pts);
+  assert.ok(d > 500 && d < 620, `expected ~556 km, got ${d}`);
+});
+
+test('distanceToRouteKm: empty route is infinity', () => {
+  assert.equal(distanceToRouteKm({ latitude: 0, longitude: 0 }, []), Number.POSITIVE_INFINITY);
 });
