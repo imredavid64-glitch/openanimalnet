@@ -30,9 +30,12 @@ jobs:
       - name: Deploy to Vercel (production)
         id: deploy
         run: |
+          set +e
           npx --yes vercel@latest deploy --prod --token "$VERCEL_TOKEN" --yes > /tmp/vercel-deploy.log 2>&1
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           cat /tmp/vercel-deploy.log
+          exit $code
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -41,7 +44,7 @@ jobs:
       # Diagnostics: the Actions run logs are admin-only, so on failure file
       # the Vercel CLI output as a repo issue where it's visible to everyone.
       - name: Report deploy failure
-        if: ${{ failure() && steps.deploy.outputs.exit_code != 0 }}
+        if: ${{ always() && steps.deploy.outputs.exit_code != '' && steps.deploy.outputs.exit_code != '0' }}
         run: |
           tail -120 /tmp/vercel-deploy.log > /tmp/vercel-tail.log
           body=$(sed 's/^/    /' /tmp/vercel-tail.log)
