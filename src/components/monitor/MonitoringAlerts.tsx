@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { sampleAlerts } from '@/data/sample/alerts';
 import { ConservationStatus } from '@/types/animal/types';
 import { SeverityIcon, BellIcon, PinIcon, CheckIcon } from '@/components/icons';
+import AlertActionCenter from '@/components/monitor/AlertActionCenter';
 
 const conservationStatusColors: Record<ConservationStatus, string> = {
   EX: 'bg-danger-500',
@@ -360,6 +361,13 @@ export default function MonitoringAlerts() {
                         </div>
                       </div>
                       
+                      {/* Interactive Action Center for critical alerts */}
+                      {alert.type === 'critical' && (
+                        <div className="mb-6">
+                          <AlertActionCenter alert={alert} />
+                        </div>
+                      )}
+
                       {/* Additional Info */}
                       <div className="bg-secondary-50 dark:bg-secondary-700/50 rounded-2xl p-4">
                         <h4 className="text-sm font-semibold text-secondary-500 dark:text-secondary-400 mb-2">
