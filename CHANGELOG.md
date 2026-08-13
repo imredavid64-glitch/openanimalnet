@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.4] - 2026-08-13
+
+### Fixed
+- **Fabricated data removed**: the StatsDashboard "Data Coverage" chart used
+  `Math.random()` for every value; "Population Trends" showed made-up global
+  numbers (45K mammals, 95K birds). Both now use real data derived from the
+  28-species dataset.
+- **monitoringCoverage percentages** were fabricated (mammals 75%, birds 68%).
+  Replaced with real derived values: 100% for every category that has species.
+- **YAxis tickFormatter** type error in StatsDashboard caught by CI.
+
+### Changed
+- **All 28 species now have populationHistory data**: per-species time-series
+  charts on every profile page, sourced from IUCN, FAO, NOAA, and peer-reviewed
+  surveys (COSEWIC, Hammond et al., NKMP, PBSG, etc.).
+
+### Removed
+- **Dead CSS utilities**: 7 unused custom animations (float, glow, slide-in,
+  fade-in, spin-slow, pulse-slow, bounce-slow) and their keyframes, 2 unused
+  backgroundImage entries, 3 unused shadow/timing utilities from tailwind.config.
+
 ## [1.18.3] - 2026-08-12
 
 ### Changed
