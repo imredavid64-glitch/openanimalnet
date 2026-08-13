@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.9] - 2026-08-13
+
+### Added
+- **Responsible Agriculture & Humane Food Systems** (`/livestock`): real-time
+  livestock health monitoring with telemetry dashboards for herd welfare and
+  early disease detection. Tracks rumination patterns, body temperature, and
+  mobility metrics. Disease risk assessment with probability scores for
+  mastitis, lameness, and heat stress. Composite herd health score from
+  multi-metric analysis.
+
 ## [1.18.8] - 2026-08-13
 
 ### Added

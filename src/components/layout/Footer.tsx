@@ -14,6 +14,7 @@ const footerLinks = {
     { name: 'AI Analysis', path: '/ai' },
     { name: 'Compare Species', path: '/compare' },
     { name: 'Companion Animals', path: '/reunite' },
+    { name: 'Livestock Health', path: '/livestock' },
     { name: 'Impact', path: '/impact' },
   ],
   data: [
