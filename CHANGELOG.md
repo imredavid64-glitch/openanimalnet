@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.5] - 2026-08-13
+
+### Added
+- **Comprehensive documentation** (`docs/`): API reference with request/response
+  examples, architecture deep-dive, data sources & verification guide,
+  deployment guide, and contributing guide with code conventions.
+
 ## [1.18.4] - 2026-08-13
 
 ### Fixed

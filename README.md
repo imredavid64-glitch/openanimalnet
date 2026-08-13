@@ -248,9 +248,18 @@ openanimalnet/
 └── package.json            # Dependencies
 ```
 
+## Documentation
+
+- [API Reference](docs/api-reference.md) — complete endpoint documentation with examples
+- [Architecture](docs/architecture.md) — system design, component structure, and performance
+- [Data Sources](docs/data-sources.md) — verification methodology and data freshness
+- [Deployment](docs/deployment.md) — Vercel setup, CI/CD, and troubleshooting
+- [Contributing](docs/contributing.md) — setup guide, code conventions, and PR process
+
 ## Contributing
 
-Contributions are welcome! Please feel free to submit issues or pull requests.
+Contributions are welcome! Please see the [Contributing Guide](docs/contributing.md)
+for setup instructions and code conventions.
 
 ## License
 
