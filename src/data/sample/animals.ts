@@ -1576,12 +1576,14 @@ export const sampleMonitoringData = {
     { type: 'alert', animal: 'African Bush Elephant', count: 3, timestamp: new Date() },
     { type: 'data_update', animal: 'Bald Eagle', count: 18, timestamp: new Date() },
   ],
+  // Real derived values: monitored / total per animal category.
+  // All 28 species have isMonitored: true.
   monitoringCoverage: {
-    mammals: 0.75,
-    birds: 0.68,
-    reptiles: 0.45,
-    amphibians: 0.32,
-    fish: 0.28,
-    marine: 0.55,
+    mammals: 1.0,
+    birds: 1.0,
+    reptiles: 1.0,
+    amphibians: 1.0,
+    fish: 0,       // no fish species in the dataset
+    marine: 1.0,
   },
 };
