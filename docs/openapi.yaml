@@ -1,0 +1,524 @@
+openapi: 3.1.0
+info:
+  title: OpenAnimalNet API
+  description: |
+    Public JSON API for the OpenAnimalNet global animal data platform.
+
+    All endpoints are rate-limited to **60 requests per minute per IP** and
+    return `Cache-Control: public, s-maxage=60` headers.
+
+    No API keys required — all data is derived from the 28-species dataset
+    and live public APIs (GBIF, Wikidata, Wikipedia, iNaturalist).
+  version: 1.18.5
+  contact:
+    name: OpenAnimalNet
+    url: https://github.com/imredavid64-glitch/openanimalnet
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://openanimalnet.vercel.app
+    description: Production
+
+paths:
+  /api/v1/animals:
+    get:
+      operationId: listAnimals
+      summary: List species
+      description: |
+        List all species with optional filtering and pagination.
+        Returns a paginated array of animal profiles.
+      tags: [Animals]
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+            enum: [mammals, birds, reptiles, amphibians, fish, invertebrates, insects, marine]
+          description: Filter by animal category
+        - name: conservationStatus
+          in: query
+          schema:
+            type: string
+            enum: [EX, EW, CR, EN, VU, NT, LC, DD, NE]
+          description: Filter by IUCN conservation status
+        - name: dataCategories
+          in: query
+          schema:
+            type: string
+          description: Comma-separated data category filter (biological, behavioral, ecological, population, health, agricultural, shelter, human-interaction)
+          example: biological,health
+        - name: isMonitored
+          in: query
+          schema:
+            type: boolean
+          description: Filter by monitoring status
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Full-text search across common name, scientific name, and description
+          example: elephant
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Results per page
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Animal"
+                      pagination:
+                        $ref: "#/components/schemas/Pagination"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/animals/{id}:
+    get:
+      operationId: getAnimal
+      summary: Get species profile
+      description: Full profile for one species, including all five data categories.
+      tags: [Animals]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Species ID (e.g., elephant-001, lion-001)
+          example: lion-001
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/AnimalData"
+        "404":
+          description: Species not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/populations:
+    get:
+      operationId: listPopulations
+      summary: Population estimates
+      description: Population estimates and conservation metrics for all species.
+      tags: [Populations]
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PopulationRecord"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/monitoring/alerts:
+    get:
+      operationId: listAlerts
+      summary: List monitoring alerts
+      description: Active monitoring alerts, filterable by severity type.
+      tags: [Monitoring]
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [critical, warning, info]
+          description: Filter by alert severity
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Alert"
+        "400":
+          description: Invalid type parameter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/monitoring/stats:
+    get:
+      operationId: getMonitoringStats
+      summary: Dashboard statistics
+      description: Aggregated monitoring statistics for the dashboard.
+      tags: [Monitoring]
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/MonitoringStats"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/locations:
+    get:
+      operationId: listLocations
+      summary: Recent telemetry locations
+      description: Recent tracking locations for all monitored animals.
+      tags: [Locations]
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/LocationRecord"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/live/sync:
+    get:
+      operationId: liveSync
+      summary: Live GBIF sync
+      description: |
+        Fetch recent georeferenced occurrences from GBIF for a specific species.
+        Results are cached for 60 seconds per species.
+      tags: [Live Sync]
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Species ID
+          example: lion-001
+      responses:
+        "200":
+          description: Success
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: public, max-age=60, stale-while-revalidate=300
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/GbifSync"
+        "400":
+          description: Missing id parameter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "502":
+          description: GBIF sync failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+components:
+  schemas:
+    Animal:
+      type: object
+      properties:
+        id:
+          type: string
+          example: lion-001
+        commonName:
+          type: string
+          example: African Lion
+        scientificName:
+          type: string
+          example: Panthera leo
+        category:
+          type: string
+          enum: [mammals, birds, reptiles, amphibians, fish, invertebrates, insects, marine]
+        description:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        conservationStatus:
+          type: string
+          enum: [EX, EW, CR, EN, VU, NT, LC, DD, NE]
+        taxonomy:
+          type: object
+          properties:
+            kingdom: { type: string }
+            phylum: { type: string }
+            class: { type: string }
+            order: { type: string }
+            family: { type: string }
+            genus: { type: string }
+            species: { type: string }
+        location:
+          $ref: "#/components/schemas/GeoPoint"
+        habitat:
+          type: array
+          items:
+            type: string
+        populationEstimate:
+          type: integer
+        populationHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/PopulationPoint"
+        populationHistoryNote:
+          type: string
+        isMonitored:
+          type: boolean
+        lastUpdated:
+          type: string
+          format: date-time
+        dataCategories:
+          type: array
+          items:
+            type: string
+        migrationRoutes:
+          type: array
+          items:
+            $ref: "#/components/schemas/MigrationRoute"
+
+    AnimalData:
+      type: object
+      properties:
+        animal:
+          $ref: "#/components/schemas/Animal"
+        biological:
+          type: object
+        behavioral:
+          type: object
+        ecological:
+          type: object
+        population:
+          type: object
+        health:
+          type: object
+
+    GeoPoint:
+      type: object
+      properties:
+        latitude: { type: number }
+        longitude: { type: number }
+        altitude: { type: number }
+        accuracy: { type: number }
+        timestamp: { type: string, format: date-time }
+        source: { type: string }
+
+    PopulationPoint:
+      type: object
+      properties:
+        year: { type: integer }
+        estimate: { type: integer }
+
+    MigrationRoute:
+      type: object
+      properties:
+        name: { type: string }
+        season: { type: string }
+        startMonth: { type: integer }
+        endMonth: { type: integer }
+        waypoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/GeoPoint"
+
+    PopulationRecord:
+      type: object
+      properties:
+        animalId: { type: string }
+        commonName: { type: string }
+        scientificName: { type: string }
+        conservationStatus: { type: string }
+        populationEstimate: { type: integer, nullable: true }
+        aerialSurveyCounts: { type: number, nullable: true }
+        cameraTrapCaptureRates: { type: number, nullable: true }
+        rangeContractionPercentage: { type: number, nullable: true }
+
+    Alert:
+      type: object
+      properties:
+        id: { type: string }
+        animalId: { type: string }
+        type:
+          type: string
+          enum: [critical, warning, info]
+        title: { type: string }
+        message: { type: string }
+        location:
+          $ref: "#/components/schemas/GeoPoint"
+        timestamp: { type: string, format: date-time }
+
+    MonitoringStats:
+      type: object
+      properties:
+        totalAnimals: { type: integer }
+        monitoredAnimals: { type: integer }
+        activeAlerts: { type: integer }
+        monitoringCoverage:
+          type: object
+          properties:
+            mammals: { type: number }
+            birds: { type: number }
+            reptiles: { type: number }
+            amphibians: { type: number }
+            fish: { type: number }
+            marine: { type: number }
+
+    LocationRecord:
+      type: object
+      properties:
+        animalId: { type: string }
+        commonName: { type: string }
+        latitude: { type: number }
+        longitude: { type: number }
+        altitude: { type: number, nullable: true }
+        accuracy: { type: number, nullable: true }
+        source: { type: string }
+        timestamp: { type: string, format: date-time }
+
+    GbifSync:
+      type: object
+      properties:
+        animalId: { type: string }
+        scientificName: { type: string }
+        gbifKey: { type: integer }
+        occurrences:
+          type: array
+          items:
+            type: object
+            properties:
+              key: { type: integer }
+              decimalLatitude: { type: number }
+              decimalLongitude: { type: number }
+              country: { type: string }
+              eventDate: { type: string }
+              basisOfRecord: { type: string }
+        fetchedAt: { type: string, format: date-time }
+        count: { type: integer }
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+        message:
+          type: string
+
+    Pagination:
+      type: object
+      properties:
+        page: { type: integer }
+        limit: { type: integer }
+        total: { type: integer }
+        totalPages: { type: integer }
+
+  responses:
+    RateLimited:
+      description: Rate limit exceeded (60 req/min per IP)
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorResponse"
+              - type: object
+                properties:
+                  retryAfter:
+                    type: integer
+          example:
+            success: false
+            error: "Rate limit exceeded"
+            retryAfter: 45
+
+  tags:
+    - name: Animals
+      description: Species profiles and listings
+    - name: Populations
+      description: Population estimates and conservation metrics
+    - name: Monitoring
+      description: Alerts and dashboard statistics
+    - name: Locations
+      description: Telemetry tracking data
+    - name: Live Sync
+      description: Real-time GBIF occurrence data

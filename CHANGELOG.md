@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.6] - 2026-08-13
+
+### Added
+- **OpenAPI 3.1 spec** (`docs/openapi.yaml`): machine-readable API specification
+  for all 7 endpoints with request/response schemas, examples, and rate-limit
+  documentation. Importable into Swagger Editor, Postman, or Insomnia.
+
 ## [1.18.5] - 2026-08-13
 
 ### Added

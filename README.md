@@ -160,7 +160,9 @@ verification tooling → the React frontend. Nothing is written back.
 ## API
 
 The platform ships a public JSON API under `/api/v1/*` (all endpoints are rate
-limited to 60 req/min per IP and send cache headers):
+limited to 60 req/min per IP and send cache headers). An
+[OpenAPI 3.1 spec](docs/openapi.yaml) is available for interactive testing
+in Swagger Editor, Postman, or Insomnia:
 
 | Endpoint | Description |
 | --- | --- |

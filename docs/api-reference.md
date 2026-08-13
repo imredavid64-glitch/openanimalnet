@@ -1,5 +1,9 @@
 # OpenAnimalNet API Reference
 
+> **Interactive testing**: import [`docs/openapi.yaml`](openapi.yaml) into
+> [Swagger Editor](https://editor.swagger.io), Postman, or Insomnia to test
+> endpoints interactively.
+
 All endpoints are rate-limited to **60 requests per minute per IP** and return
 `Cache-Control: public, s-maxage=60` headers. Responses use a consistent envelope:
 
