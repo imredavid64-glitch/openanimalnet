@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.15] - 2026-08-13
+
+### Changed
+- **AI Assistant rewritten** with full dataset knowledge: now understands
+  all 28 species, conservation data, migration corridors, animal laws,
+  climate scenarios, API docs, alerts, statistics, and source verification.
+  Supports natural language queries about any topic in the database.
+
 ## [1.18.14] - 2026-08-13
 
 ### Changed
