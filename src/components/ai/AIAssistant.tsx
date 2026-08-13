@@ -177,7 +177,7 @@ function generateResponse(query: string): { text: string; data?: any } {
     migrators.forEach(a => {
       a.migrationRoutes!.forEach(r => {
         text += `• **${a.commonName}**: ${r.name} (${r.season})\n`;
-        text += `  ${r.waypoints?.length || 0} waypoints, months ${r.startMonth}-${r.endMonth}\n`;
+        text += `  ${r.points?.length || 0} waypoints, months ${r.startMonth}-${r.endMonth}\n`;
       });
     });
 
