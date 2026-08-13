@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.13] - 2026-08-13
+
+### Added
+- **Animal Laws database** (`/laws`): searchable collection of 25+ key animal
+  protection laws from around the world. Filter by category (wildlife,
+  companion, service-animal, agriculture, trade), region, and keyword.
+  Each law includes summary, key provisions, enforcement agency, penalties,
+  and official source links.
+- **Climate Corridor Simulator** (migration page): time-scrubber showing
+  predictive shifts in migration corridors under 5 IPCC SSP scenarios
+  (SSP1-1.9 through SSP5-8.5). Covers 6 species with researched shift
+  rates, risk assessments, and detailed impact notes.
+
 ## [1.18.12] - 2026-08-13
 
 ### Added

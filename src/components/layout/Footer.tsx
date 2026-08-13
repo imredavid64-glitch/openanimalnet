@@ -31,6 +31,7 @@ const footerLinks = {
     { name: 'About Us', path: '/about' },
     { name: 'Methodology', path: '/methodology' },
     { name: 'Data Sources', path: '/sources' },
+    { name: 'Animal Laws', path: '/laws' },
     { name: 'Partners', path: '/partners' },
     { name: 'Careers', path: '/careers' },
   ],

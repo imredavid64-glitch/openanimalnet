@@ -7,6 +7,7 @@ import { routeDistanceKm, formatKm, formatDurationDays } from '@/lib/geo';
 import { CalendarIcon } from '@/components/icons';
 import ExportButton, { ExportRow } from './ExportButton';
 import ExportIcs from './ExportIcs';
+import ClimateCorridorSimulator from '@/components/migration/ClimateCorridorSimulator';
 
 // Calendar season: the four seasons plus year-round. Migration legs are
 // spring/fall/year-round; summer/winter cells come from year-round corridors.
@@ -268,6 +269,15 @@ export default function MigrationPage() {
         or see the full data behind each route on its{' '}
         <Link href="/animal/arctic-tern-001" className="text-primary-600 dark:text-primary-400 hover:underline">species profile</Link>.
       </p>
+
+      <Section>Climate Corridor Simulator</Section>
+      <p>
+        See how migration corridors may shift under different warming scenarios.
+        Use the time-scrubber to visualize 10-to-50-year predictive shifts in
+        migration routes under varying global temperature scenarios (SSP1-1.9
+        through SSP5-8.5).
+      </p>
+      <ClimateCorridorSimulator />
     </StaticPage>
   );
 }
