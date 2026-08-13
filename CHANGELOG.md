@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.10] - 2026-08-13
+
+### Added
+- **Pet Tracker** (`/tracker`): personal pet tracking with care dashboard.
+  Add pets with profiles (name, species, breed, age, weight, microchip),
+  track vaccinations with next-due dates, log vet visits with diagnoses,
+  manage medications, set feeding schedules and exercise goals. Care
+  dashboard shows urgent/upcoming/routine needs at a glance. All data
+  stored locally in the browser (localStorage) — nothing sent to servers.
+
 ## [1.18.9] - 2026-08-13
 
 ### Added
