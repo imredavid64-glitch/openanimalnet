@@ -130,7 +130,7 @@ function generateResponse(query: string): { text: string; data?: any } {
 
     if (alerts.length) {
       text += `**Active Alerts (${alerts.length}):**\n`;
-      alerts.forEach(a => text += `• [${a.type.toUpperCase()}] ${a.title}: ${a.message}\n`);
+      alerts.forEach(a => text += `• [${a.type.toUpperCase()}] ${a.animal.commonName}: ${a.message}\n`);
       text += '\n';
     }
 
@@ -249,17 +249,17 @@ function generateResponse(query: string): { text: string; data?: any } {
     let text = `**Active Monitoring Alerts** (${sampleAlerts.length})\n\n`;
     if (critical.length) {
       text += `🔴 **Critical (${critical.length})**\n`;
-      critical.forEach(a => text += `• ${a.title} — ${a.message}\n`);
+      critical.forEach(a => text += `• ${a.animal.commonName} — ${a.message}\n`);
       text += '\n';
     }
     if (warning.length) {
       text += `🟡 **Warning (${warning.length})**\n`;
-      warning.forEach(a => text += `• ${a.title} — ${a.message}\n`);
+      warning.forEach(a => text += `• ${a.animal.commonName} — ${a.message}\n`);
       text += '\n';
     }
     if (info.length) {
       text += `🔵 **Info (${info.length})**\n`;
-      info.forEach(a => text += `• ${a.title} — ${a.message}\n`);
+      info.forEach(a => text += `• ${a.animal.commonName} — ${a.message}\n`);
     }
     return { text };
   }
