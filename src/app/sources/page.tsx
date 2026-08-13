@@ -165,7 +165,7 @@ export default function SourcesPage() {
           <p className="text-sm text-secondary-600 dark:text-secondary-400">
             Provides independently observed conservation status through citizen science observations.
             Each species has a stable iNaturalist taxon ID (e.g., {"lion-001"} → 41964) for cross-
-            verification. When iNaturalist's status matches our recorded status, it confirms accuracy.
+            verification. When iNaturalist&apos;s status matches our recorded status, it confirms accuracy.
           </p>
           <p className="text-xs text-secondary-400 mt-2">API: api.inaturalist.org/v1 (free, no key required)</p>
         </div>
@@ -173,7 +173,7 @@ export default function SourcesPage() {
 
       <Section>Climate & Population Sources</Section>
       <p>
-        Population history data comes from published censuses and surveys cited in each species'
+        Population history data comes from published censuses and surveys cited in each species&apos;
         <code className="text-xs bg-secondary-100 dark:bg-secondary-800 px-1.5 py-0.5 rounded">populationHistoryNote</code>.
         Climate corridor shift rates are based on IPCC AR6 and peer-reviewed range-shift research.
         Animal law data is sourced from official government legislation websites.
