@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.14] - 2026-08-13
+
+### Changed
+- **Expanded data sources documentation** (/sources): added detailed
+  descriptions of each data source (IUCN, GBIF, Wikipedia/Wikidata,
+  iNaturalist) with API endpoints and how they're used. Added Climate
+  & Population Sources section citing IPCC AR6 and peer-reviewed research.
+- **Multi-source verification** confirmed 28/28 species accurate across
+  all 4 live sources (Wikidata, Wikipedia, GBIF, iNaturalist).
+
 ## [1.18.13] - 2026-08-13
 
 ### Added
