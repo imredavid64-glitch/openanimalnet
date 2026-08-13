@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.8] - 2026-08-13
+
+### Added
+- **Custom paw-print favicon**: SVG favicon with the OpenAnimalNet brand color
+  (#0284c7), replacing the default Next.js icon. Includes web manifest for
+  PWA support and proper apple-touch-icon link.
+
 ## [1.18.7] - 2026-08-13
 
 ### Added

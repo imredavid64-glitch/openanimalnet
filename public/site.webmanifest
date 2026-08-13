@@ -1,0 +1,21 @@
+{
+  "name": "OpenAnimalNet",
+  "short_name": "OpenAnimalNet",
+  "description": "Global Animal Data Platform — monitor, analyze, and explore animal data from around the world.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ]
+}
