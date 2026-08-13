@@ -12,6 +12,7 @@ const footerLinks = {
     { name: 'Migrations', path: '/migration' },
     { name: 'Monitor', path: '/monitor' },
     { name: 'AI Analysis', path: '/ai' },
+    { name: 'Compare Species', path: '/compare' },
     { name: 'Companion Animals', path: '/reunite' },
     { name: 'Impact', path: '/impact' },
   ],

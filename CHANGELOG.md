@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.7] - 2026-08-13
+
+### Added
+- **Species Comparison tool** (`/compare`): select up to 6 species and compare
+  their population trends on an interactive multi-line chart. Searchable species
+  picker, color-coded lines with legend, source notes for each species, and
+  real-time Recharts visualization. Linked from the footer.
+
 ## [1.18.6] - 2026-08-13
 
 ### Added
