@@ -296,6 +296,15 @@ export function LinkedinIcon({ className }: { className?: string }) {
   );
 }
 
+export function SendIcon({ className }: { className?: string }) {
+  return (
+    <Svg className={className}>
+      <path d="M22 2L11 13" />
+      <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+    </Svg>
+  );
+}
+
 // Category glyphs — one recognizable line shape per class.
 const CATEGORY_PATHS: Record<AnimalCategory, ReactNode> = {
   mammals: (
