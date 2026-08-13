@@ -101,7 +101,7 @@ function generateResponse(query: string): { text: string; data?: any } {
   if (speciesMatch) {
     const source = speciesSources.find(s => s.animalId === speciesMatch.id);
     const data = sampleAnimalData.find(d => d.animal.id === speciesMatch.id);
-    const alerts = sampleAlerts.filter(a => a.animalId === speciesMatch.id);
+    const alerts = sampleAlerts.filter(a => a.animal.id === speciesMatch.id);
 
     let text = `**${speciesMatch.commonName}** (*${speciesMatch.scientificName}*)\n\n`;
     text += `**Conservation Status:** ${STATUS_NAMES[speciesMatch.conservationStatus]} (${speciesMatch.conservationStatus})\n`;
