@@ -107,7 +107,7 @@ function CrowdSighter({ sightings, onReport, onVerify }: any) {
                   {s.notes && <p className="text-xs text-secondary-500 mt-1">{s.notes}</p>}
                 </div>
                 <div className="flex items-center gap-2">
-                  {!s.verified && <button onClick={() => verifySighting(s.id)} className="px-3 py-1 rounded-lg text-xs bg-primary-100 text-primary-600 hover:bg-primary-200">Verify</button>}
+                  {!s.verified && <button onClick={() => onVerify(s.id)} className="px-3 py-1 rounded-lg text-xs bg-primary-100 text-primary-600 hover:bg-primary-200">Verify</button>}
                   {s.verified && <span className="text-xs text-success-600">Verified</span>}
                 </div>
               </div>
