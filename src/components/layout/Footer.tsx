@@ -13,6 +13,7 @@ const footerLinks = {
     { name: 'Monitor', path: '/monitor' },
     { name: 'AI Analysis', path: '/ai' },
     { name: 'Compare Species', path: '/compare' },
+    { name: 'Wildlife Safari', path: '/safari' },
     { name: 'Pet Tracker', path: '/tracker' },
     { name: 'Companion Animals', path: '/reunite' },
     { name: 'Livestock Health', path: '/livestock' },

@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.11] - 2026-08-13
+
+### Added
+- **Wildlife Safari** (`/safari`): Pokemon Go-style animal discovery and
+  collection system. Find animals near your location, encounter them with
+  a multi-phase discovery flow (spotting → investigate → discover), take
+  photos, add notes, and build a Pokedex-style collection. Animals spawn
+  based on conservation status (CR = legendary, EN = rare, VU = uncommon,
+  LC = common). Collection page shows completion progress, discovery
+  stats, and detailed species info. All data saved locally.
+
 ## [1.18.10] - 2026-08-13
 
 ### Added
