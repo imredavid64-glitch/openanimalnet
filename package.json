@@ -1,6 +1,6 @@
 {
   "name": "openanimalnet",
-  "version": "1.18.11",
+  "version": "1.18.12",
   "private": true,
   "engines": {
     "node": ">=22.6"
@@ -15,7 +15,12 @@
     "refresh:data": "node .freebuff/refresh-sources.mjs",
     "verify:data": "node .freebuff/verify-multisource.mjs",
     "check:taxonomy": "node .freebuff/check-taxonomy.mjs",
-    "species:add": "node .freebuff/generate-species.mjs"
+    "species:add": "node .freebuff/generate-species.mjs",
+    "mobile:setup": "bash scripts/setup-mobile.sh",
+    "mobile:build": "MOBILE_BUILD=true npm run build",
+    "mobile:sync": "npm run mobile:build && npx cap sync",
+    "mobile:ios": "npm run mobile:sync && npx cap open ios",
+    "mobile:android": "npm run mobile:sync && npx cap open android"
   },
   "dependencies": {
     "@react-leaflet/core": "^2.0.0",

@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.12] - 2026-08-13
+
+### Added
+- **Mobile app support** (iOS & Android via Capacitor): Capacitor config,
+  setup script, native permission declarations, and npm scripts for
+  building, syncing, and opening native projects. The web app wraps into
+  native shells with geolocation, camera, and haptics support. API calls
+  route to the live Vercel backend.
+
 ## [1.18.11] - 2026-08-13
 
 ### Added
