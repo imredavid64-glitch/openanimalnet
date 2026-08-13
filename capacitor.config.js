@@ -1,6 +1,5 @@
-import type { CapacitorConfig } from '@capacitor/cli';
-
-const config: CapacitorConfig = {
+/** @type {import('@capacitor/cli').CapacitorConfig} */
+const config = {
   appId: 'com.openanimalnet.app',
   appName: 'OpenAnimalNet',
   webDir: 'out',
@@ -12,11 +11,9 @@ const config: CapacitorConfig = {
   },
   plugins: {
     Geolocation: {
-      // Request high accuracy for safari feature
       enableHighAccuracy: true,
     },
     Camera: {
-      // Allow photo capture for wildlife safari
       android: {
         permissions: ['android.permission.CAMERA'],
       },
@@ -32,12 +29,7 @@ const config: CapacitorConfig = {
     },
   },
   android: {
-    // Allow mixed content for API calls
     allowMixedContent: true,
-    buildOptions: {
-      keystorePath: undefined,
-      keystoreAlias: undefined,
-    },
   },
   ios: {
     contentInset: 'automatic',
@@ -45,4 +37,4 @@ const config: CapacitorConfig = {
   },
 };
 
-export default config;
+module.exports = config;
