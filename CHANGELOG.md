@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.16] - 2026-08-13
+
+### Added
+- **Interactive Platform** (`/interact`): transforms the site from read-only
+  to active participation:
+  - **Crowd-sourced wildlife sightings**: report and verify animal sightings
+    with location and notes
+  - **IoT sensor dashboard**: live sensor feed with temperature, humidity,
+    movement, location, and sound data; filterable by status
+  - **Species identification**: describe what you see and get matched species
+  - **Shelter matching engine**: preference-based pet matching with score,
+    reasons, and adopt flow
+  - **Service animal access logs**: track handler access with location,
+    purpose, and duration
+
 ## [1.18.15] - 2026-08-13
 
 ### Changed
