@@ -13,14 +13,14 @@ export default function LivestockPage() {
   const livestockSpecies = useMemo(() =>
     sampleAnimals.filter(a =>
       a.dataCategories.includes('agricultural') ||
-      (a as any).livestockTelemetry
+      a.livestockTelemetry
     ),
     []
   );
 
   // Find the cow with telemetry data
   const cow = sampleAnimals.find(a => a.id === 'cow-001');
-  const telemetry = (cow as any)?.livestockTelemetry;
+  const telemetry = cow?.livestockTelemetry;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white dark:from-secondary-900 dark:to-secondary-950">

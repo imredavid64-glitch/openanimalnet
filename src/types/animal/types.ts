@@ -636,6 +636,26 @@ export interface Animal {
   isMonitored: boolean;
   lastUpdated: Date;
   dataCategories: DataCategory[];
+  /** Livestock telemetry data (rumination, temperature, mobility) for agricultural species. */
+  livestockTelemetry?: {
+    herdSize: number;
+    averageRuminationMinutes: number;
+    averageBodyTemperature: number;
+    averageMobilityScore: number;
+    healthAlerts: number;
+    recentMetrics: {
+      timestamp: Date;
+      rumination: number;
+      temperature: number;
+      mobility: number;
+    }[];
+    diseaseRisks: {
+      name: string;
+      risk: 'low' | 'moderate' | 'high';
+      indicator: string;
+      probability: number;
+    }[];
+  };
 }
 
 export interface Taxonomy {
