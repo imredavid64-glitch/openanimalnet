@@ -123,7 +123,7 @@ function generateResponse(query: string): { text: string; data?: any } {
     if (speciesMatch.migrationRoutes?.length) {
       text += `**Migration Routes:**\n`;
       speciesMatch.migrationRoutes.forEach(r => {
-        text += `• ${r.name} (${r.season}, ${r.waypoints?.length || 0} waypoints)\n`;
+        text += `• ${r.name} (${r.season}, ${r.points?.length || 0} points)\n`;
       });
       text += '\n';
     }
