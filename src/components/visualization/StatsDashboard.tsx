@@ -269,7 +269,7 @@ export default function StatsDashboard() {
                       <BarChart data={populationByCategory}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                         <XAxis dataKey="date" stroke="#94a3b8" />
-                        <YAxis stroke="#94a3b8" tickFormatter={(v: number) => v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1)}M` : v >= 1_000 ? `${(v / 1_000).toFixed(0)}K` : v} />
+                        <YAxis stroke="#94a3b8" tickFormatter={(v: number) => v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1)}M` : v >= 1_000 ? `${(v / 1_000).toFixed(0)}K` : String(v)} />
                         <Tooltip
                           contentStyle={{
                             backgroundColor: 'white',
