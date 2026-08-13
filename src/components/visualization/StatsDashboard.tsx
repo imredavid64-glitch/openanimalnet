@@ -10,7 +10,7 @@ import {
   dataCategoryData,
 } from '@/data/sample/animals';
 import { ConservationStatus, AnimalCategory, DataCategory } from '@/types/animal/types';
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { PawIcon, AntennaIcon, ShieldIcon, DataCategoryIcon, SeverityIcon, CalendarIcon, ChartIcon, TrendIcon } from '@/components/icons';
 
 const COLORS = ['#0ea5e9', '#38bdf8', '#06b6d4', '#0891b2', '#0e7490', '#1d4ed8', '#7c3aed', '#1e40af'];
@@ -42,7 +42,6 @@ interface MonitoringStats {
   totalAnimals: number;
   monitoredAnimals: number;
   activeAlerts: number;
-  populationTrend: { date: string; mammals: number; birds: number; reptiles: number; amphibians: number }[];
 }
 
 export default function StatsDashboard() {
@@ -105,12 +104,25 @@ export default function StatsDashboard() {
     { name: 'Not Monitored', value: sampleMonitoringData.totalAnimals - sampleMonitoringData.monitoredAnimals, color: '#ef4444' },
   ];
 
-  const populationTrendData = apiStats?.populationTrend ?? sampleMonitoringData.populationTrend;
+  // Real per-category population sums from sampleAnimals.populationEstimate
+  const populationByCategory = [
+    { date: 'Mammals', mammals: 11283130, reptiles: 0, amphibians: 0 },
+    { date: 'Marine', mammals: 0, reptiles: 0, amphibians: 319663 },
+    { date: 'Insects', mammals: 0, reptiles: 0, amphibians: 657000 },
+    { date: 'Reptiles', mammals: 0, reptiles: 8750, amphibians: 0 },
+    { date: 'Amphibians', mammals: 0, reptiles: 0, amphibians: 10000 },
+    { date: 'Birds', mammals: 0, reptiles: 0, amphibians: 1000 },
+  ];
 
-  const dataCategoryChartData = dataCategoryData.map(cat => ({
+  // Real derived counts: how many of our 28 species have data in each category.
+  const dataCategoryCounts: Record<string, number> = {
+    biological: 28, behavioral: 26, ecological: 27, population: 27,
+    health: 23, agricultural: 3, shelter: 1, 'human-interaction': 7,
+  };
+  const dataCategoryChartData = dataCategoryData.map((cat, i) => ({
     name: cat.name,
-    value: Math.floor(Math.random() * 50000) + 10000,
-    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    value: dataCategoryCounts[cat.category] ?? 0,
+    color: COLORS[i % COLORS.length],
   }));
 
   const tabs = [
@@ -238,7 +250,7 @@ export default function StatsDashboard() {
                 ))}
               </div>
 
-              {/* Population Trend Chart */}
+              {/* Population by Animal Category — real sums from dataset */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -247,37 +259,29 @@ export default function StatsDashboard() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-semibold text-secondary-900 dark:text-white">
-                    Population Trends
+                    Population by Category
                   </h3>
-                  <div className="flex space-x-2">
-                    <button aria-label="Calendar view" className="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors duration-300">
-                      <CalendarIcon className="w-5 h-5 text-secondary-500 dark:text-secondary-400" />
-                    </button>
-                    <button aria-label="Chart view" className="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors duration-300">
-                      <ChartIcon className="w-5 h-5 text-secondary-500 dark:text-secondary-400" />
-                    </button>
-                  </div>
+                  <span className="text-xs text-secondary-400">Sum of populationEstimate in dataset</span>
                 </div>
                 <div className="h-64">
                   {isClient && (
                     <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={populationTrendData}>
+                      <BarChart data={populationByCategory}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                         <XAxis dataKey="date" stroke="#94a3b8" />
-                        <YAxis stroke="#94a3b8" />
+                        <YAxis stroke="#94a3b8" tickFormatter={(v: number) => v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1)}M` : v >= 1_000 ? `${(v / 1_000).toFixed(0)}K` : v} />
                         <Tooltip
                           contentStyle={{
                             backgroundColor: 'white',
                             border: '1px solid #e2e8f0',
                             borderRadius: '12px',
                           }}
+                          formatter={(value: number) => value.toLocaleString()}
                         />
-                        <Legend wrapperStyle={{ paddingTop: '10px' }} />
-                        <Line type="monotone" dataKey="mammals" stroke="#0ea5e9" strokeWidth={3} />
-                        <Line type="monotone" dataKey="birds" stroke="#38bdf8" strokeWidth={3} />
-                        <Line type="monotone" dataKey="reptiles" stroke="#06b6d4" strokeWidth={3} />
-                        <Line type="monotone" dataKey="amphibians" stroke="#0891b2" strokeWidth={3} />
-                      </LineChart>
+                        <Bar dataKey="mammals" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="reptiles" fill="#06b6d4" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="amphibians" fill="#0891b2" radius={[4, 4, 0, 0]} />
+                      </BarChart>
                     </ResponsiveContainer>
                   )}
                 </div>

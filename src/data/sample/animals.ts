@@ -1517,13 +1517,7 @@ export const sampleMonitoringData = {
   totalAnimals: sampleAnimals.length,
   monitoredAnimals: sampleAnimals.filter((a) => a.isMonitored).length,
   activeAlerts: 8,
-  populationTrend: [
-    { date: '2020', mammals: 45000, birds: 95000, reptiles: 85000, amphibians: 65000 },
-    { date: '2021', mammals: 46000, birds: 96000, reptiles: 86000, amphibians: 64000 },
-    { date: '2022', mammals: 47000, birds: 97000, reptiles: 87000, amphibians: 63000 },
-    { date: '2023', mammals: 48000, birds: 98000, reptiles: 88000, amphibians: 62000 },
-    { date: '2024', mammals: 49000, birds: 99000, reptiles: 89000, amphibians: 61000 },
-  ],
+
   recentActivity: [
     { type: 'new_sighting', animal: 'African Lion', count: 42, timestamp: new Date() },
     { type: 'alert', animal: 'African Bush Elephant', count: 3, timestamp: new Date() },
