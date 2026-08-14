@@ -48,7 +48,7 @@ export default function AnimalCategories() {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: 'easeOut' }}
-            whileHover={{ y: -10, scale: 1.02 }}
+            whileHover={{ y: -3, scale: 1.02 }}
             className="relative group"
           >
             <Link

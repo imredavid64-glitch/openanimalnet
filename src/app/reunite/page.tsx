@@ -311,7 +311,7 @@ export default function ReunitePage() {
                   href={p.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white dark:bg-secondary-800 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 group"
+                  className="bg-white dark:bg-secondary-800 rounded-2xl p-6 shadow-lg card-hover group"
                 >
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <h3 className="font-bold text-secondary-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">

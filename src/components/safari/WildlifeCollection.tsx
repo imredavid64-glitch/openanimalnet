@@ -145,7 +145,7 @@ export default function WildlifeCollection({
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: Math.min(i * 0.02, 0.5) }}
-              whileHover={{ scale: 1.05, y: -3 }}
+              whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedAnimal(animal)}
               className={`relative p-3 rounded-2xl border text-left transition-all duration-200 ${

@@ -681,7 +681,7 @@ export default function InteractiveGlobe() {
         {uniqueCategories.map(category => (
           <motion.div
             key={category}
-            whileHover={{ scale: 1.05, y: -2 }}
+            whileHover={{ scale: 1.03, y: -2 }}
             className={`flex items-center space-x-2 px-4 py-2 rounded-xl bg-white/80 dark:bg-secondary-800/50 backdrop-blur-sm ${
               selectedCategory === category ? 'ring-2 ring-primary-500' : ''
             }`}

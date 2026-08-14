@@ -72,7 +72,7 @@ export default function FeaturedAnimals() {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: 'easeOut' }}
-            whileHover={{ y: -5, scale: 1.02 }}
+            whileHover={{ y: -2, scale: 1.02 }}
             onClick={() => setSelectedAnimal(selectedAnimal === animal.id ? null : animal.id)}
             className="relative cursor-pointer"
           >

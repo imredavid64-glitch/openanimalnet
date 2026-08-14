@@ -125,7 +125,7 @@ export default function DashboardPage() {
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         onClick={() => setShowAI(true)}
-        className="fixed bottom-8 right-8 z-50 bg-primary-600 hover:bg-primary-700 text-white p-4 rounded-full shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:scale-110 active:scale-95"
+        className="fixed bottom-8 right-8 z-50 bg-primary-600 hover:bg-primary-700 text-white p-4 rounded-full shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:scale-105 active:scale-95"
       >
         <RobotIcon className="w-6 h-6" />
         <span className="ml-2 font-medium">AI Assistant</span>

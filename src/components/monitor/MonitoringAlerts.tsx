@@ -119,7 +119,7 @@ export default function MonitoringAlerts() {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: 'easeOut' }}
-            whileHover={{ y: -5, scale: 1.02 }}
+            whileHover={{ y: -2, scale: 1.02 }}
             role="button"
             tabIndex={0}
             aria-expanded={selectedAlert === alert.id}

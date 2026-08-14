@@ -161,7 +161,7 @@ export default function PetTracker() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  className={`bg-white dark:bg-secondary-800 rounded-2xl p-5 shadow-lg cursor-pointer transition-all duration-200 hover:shadow-xl hover:-translate-y-1 ${
+                  className={`bg-white dark:bg-secondary-800 rounded-2xl p-5 shadow-lg cursor-pointer card-hover ${
                     selectedPet === p.id ? 'ring-2 ring-primary-500' : ''
                   }`}
                   onClick={() => { setSelectedPet(p.id); setActiveTab('dashboard'); }}
