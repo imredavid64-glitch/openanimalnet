@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { sampleAnimals } from '@/data/sample/animals';
 import { computeShelterMatches, type ShelterMatchAnswers } from './interactMatching';
+import type { ShelterMatch } from './interactMatching';
 
 export interface WildlifeSighting {
   id: string;
