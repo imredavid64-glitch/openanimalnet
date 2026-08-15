@@ -8,6 +8,7 @@ import { sampleAnimals, conservationStatusData } from '@/data/sample/animals';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 import { CategoryIcon } from '@/components/icons';
 import type { SeasonFilter } from './GlobeComponent';
+import { ObservationPoint, recencyColor } from '@/lib/observations';
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
   mammals: '#0ea5e9',
@@ -54,11 +55,13 @@ export default function SimpleWorldMap({
   showRoutes = true,
   showMarkers = true,
   seasonFilter = 'all',
+  observations = [],
 }: {
   onAnimalClick?: (animalId: string) => void;
   showRoutes?: boolean;
   showMarkers?: boolean;
   seasonFilter?: SeasonFilter;
+  observations?: ObservationPoint[];
 }) {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -148,6 +151,19 @@ export default function SimpleWorldMap({
       drawContinent(ctx, [50, 60, 70, 80], [70, 80, 75, 85], 'Asia');
       drawContinent(ctx, [20, 30, 40, 50], [90, 95, 92, 98], 'Australia');
       
+      // Live observations — small recency-colored dots beneath the markers
+      observations.forEach((obs) => {
+        if (typeof obs.latitude !== 'number' || typeof obs.longitude !== 'number') return;
+        const ox = ((obs.longitude + 180) / 360) * canvas.width;
+        const oy = ((90 - obs.latitude) / 180) * canvas.height;
+        ctx.beginPath();
+        ctx.arc(ox, oy, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = recencyColor(obs.eventDate);
+        ctx.globalAlpha = 0.9;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      });
+
       // Draw points (skipped when the markers layer is hidden)
       points.forEach(point => {
         if (!showMarkers) return;
@@ -276,7 +292,7 @@ export default function SimpleWorldMap({
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [points, routes, hoveredPoint, showRoutes, showMarkers]);
+  }, [points, routes, hoveredPoint, showRoutes, showMarkers, observations]);
 
   // Find the closest map point to given canvas coordinates (in % of canvas)
   const findClosestPoint = (x: number, y: number): MapPoint | null => {

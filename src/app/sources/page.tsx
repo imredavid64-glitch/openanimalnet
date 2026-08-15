@@ -121,7 +121,9 @@ export default function SourcesPage() {
         conservation status, GBIF for backbone taxonomy, and iNaturalist for independently
         observed conservation status. Run{' '}
         <code className="text-xs bg-secondary-100 dark:bg-secondary-800 px-1.5 py-0.5 rounded">npm run verify:data</code>{' '}
-        to re-verify every species against all four live sources.
+        to re-verify every species against all four live sources. The live results — with
+        per-source timestamps and drift status — are published on the{' '}
+        <PageLink href="/data-quality">data-quality dashboard</PageLink>.
       </p>
 
       <Section>Data Source Details</Section>

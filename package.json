@@ -1,6 +1,6 @@
 {
   "name": "openanimalnet",
-  "version": "1.18.16",
+  "version": "1.18.18",
   "private": true,
   "engines": {
     "node": ">=22.6"
@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --test src/lib/animalFiltering.test.ts src/lib/rateLimit.test.ts src/lib/geo.test.ts",
+    "test": "node --test src/lib/animalFiltering.test.ts src/lib/rateLimit.test.ts src/lib/geo.test.ts src/lib/interactMatching.test.ts src/lib/observations.test.ts",
     "test:api": "node --test tests/api.integration.test.ts",
     "refresh:data": "node .freebuff/refresh-sources.mjs",
     "verify:data": "node .freebuff/verify-multisource.mjs",

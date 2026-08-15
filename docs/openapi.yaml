@@ -281,6 +281,56 @@ paths:
         "429":
           $ref: "#/components/responses/RateLimited"
 
+  /api/v1/live/observations:
+    get:
+      operationId: liveObservations
+      summary: Batched live GBIF observations
+      description: |
+        Fetch recent georeferenced occurrences from GBIF for a batch of
+        species (the globe's live-observations layer). Each species is
+        cached for 60 seconds; a species that fails or has no GBIF key is
+        skipped rather than failing the whole request.
+      tags: [Live Sync]
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Comma-separated species IDs
+          example: lion-001,tiger-001,blue-whale-001
+      responses:
+        "200":
+          description: Success
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: public, max-age=60, stale-while-revalidate=300
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/LiveObservations"
+        "400":
+          description: Missing or too many ids
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "502":
+          description: GBIF observations failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
 components:
   schemas:
     Animal:
@@ -462,6 +512,27 @@ components:
               basisOfRecord: { type: string }
         fetchedAt: { type: string, format: date-time }
         count: { type: integer }
+
+    LiveObservations:
+      type: object
+      properties:
+        fetchedAt: { type: string, format: date-time }
+        cached: { type: boolean }
+        skipped:
+          type: array
+          items: { type: string }
+        observations:
+          type: array
+          items:
+            type: object
+            properties:
+              animalId: { type: string }
+              key: { type: integer }
+              species: { type: string }
+              country: { type: string, nullable: true }
+              latitude: { type: number }
+              longitude: { type: number }
+              eventDate: { type: string, nullable: true }
 
     SuccessResponse:
       type: object

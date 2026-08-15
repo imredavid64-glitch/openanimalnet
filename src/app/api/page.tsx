@@ -37,6 +37,16 @@ const endpoints = [
     path: '/api/v1/locations',
     detail: 'Recent tracking locations for monitored animals.',
   },
+  {
+    method: 'GET',
+    path: '/api/v1/live/sync',
+    detail: 'Live GBIF sync for one species: recent georeferenced occurrences with a fetched-at timestamp.',
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/live/observations',
+    detail: 'Batched recent GBIF occurrences for several species — powers the globe\'s live-observations layer.',
+  },
 ];
 
 export default function ApiPage() {

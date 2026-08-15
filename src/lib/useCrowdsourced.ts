@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { sampleAnimals } from '@/data/sample/animals';
+import { computeShelterMatches, type ShelterMatchAnswers } from './interactMatching';
 
 export interface WildlifeSighting {
   id: string;
@@ -36,19 +37,7 @@ export interface AccessLog {
   status: 'granted' | 'denied' | 'pending';
 }
 
-export interface ShelterMatch {
-  petId: string;
-  petName: string;
-  species: string;
-  breed: string;
-  age: number;
-  temperament: string[];
-  matchScore: number;
-  matchReasons: string[];
-  shelter: string;
-  contact: string;
-  adopted: boolean;
-}
+export type { ShelterMatch, ShelterMatchAnswers } from './interactMatching';
 
 const SIGHTING_KEY = 'oan-sightings';
 const SENSOR_KEY = 'oan-sensors';
@@ -111,55 +100,6 @@ function generateSensorData(): SensorReading[] {
   return sensors.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 }
 
-// Shelter matching engine
-function computeMatches(answers: {
-  species: string;
-  size: string;
-  energy: string;
-  kids: boolean;
-  experience: string;
-}): ShelterMatch[] {
-  const pets = [
-    { id: 'pet-1', name: 'Luna', species: 'Dog', breed: 'Labrador Mix', age: 3, temperament: ['gentle', 'energetic', 'kid-friendly'], shelter: 'City Animal Shelter', contact: '555-0101' },
-    { id: 'pet-2', name: 'Shadow', species: 'Cat', breed: 'Domestic Shorthair', age: 2, temperament: ['calm', 'independent', 'quiet'], shelter: 'Feline Rescue', contact: '555-0102' },
-    { id: 'pet-3', name: 'Max', species: 'Dog', breed: 'German Shepherd', age: 5, temperament: ['loyal', 'protective', 'active'], shelter: 'K-9 Rescue', contact: '555-0103' },
-    { id: 'pet-4', name: 'Whiskers', species: 'Cat', breed: 'Persian', age: 4, temperament: ['calm', 'affectionate', 'quiet'], shelter: 'Purrfect Home', contact: '555-0104' },
-    { id: 'pet-5', name: 'Buddy', species: 'Dog', breed: 'Beagle', age: 1, temperament: ['energetic', 'friendly', 'playful'], shelter: 'Happy Tails', contact: '555-0105' },
-    { id: 'pet-6', name: 'Cleo', species: 'Cat', breed: 'Siamese', age: 2, temperament: ['vocal', 'social', 'playful'], shelter: 'Feline Rescue', contact: '555-0106' },
-    { id: 'pet-7', name: 'Rex', species: 'Dog', breed: 'Golden Retriever', age: 4, temperament: ['gentle', 'kid-friendly', 'energetic'], shelter: 'City Animal Shelter', contact: '555-0107' },
-    { id: 'pet-8', name: 'Milo', species: 'Rabbit', breed: 'Holland Lop', age: 1, temperament: ['gentle', 'quiet', 'kid-friendly'], shelter: 'Small Wonders', contact: '555-0108' },
-  ];
-
-  return pets.map(pet => {
-    let score = 50;
-    const reasons: string[] = [];
-
-    if (answers.species === 'Any' || answers.species.toLowerCase() === pet.species.toLowerCase()) {
-      score += 20; reasons.push(`Species match: ${pet.species}`);
-    }
-    if (answers.energy === 'Calm' && pet.temperament.includes('calm')) { score += 15; reasons.push('Temperament: calm'); }
-    if (answers.energy === 'Active' && (pet.temperament.includes('energetic') || pet.temperament.includes('active'))) { score += 15; reasons.push('Temperament: active'); }
-    if (answers.kids && pet.temperament.includes('kid-friendly')) { score += 15; reasons.push('Good with kids'); }
-    if (answers.size === 'Small' && ['Cat', 'Rabbit'].includes(pet.species)) { score += 10; reasons.push('Size match'); }
-    if (answers.size === 'Large' && pet.species === 'Dog') { score += 10; reasons.push('Size match'); }
-    if (answers.experience === 'First-time' && pet.age > 2) { score += 5; reasons.push('Mature & stable'); }
-
-    return {
-      petId: pet.id,
-      petName: pet.name,
-      species: pet.species,
-      breed: pet.breed,
-      age: pet.age,
-      temperament: pet.temperament,
-      matchScore: Math.min(99, score),
-      matchReasons: reasons,
-      shelter: pet.shelter,
-      contact: pet.contact,
-      adopted: false,
-    };
-  }).sort((a, b) => b.matchScore - a.matchScore);
-}
-
 export function useCrowdsourced() {
   const [sightings, setSightings] = useState<WildlifeSighting[]>([]);
   const [sensors, setSensors] = useState<SensorReading[]>([]);
@@ -193,8 +133,8 @@ export function useCrowdsourced() {
     save(ACCESS_KEY, updated);
   }, [accessLogs]);
 
-  const runMatch = useCallback((answers: Parameters<typeof computeMatches>[0]) => {
-    const result = computeMatches(answers);
+  const runMatch = useCallback((answers: ShelterMatchAnswers) => {
+    const result = computeShelterMatches(answers);
     setMatches(result);
     save(MATCH_KEY, result);
     return result;

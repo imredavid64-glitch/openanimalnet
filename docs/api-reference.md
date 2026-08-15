@@ -241,6 +241,50 @@ curl "http://localhost:3000/api/v1/live/sync?id=lion-001"
 }
 ```
 
+### `GET /api/v1/live/observations`
+
+Fetch recent georeferenced occurrences from GBIF for a **batch** of species
+— the endpoint that powers the globe's live-observations layer. Records are
+restricted to the last 365 days and sorted most-recent-first; a species with
+no GBIF key (or one that fails upstream) is skipped rather than failing the
+whole request. Cached for 60 seconds per species.
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `ids` | `string` | Yes | Comma-separated species IDs (max 40), e.g. `lion-001,tiger-001` |
+
+**Example:**
+
+```bash
+curl "http://localhost:3000/api/v1/live/observations?ids=lion-001,tiger-001"
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "fetchedAt": "2026-08-14T00:00:00.000Z",
+    "cached": false,
+    "skipped": [],
+    "observations": [
+      {
+        "animalId": "lion-001",
+        "key": 4000000001,
+        "species": "Panthera leo",
+        "country": "ZA",
+        "latitude": -25.5,
+        "longitude": 28.1,
+        "eventDate": "2026-08-10"
+      }
+    ]
+  }
+}
+```
+
 ---
 
 ## Rate Limiting

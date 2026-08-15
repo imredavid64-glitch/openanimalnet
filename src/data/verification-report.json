@@ -1,0 +1,815 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-15T19:54:36.242Z",
+  "generator": "verify-multisource.mjs",
+  "sourceOrder": [
+    "wikidata",
+    "wikipedia",
+    "gbif",
+    "inaturalist"
+  ],
+  "sourceLabels": {
+    "wikidata": "Wikidata/IUCN",
+    "wikipedia": "Wikipedia",
+    "gbif": "GBIF",
+    "inaturalist": "iNaturalist"
+  },
+  "totals": {
+    "species": 28,
+    "fullyVerified": 28,
+    "drifted": 0,
+    "checks": 112,
+    "perStatus": {
+      "verified": 106,
+      "drifted": 0,
+      "na": 6,
+      "error": 0
+    }
+  },
+  "species": [
+    {
+      "animalId": "elephant-001",
+      "commonName": "African Bush Elephant",
+      "scientificName": "Loxodonta africana",
+      "conservationStatus": "EN",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 181008073 + status EN match",
+          "checkedAt": "2026-08-15T19:54:17.333Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “African bush elephant” exists",
+          "checkedAt": "2026-08-15T19:54:17.366Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2435350 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:17.436Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 43694 · iNat status EN matches",
+          "checkedAt": "2026-08-15T19:54:17.593Z"
+        }
+      }
+    },
+    {
+      "animalId": "lion-001",
+      "commonName": "African Lion",
+      "scientificName": "Panthera leo",
+      "conservationStatus": "VU",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 15951 + status VU match",
+          "checkedAt": "2026-08-15T19:54:15.617Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Lion” exists",
+          "checkedAt": "2026-08-15T19:54:15.734Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 5219404 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:16.310Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 41964 · iNat status VU matches",
+          "checkedAt": "2026-08-15T19:54:16.975Z"
+        }
+      }
+    },
+    {
+      "animalId": "african-penguin-001",
+      "commonName": "African Penguin",
+      "scientificName": "Spheniscus demersus",
+      "conservationStatus": "CR",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 22697810 + status CR match",
+          "checkedAt": "2026-08-15T19:54:31.348Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “African penguin” exists",
+          "checkedAt": "2026-08-15T19:54:31.386Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 5229384 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:31.490Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 3813 · iNat status CR matches",
+          "checkedAt": "2026-08-15T19:54:31.650Z"
+        }
+      }
+    },
+    {
+      "animalId": "leopard-001",
+      "commonName": "Amur Leopard",
+      "scientificName": "Panthera pardus orientalis",
+      "conservationStatus": "CR",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id — + status NE match",
+          "checkedAt": "2026-08-15T19:54:23.995Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Amur leopard” exists",
+          "checkedAt": "2026-08-15T19:54:24.080Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 5219440 · ACCEPTED · rank SUBSPECIES",
+          "checkedAt": "2026-08-15T19:54:24.179Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 147734 · iNat status CR matches",
+          "checkedAt": "2026-08-15T19:54:24.353Z"
+        }
+      }
+    },
+    {
+      "animalId": "arctic-tern-001",
+      "commonName": "Arctic Tern",
+      "scientificName": "Sterna paradisaea",
+      "conservationStatus": "LC",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 22694629 + status LC match",
+          "checkedAt": "2026-08-15T19:54:35.918Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Arctic tern” exists",
+          "checkedAt": "2026-08-15T19:54:35.971Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 5229230 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:36.054Z"
+        },
+        "inaturalist": {
+          "status": "na",
+          "detail": "taxon 4449 · no iNaturalist IUCN status signal",
+          "checkedAt": "2026-08-15T19:54:36.213Z"
+        }
+      }
+    },
+    {
+      "animalId": "axolotl-001",
+      "commonName": "Axolotl",
+      "scientificName": "Ambystoma mexicanum",
+      "conservationStatus": "CR",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 1095 + status CR match",
+          "checkedAt": "2026-08-15T19:54:30.545Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Axolotl” exists",
+          "checkedAt": "2026-08-15T19:54:30.578Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2431950 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:30.649Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 26777 · iNat status CR matches",
+          "checkedAt": "2026-08-15T19:54:30.824Z"
+        }
+      }
+    },
+    {
+      "animalId": "eagle-001",
+      "commonName": "Bald Eagle",
+      "scientificName": "Haliaeetus leucocephalus",
+      "conservationStatus": "LC",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 22695144 + status LC match",
+          "checkedAt": "2026-08-15T19:54:18.228Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Bald eagle” exists",
+          "checkedAt": "2026-08-15T19:54:18.260Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2480446 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:18.341Z"
+        },
+        "inaturalist": {
+          "status": "na",
+          "detail": "taxon 5305 · no iNaturalist IUCN status signal",
+          "checkedAt": "2026-08-15T19:54:18.502Z"
+        }
+      }
+    },
+    {
+      "animalId": "tiger-001",
+      "commonName": "Bengal Tiger",
+      "scientificName": "Panthera tigris tigris",
+      "conservationStatus": "EN",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 136899 + status EN match",
+          "checkedAt": "2026-08-15T19:54:17.768Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Bengal tiger” exists",
+          "checkedAt": "2026-08-15T19:54:17.801Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 7059276 · ACCEPTED · rank SUBSPECIES",
+          "checkedAt": "2026-08-15T19:54:17.884Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 130793 · iNat status EN matches",
+          "checkedAt": "2026-08-15T19:54:18.076Z"
+        }
+      }
+    },
+    {
+      "animalId": "whale-001",
+      "commonName": "Blue Whale",
+      "scientificName": "Balaenoptera musculus",
+      "conservationStatus": "EN",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 2477 + status EN match",
+          "checkedAt": "2026-08-15T19:54:18.794Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Blue whale” exists",
+          "checkedAt": "2026-08-15T19:54:18.845Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2440735 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:18.917Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 41553 · iNat status EN matches",
+          "checkedAt": "2026-08-15T19:54:19.074Z"
+        }
+      }
+    },
+    {
+      "animalId": "orangutan-001",
+      "commonName": "Bornean Orangutan",
+      "scientificName": "Pongo pygmaeus",
+      "conservationStatus": "CR",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 17975 + status CR match",
+          "checkedAt": "2026-08-15T19:54:23.246Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Bornean orangutan” exists",
+          "checkedAt": "2026-08-15T19:54:23.305Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 5219532 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:23.400Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 43582 · iNat status CR matches",
+          "checkedAt": "2026-08-15T19:54:23.565Z"
+        }
+      }
+    },
+    {
+      "animalId": "dolphin-001",
+      "commonName": "Common Bottlenose Dolphin",
+      "scientificName": "Tursiops truncatus",
+      "conservationStatus": "LC",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 22563 + status LC match",
+          "checkedAt": "2026-08-15T19:54:20.766Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Common bottlenose dolphin” exists",
+          "checkedAt": "2026-08-15T19:54:20.804Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2440447 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:20.894Z"
+        },
+        "inaturalist": {
+          "status": "na",
+          "detail": "taxon 41482 · no iNaturalist IUCN status signal",
+          "checkedAt": "2026-08-15T19:54:21.061Z"
+        }
+      }
+    },
+    {
+      "animalId": "panda-001",
+      "commonName": "Giant Panda",
+      "scientificName": "Ailuropoda melanoleuca",
+      "conservationStatus": "VU",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 712 + status VU match",
+          "checkedAt": "2026-08-15T19:54:19.413Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Giant panda” exists",
+          "checkedAt": "2026-08-15T19:54:19.458Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2433399 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:19.533Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 41659 · iNat status VU matches",
+          "checkedAt": "2026-08-15T19:54:19.707Z"
+        }
+      }
+    },
+    {
+      "animalId": "giraffe-001",
+      "commonName": "Giraffe",
+      "scientificName": "Giraffa camelopardalis",
+      "conservationStatus": "VU",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 9194 + status VU match",
+          "checkedAt": "2026-08-15T19:54:24.890Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Giraffe” exists",
+          "checkedAt": "2026-08-15T19:54:24.934Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2441205 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:25.006Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 42157 · iNat status VU matches",
+          "checkedAt": "2026-08-15T19:54:25.164Z"
+        }
+      }
+    },
+    {
+      "animalId": "golden-lion-tamarin-001",
+      "commonName": "Golden Lion Tamarin",
+      "scientificName": "Leontopithecus rosalia",
+      "conservationStatus": "EN",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 11506 + status EN match",
+          "checkedAt": "2026-08-15T19:54:33.849Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Golden lion tamarin” exists",
+          "checkedAt": "2026-08-15T19:54:33.940Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2436482 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:34.043Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 43396 · iNat status EN matches",
+          "checkedAt": "2026-08-15T19:54:34.218Z"
+        }
+      }
+    },
+    {
+      "animalId": "shark-001",
+      "commonName": "Great White Shark",
+      "scientificName": "Carcharodon carcharias",
+      "conservationStatus": "VU",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 3855 + status VU match",
+          "checkedAt": "2026-08-15T19:54:19.865Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Great white shark” exists",
+          "checkedAt": "2026-08-15T19:54:19.897Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2420694 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:19.969Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 50873 · iNat status VU matches",
+          "checkedAt": "2026-08-15T19:54:20.126Z"
+        }
+      }
+    },
+    {
+      "animalId": "cow-001",
+      "commonName": "Holstein Cow",
+      "scientificName": "Bos taurus",
+      "conservationStatus": "NE",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id — + status NE match",
+          "checkedAt": "2026-08-15T19:54:21.934Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Holstein Friesian” exists",
+          "checkedAt": "2026-08-15T19:54:21.969Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2441022 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:22.042Z"
+        },
+        "inaturalist": {
+          "status": "na",
+          "detail": "taxon 74113 · no iNaturalist IUCN status signal",
+          "checkedAt": "2026-08-15T19:54:22.205Z"
+        }
+      }
+    },
+    {
+      "animalId": "koala-001",
+      "commonName": "Koala",
+      "scientificName": "Phascolarctos cinereus",
+      "conservationStatus": "VU",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 16892 + status VU match",
+          "checkedAt": "2026-08-15T19:54:25.882Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Koala” exists",
+          "checkedAt": "2026-08-15T19:54:25.919Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2440012 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:25.998Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 42983 · iNat status VU matches",
+          "checkedAt": "2026-08-15T19:54:26.174Z"
+        }
+      }
+    },
+    {
+      "animalId": "komodo-001",
+      "commonName": "Komodo Dragon",
+      "scientificName": "Varanus komodoensis",
+      "conservationStatus": "EN",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 22884 + status EN match",
+          "checkedAt": "2026-08-15T19:54:27.591Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Komodo dragon” exists",
+          "checkedAt": "2026-08-15T19:54:27.635Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2470854 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:27.748Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 39449 · iNat status EN matches",
+          "checkedAt": "2026-08-15T19:54:27.906Z"
+        }
+      }
+    },
+    {
+      "animalId": "leatherback-001",
+      "commonName": "Leatherback Sea Turtle",
+      "scientificName": "Dermochelys coriacea",
+      "conservationStatus": "VU",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 6494 + status VU match",
+          "checkedAt": "2026-08-15T19:54:32.238Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Leatherback sea turtle” exists",
+          "checkedAt": "2026-08-15T19:54:32.284Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 9789983 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:32.378Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 39677 · iNat status VU matches",
+          "checkedAt": "2026-08-15T19:54:32.542Z"
+        }
+      }
+    },
+    {
+      "animalId": "monarch-001",
+      "commonName": "Monarch Butterfly",
+      "scientificName": "Danaus plexippus",
+      "conservationStatus": "EN",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 159971 + status LC match",
+          "checkedAt": "2026-08-15T19:54:26.526Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Monarch butterfly” exists",
+          "checkedAt": "2026-08-15T19:54:26.567Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 5133088 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:26.642Z"
+        },
+        "inaturalist": {
+          "status": "na",
+          "detail": "taxon 48662 · no iNaturalist IUCN status signal",
+          "checkedAt": "2026-08-15T19:54:26.811Z"
+        }
+      }
+    },
+    {
+      "animalId": "gorilla-001",
+      "commonName": "Mountain Gorilla",
+      "scientificName": "Gorilla beringei beringei",
+      "conservationStatus": "EN",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 39999 + status EN match",
+          "checkedAt": "2026-08-15T19:54:20.339Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Mountain gorilla” exists",
+          "checkedAt": "2026-08-15T19:54:20.377Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 4267319 · ACCEPTED · rank SUBSPECIES",
+          "checkedAt": "2026-08-15T19:54:20.449Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 147661 · iNat status EN matches",
+          "checkedAt": "2026-08-15T19:54:20.606Z"
+        }
+      }
+    },
+    {
+      "animalId": "polar-bear-001",
+      "commonName": "Polar Bear",
+      "scientificName": "Ursus maritimus",
+      "conservationStatus": "VU",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 22823 + status VU match",
+          "checkedAt": "2026-08-15T19:54:22.595Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Polar bear” exists",
+          "checkedAt": "2026-08-15T19:54:22.631Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2433451 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:22.705Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 41644 · iNat status VU matches",
+          "checkedAt": "2026-08-15T19:54:22.873Z"
+        }
+      }
+    },
+    {
+      "animalId": "proboscis-monkey-001",
+      "commonName": "Proboscis Monkey",
+      "scientificName": "Nasalis larvatus",
+      "conservationStatus": "EN",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 14352 + status EN match",
+          "checkedAt": "2026-08-15T19:54:32.792Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Proboscis monkey” exists",
+          "checkedAt": "2026-08-15T19:54:32.840Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2436525 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:32.920Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 43538 · iNat status EN matches",
+          "checkedAt": "2026-08-15T19:54:33.091Z"
+        }
+      }
+    },
+    {
+      "animalId": "red-panda-001",
+      "commonName": "Red Panda",
+      "scientificName": "Ailurus fulgens",
+      "conservationStatus": "EN",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 714 + status EN match",
+          "checkedAt": "2026-08-15T19:54:29.723Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Red panda” exists",
+          "checkedAt": "2026-08-15T19:54:29.767Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 5219446 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:29.851Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 41653 · iNat status EN matches",
+          "checkedAt": "2026-08-15T19:54:30.024Z"
+        }
+      }
+    },
+    {
+      "animalId": "saiga-001",
+      "commonName": "Saiga Antelope",
+      "scientificName": "Saiga tatarica",
+      "conservationStatus": "NT",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 19832 + status NT match",
+          "checkedAt": "2026-08-15T19:54:33.262Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Saiga antelope” exists",
+          "checkedAt": "2026-08-15T19:54:33.306Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2441067 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:33.396Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 42378 · iNat status NT matches",
+          "checkedAt": "2026-08-15T19:54:33.557Z"
+        }
+      }
+    },
+    {
+      "animalId": "snow-leopard-001",
+      "commonName": "Snow Leopard",
+      "scientificName": "Panthera uncia",
+      "conservationStatus": "VU",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 22732 + status VU match",
+          "checkedAt": "2026-08-15T19:54:28.484Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Snow leopard” exists",
+          "checkedAt": "2026-08-15T19:54:28.537Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2435238 · SYNONYM · rank SPECIES (accepted: Uncia uncia (Schreber, 1775))",
+          "checkedAt": "2026-08-15T19:54:28.788Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 74831 · iNat status VU matches",
+          "checkedAt": "2026-08-15T19:54:28.944Z"
+        }
+      }
+    },
+    {
+      "animalId": "vaquita-001",
+      "commonName": "Vaquita",
+      "scientificName": "Phocoena sinus",
+      "conservationStatus": "CR",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 17028 + status CR match",
+          "checkedAt": "2026-08-15T19:54:34.598Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Vaquita” exists",
+          "checkedAt": "2026-08-15T19:54:34.777Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 2440665 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:34.850Z"
+        },
+        "inaturalist": {
+          "status": "verified",
+          "detail": "taxon 41443 · iNat status CR matches",
+          "checkedAt": "2026-08-15T19:54:35.021Z"
+        }
+      }
+    },
+    {
+      "animalId": "bee-001",
+      "commonName": "Western Honey Bee",
+      "scientificName": "Apis mellifera",
+      "conservationStatus": "DD",
+      "sources": {
+        "wikidata": {
+          "status": "verified",
+          "detail": "IUCN id 42463639 + status DD match",
+          "checkedAt": "2026-08-15T19:54:21.447Z"
+        },
+        "wikipedia": {
+          "status": "verified",
+          "detail": "article “Western honey bee” exists",
+          "checkedAt": "2026-08-15T19:54:21.487Z"
+        },
+        "gbif": {
+          "status": "verified",
+          "detail": "key 1341976 · ACCEPTED · rank SPECIES",
+          "checkedAt": "2026-08-15T19:54:21.591Z"
+        },
+        "inaturalist": {
+          "status": "na",
+          "detail": "taxon 47219 · no iNaturalist IUCN status signal",
+          "checkedAt": "2026-08-15T19:54:21.763Z"
+        }
+      }
+    }
+  ]
+}

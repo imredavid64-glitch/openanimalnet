@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCrowdsourced, SensorReading, ShelterMatch } from '@/lib/useCrowdsourced';
+import { identifySpecies } from '@/lib/interactMatching';
 import { sampleAnimals } from '@/data/sample/animals';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -162,15 +163,7 @@ function SpeciesIdentifier() {
   const [results, setResults] = useState<any[]>([]);
 
   const identify = () => {
-    const q = query.toLowerCase();
-    const matches = sampleAnimals.filter(a =>
-      a.commonName.toLowerCase().includes(q) ||
-      a.scientificName.toLowerCase().includes(q) ||
-      a.habitat?.some(h => h.toLowerCase().includes(q)) ||
-      a.category.toLowerCase().includes(q) ||
-      a.conservationStatus.toLowerCase().includes(q)
-    ).slice(0, 6);
-    setResults(matches);
+    setResults(identifySpecies(query, sampleAnimals));
   };
 
   return (

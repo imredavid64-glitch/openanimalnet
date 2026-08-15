@@ -27,6 +27,7 @@ const footerLinks = {
     { name: 'Population', path: '/data/population' },
     { name: 'Health', path: '/data/health' },
     { name: 'Conservation', path: '/conservation' },
+    { name: 'Data Quality', path: '/data-quality' },
   ],
   about: [
     { name: 'About Us', path: '/about' },
@@ -56,8 +57,8 @@ export default function Footer() {
   const pathname = usePathname();
 
   return (
-    <footer className="bg-secondary-900 dark:bg-secondary-950 text-secondary-300 dark:text-secondary-400 border-t border-secondary-200 dark:border-secondary-800">
-      <div className="container mx-auto px-4 py-16">
+    <footer className="relative overflow-hidden bg-secondary-900 dark:bg-secondary-950 text-secondary-300 dark:text-secondary-400 border-t border-secondary-200 dark:border-secondary-800">
+      <div className="container relative z-10 mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Logo and Description */}
           <div className="lg:col-span-2">
@@ -134,8 +135,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Large Background Text */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Large Background Text — anchored to the footer, behind the content */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute bottom-0 left-0 right-0 text-center">
             <motion.span
               initial={{ opacity: 0, y: 100 }}

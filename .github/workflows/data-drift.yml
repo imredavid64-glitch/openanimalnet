@@ -32,7 +32,10 @@ jobs:
         run: npm run refresh:data -- --fail
 
       - name: Verify every species across Wikidata, Wikipedia, GBIF, and iNaturalist
-        run: npm run verify:data -- --fail
+        # --report also regenerates src/data/verification-report.json, the
+        # source of truth for the public /data-quality page (verified fresh,
+        # committed via the usual PR flow).
+        run: npm run verify:data -- --fail --report
 
   taxonomy:
     runs-on: ubuntu-latest

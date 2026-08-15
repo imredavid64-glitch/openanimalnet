@@ -23,6 +23,9 @@
 
 - **Interactive Globe**: 3D globe with all 28 species, search, conservation-status
   filters, click-to-focus popups, and animated migration routes.
+- **Live observations layer**: recent GBIF occurrences rendered as recency-
+  colored dots on the globe (green = this week, amber = this month, blue =
+  this year), filtered by the same species/status filters as the markers.
 - **Live GBIF ingestion**: species pages show a "Last synced from GBIF" badge
   with recent georeferenced occurrence counts, polled live from the GBIF API
   (`/api/v1/live/sync`).
@@ -173,6 +176,7 @@ in Swagger Editor, Postman, or Insomnia:
 | `GET /api/v1/monitoring/stats` | Aggregated dashboard statistics and population trends |
 | `GET /api/v1/locations` | Recent telemetry locations for monitored animals |
 | `GET /api/v1/live/sync?id=<animalId>` | Live GBIF sync for one species: recent georeferenced occurrences + `fetchedAt` timestamp (cached 60s) |
+| `GET /api/v1/live/observations?ids=a,b,c` | Batched recent GBIF occurrences for several species — powers the globe's live-observations layer (cached 60s per species) |
 
 Example:
 

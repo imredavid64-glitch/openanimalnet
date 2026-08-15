@@ -4,6 +4,7 @@ import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 're
 import SimpleWorldMap from './SimpleWorldMap';
 import { AnimalCategory } from '@/types/animal/types';
 import type { RouteHoverInfo, SeasonFilter } from './GlobeComponent';
+import type { ObservationPoint } from '@/lib/observations';
 
 interface GlobeProps {
   data: any[];
@@ -16,10 +17,11 @@ interface GlobeProps {
   onRouteHover?: (info: RouteHoverInfo | null) => void;
   onRouteClick?: (info: RouteHoverInfo) => void;
   seasonFilter?: SeasonFilter;
+  observations?: ObservationPoint[];
 }
 
 export default forwardRef(function GlobeComponentFallback(
-  { onAnimalClick, showRoutes = true, showMarkers = true, seasonFilter = 'all' }: GlobeProps,
+  { onAnimalClick, showRoutes = true, showMarkers = true, seasonFilter = 'all', observations = [] }: GlobeProps,
   ref
 ) {
   const [isClient, setIsClient] = useState(false);
@@ -46,7 +48,13 @@ export default forwardRef(function GlobeComponentFallback(
 
   return (
     <div className="w-full h-full">
-      <SimpleWorldMap onAnimalClick={onAnimalClick} showRoutes={showRoutes} showMarkers={showMarkers} seasonFilter={seasonFilter} />
+      <SimpleWorldMap
+        onAnimalClick={onAnimalClick}
+        showRoutes={showRoutes}
+        showMarkers={showMarkers}
+        seasonFilter={seasonFilter}
+        observations={observations}
+      />
     </div>
   );
 });

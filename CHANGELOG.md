@@ -2,6 +2,50 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.18.18] - 2026-08-15
+
+### Added
+- **Public data-quality dashboard** (`/data-quality`): every species is
+  cross-checked against four independent live sources — Wikidata/IUCN,
+  Wikipedia, GBIF, and iNaturalist — and the results are now public.
+  Per-species, per-source status (verified / drifted / N/A / error) with
+  last-checked timestamps, a freshness banner, per-source totals, and
+  drift/error filters. Powered by a committed machine-readable report
+  (`src/data/verification-report.json`) regenerated on demand via
+  `npm run verify:data -- --report` and weekly in CI; the page shows a
+  stale banner when the report is older than 7 days.
+- Data Quality linked from the footer and the data sources index.
+
+### Fixed
+- **Footer watermark**: the giant "OpenAnimalNet" background text was
+  anchored to the viewport instead of the footer — causing horizontal
+  overflow (~2569px) and overlaying the globe section. It is now clipped
+  inside the footer and sits behind the content.
+- **Verifier hardening**: every upstream request now has a 30s timeout so a
+  wedged source (e.g. a hung Wikipedia response) fails fast instead of
+  hanging the check — and the weekly CI job.
+
+### Tests
+- Extracted the /interact matching engines (shelter matching, species
+  identification, lost-pet ↔ found-pet distance matching) into a pure,
+  testable module (`src/lib/interactMatching.ts`) and added unit tests for
+  each — plus tests for the live-observations recency bands
+  (`src/lib/observations.ts`). `npm test` now runs 64 tests, all passing.
+
+## [1.18.17] - 2026-08-14
+
+### Added
+- **Live observations layer on the globe**: recent georeferenced GBIF
+  occurrences rendered as recency-colored dots (green = this week, amber =
+  this month, blue = this year) on both the 3D globe and the 2D fallback.
+  Dots follow the same category/status filters as the species markers, and
+  a sparkle toggle in the globe toolbar shows/hides the layer with a live
+  count + recency legend.
+- **New API endpoint** `GET /api/v1/live/observations?ids=a,b,c`: batched
+  recent GBIF occurrences for up to 40 species (rolling 365-day window,
+  most-recent-first, per-species 60s cache). Failing species are skipped
+  instead of failing the batch.
+
 ## [1.18.16] - 2026-08-13
 
 ### Added

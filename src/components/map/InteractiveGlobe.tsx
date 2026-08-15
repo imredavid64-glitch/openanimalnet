@@ -9,6 +9,7 @@ import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 import { routeDistanceKm, formatKm, formatDurationDays } from '@/lib/geo';
 import { CategoryIcon, CalendarIcon, UsersIcon } from '@/components/icons';
 import type { SeasonFilter } from './GlobeComponent';
+import { ObservationPoint, RECENCY_COLORS, RECENCY_LABELS } from '@/lib/observations';
 
 // Dynamically import Three.js components to avoid SSR issues
 const Globe = dynamic(() => import('./GlobeComponent').catch(() => import('./GlobeComponentFallback')), {
@@ -53,6 +54,7 @@ const ICON_PATHS: Record<string, React.ReactNode> = {
   chevronLeft: <path d="m15 18-6-6 6-6" />,
   chevronRight: <path d="m9 18 6-6-6-6" />,
   globe: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z" /></>,
+  sparkle: <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" />,
 };
 
 function CtrlIcon({ name, className = 'w-5 h-5' }: { name: keyof typeof ICON_PATHS; className?: string }) {
@@ -115,6 +117,10 @@ export default function InteractiveGlobe() {
   const [showRoutes, setShowRoutes] = useState(true);
   const [showMarkers, setShowMarkers] = useState(true);
   const [showClouds, setShowClouds] = useState(true);
+  // Live GBIF observations for the species currently in view, fetched from
+  // /api/v1/live/observations whenever the filters change (debounced).
+  const [observations, setObservations] = useState<ObservationPoint[]>([]);
+  const [showObservations, setShowObservations] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [seasonFilter, setSeasonFilter] = useState<SeasonFilter>('all');
@@ -247,6 +253,35 @@ export default function InteractiveGlobe() {
 
   // Get unique categories from sample animals
   const uniqueCategories = [...new Set(sampleAnimals.map(a => a.category))] as AnimalCategory[];
+
+  // Live observations layer: fetch recent GBIF occurrences for exactly the
+  // species in the current category/status view (so the dots follow the same
+  // filters as the markers). Debounced + aborted so rapid filter clicks don't
+  // stack stale requests, and cleared entirely when the layer is hidden.
+  const visibleIds = filteredData.map((d) => d.id).join(',');
+  useEffect(() => {
+    if (!showObservations || !visibleIds) {
+      setObservations([]);
+      return;
+    }
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => {
+      fetch(`/api/v1/live/observations?ids=${visibleIds}`, { signal: ctrl.signal })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((json) => {
+          if (json?.success && Array.isArray(json.data?.observations)) {
+            setObservations(json.data.observations as ObservationPoint[]);
+          }
+        })
+        .catch(() => {
+          // Network hiccup / 429 — leave the previous dots in place.
+        });
+    }, 250);
+    return () => {
+      clearTimeout(timer);
+      ctrl.abort();
+    };
+  }, [visibleIds, showObservations]);
 
   return (
     <motion.div
@@ -449,6 +484,7 @@ export default function InteractiveGlobe() {
             onRouteHover={handleRouteHover}
             onRouteClick={handleRouteClick}
             seasonFilter={seasonFilter}
+            observations={showObservations ? observations : []}
           />
         )}
 
@@ -653,6 +689,15 @@ export default function InteractiveGlobe() {
             <CtrlIcon name="cloud" />
           </button>
           <button
+            onClick={() => setShowObservations((prev) => !prev)}
+            className={`p-3 rounded-xl transition-colors duration-300 ${
+              showObservations ? 'bg-primary-500 text-white shadow-lg' : 'bg-white/20 hover:bg-white/30 text-white'
+            }`}
+            title={showObservations ? 'Hide live observations' : 'Show live observations'}
+          >
+            <CtrlIcon name="sparkle" />
+          </button>
+          <button
             onClick={() => globeRef.current?.zoomIn()}
             className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300 text-white"
             title="Zoom In"
@@ -752,6 +797,30 @@ export default function InteractiveGlobe() {
         <span className="inline-flex items-center gap-1.5">
           <CalendarIcon className="w-3.5 h-3.5" />
           scrub seasons to watch migrations
+        </span>
+      </div>
+
+      {/* Live observations legend — recency bands + live count from GBIF */}
+      <div className="mt-2 flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-xs text-secondary-500 dark:text-secondary-400">
+        <span className="inline-flex items-center gap-1.5">
+          <CtrlIcon name="sparkle" className="w-3.5 h-3.5" />
+          {showObservations
+            ? observations.length > 0
+              ? `${observations.length} live observations`
+              : 'live observations (loading…)'
+            : 'live observations hidden'}
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: RECENCY_COLORS.week }} />
+          {RECENCY_LABELS.week}
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: RECENCY_COLORS.month }} />
+          {RECENCY_LABELS.month}
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: RECENCY_COLORS.year }} />
+          {RECENCY_LABELS.year}
         </span>
       </div>
     </motion.div>

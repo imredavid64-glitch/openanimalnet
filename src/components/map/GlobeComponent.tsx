@@ -4,6 +4,7 @@ import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 're
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
+import { ObservationPoint, recencyColor } from '@/lib/observations';
 
 interface RoutePoint {
   latitude: number;
@@ -74,6 +75,8 @@ interface GlobeProps {
   onRouteClick?: (info: RouteHoverInfo) => void;
   /** Season scrubber: hide/dim corridors that aren't active in this season. */
   seasonFilter?: SeasonFilter;
+  /** Live observations (recency-colored dots) from the GBIF layer. */
+  observations?: ObservationPoint[];
 }
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
@@ -111,6 +114,7 @@ export default forwardRef(function GlobeComponent(
     onRouteHover,
     onRouteClick,
     seasonFilter = 'all',
+    observations = [],
   }: GlobeProps,
   ref
 ) {
@@ -126,6 +130,7 @@ export default forwardRef(function GlobeComponent(
   const cloudsRef = useRef<THREE.Mesh | null>(null);
   const pointsRef = useRef<THREE.Points | THREE.Group | null>(null);
   const routesRef = useRef<THREE.Group | null>(null);
+  const observationsRef = useRef<THREE.Points | null>(null);
   const raycasterRef = useRef<THREE.Raycaster | null>(null);
   const mouseRef = useRef<THREE.Vector2 | null>(null);
 
@@ -399,6 +404,25 @@ export default forwardRef(function GlobeComponent(
     // is `data`, which is already the dependency.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, showRoutes, showMarkers]);
+  
+  // Rebuild the observations dot cloud when the layer's data changes (the
+  // parent passes [] to hide it). Points are never picked, so this is purely
+  // a draw-once layer — no raycast/event wiring needed.
+  useEffect(() => {
+    if (!sceneRef.current) return;
+
+    if (observationsRef.current) {
+      sceneRef.current.remove(observationsRef.current);
+      observationsRef.current.geometry.dispose();
+      (observationsRef.current.material as THREE.Material).dispose();
+      observationsRef.current = null;
+    }
+
+    createObservations(sceneRef.current, observations);
+    // createObservations is a component-scope helper; its only input is
+    // `observations`, which is already the dependency.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [observations]);
   
   // Re-apply the season filter when the scrubber moves (routes are rebuilt on
   // data changes but not on season changes — just toggle visibility here)
@@ -825,7 +849,45 @@ export default forwardRef(function GlobeComponent(
     pointsRef.current = group;
     scene.add(group);
   };
-  
+
+  // Live observations: small recency-colored dots on the globe surface (GBIF
+  // occurrences for the species currently in view). Rendered as a single
+  // THREE.Points cloud with per-vertex colors — cheap, non-interactive.
+  const createObservations = (scene: THREE.Scene, observations: ObservationPoint[]) => {
+    if (observations.length === 0) return;
+
+    const positions: number[] = [];
+    const colors: number[] = [];
+    const surfaceRadius = 2.03; // just above the earth texture, below markers
+
+    observations.forEach((obs) => {
+      if (typeof obs.latitude !== 'number' || typeof obs.longitude !== 'number') return;
+      const pos = latLngToVector3(obs.latitude, obs.longitude, surfaceRadius);
+      positions.push(pos.x, pos.y, pos.z);
+      const c = new THREE.Color(recencyColor(obs.eventDate));
+      colors.push(c.r, c.g, c.b);
+    });
+
+    if (positions.length === 0) return;
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({
+      size: 0.035,
+      vertexColors: true,
+      sizeAttenuation: true,
+      transparent: true,
+      opacity: 0.95,
+      depthWrite: false,
+    });
+
+    const points = new THREE.Points(geometry, material);
+    observationsRef.current = points;
+    scene.add(points);
+  };
+
   return (
     <div
       ref={containerRef}

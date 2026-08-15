@@ -8,6 +8,7 @@ import Footer from '@/components/layout/Footer';
 import { sampleShelters, sampleLostPets, sampleFoundPets } from '@/data/sample/shelters';
 import type { FoundPetReport, LostPetReport } from '@/data/sample/shelters';
 import { greatCircleKm } from '@/lib/geo';
+import { matchLostToFound } from '@/lib/interactMatching';
 import { PawIcon, PinIcon, PhoneIcon, CheckIcon, SearchIcon, AccessibleIcon, BookIcon } from '@/components/icons';
 
 type Tab = 'lost-found' | 'shelters' | 'adopt';
@@ -71,13 +72,6 @@ const SERVICES: Record<string, string> = {
 
 // Reference location for distance display ("your area"), defaulting to Nairobi.
 const DEFAULT_AREA = { latitude: -1.2864, longitude: 36.8172 };
-
-function matchLostToFound(lost: LostPetReport, found: FoundPetReport): number {
-  if (lost.species !== found.species) return 0;
-  const distKm = greatCircleKm(lost.lastSeen, found.location);
-  if (distKm > 60) return 0;
-  return Math.round(Math.max(0, 100 - distKm * 1.6));
-}
 
 export default function ReunitePage() {
   const [tab, setTab] = useState<Tab>('lost-found');
