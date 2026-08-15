@@ -4,6 +4,10 @@ name: Data Drift Watch
 # article still matches live sources. Fails loudly on drift so the team can
 # update src/data/sample/sources.ts (and the sample data) before the data
 # goes stale. Can also be triggered manually from the Actions tab.
+#
+# On a clean run it commits the regenerated verification report back to the
+# repo and redeploys, so the public /data-quality page never shows stale
+# data between releases.
 
 on:
   schedule:
@@ -13,6 +17,13 @@ on:
 jobs:
   source-drift:
     runs-on: ubuntu-latest
+    # The commit-back writes to the repo, and the explicit redeploy needs to
+    # dispatch the deploy workflow (GITHUB_TOKEN commits don't re-trigger
+    # workflows, so the fresh report must be deployed on purpose). The
+    # taxonomy job keeps its default read-only permissions.
+    permissions:
+      contents: write
+      actions: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,10 +43,33 @@ jobs:
         run: npm run refresh:data -- --fail
 
       - name: Verify every species across Wikidata, Wikipedia, GBIF, and iNaturalist
-        # --report also regenerates src/data/verification-report.json, the
-        # source of truth for the public /data-quality page (verified fresh,
-        # committed via the usual PR flow).
+        # --report regenerates src/data/verification-report.json, the source
+        # of truth for the public /data-quality page. --fail stops the job
+        # (and the commit-back below) on any drift, so a dirty report is
+        # never published.
         run: npm run verify:data -- --fail --report
+
+      - name: Commit regenerated verification report
+        # The report carries a fresh generatedAt timestamp every run, so it
+        # always changes on a clean check.
+        run: |
+          if ! git diff --quiet -- src/data/verification-report.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/data/verification-report.json
+            git commit -m "chore(data): refresh verification report [skip ci]"
+            git push
+            echo "report committed"
+          else
+            echo "report unchanged — nothing to commit"
+          fi
+
+      - name: Redeploy with the fresh report
+        # GITHUB_TOKEN commits don't trigger the on-push deploy, so dispatch
+        # it explicitly to put the new report into production.
+        run: gh workflow run deploy.yml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   taxonomy:
     runs-on: ubuntu-latest

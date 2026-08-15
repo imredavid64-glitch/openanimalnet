@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- The weekly data-drift check now commits the regenerated verification
+  report back to the repo and redeploys, so /data-quality never shows stale
+  data between releases. On any drift the check still fails loudly and
+  nothing is published.
+
 ## [1.18.18] - 2026-08-15
 
 ### Added
