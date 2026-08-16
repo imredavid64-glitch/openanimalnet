@@ -1,6 +1,6 @@
 {
   "name": "openanimalnet",
-  "version": "1.18.18",
+  "version": "1.18.19",
   "private": true,
   "engines": {
     "node": ">=22.6"
@@ -15,6 +15,7 @@
     "refresh:data": "node .freebuff/refresh-sources.mjs",
     "verify:data": "node .freebuff/verify-multisource.mjs",
     "check:taxonomy": "node .freebuff/check-taxonomy.mjs",
+    "clean": "bash scripts/clean.sh",
     "species:add": "node .freebuff/generate-species.mjs",
     "mobile:setup": "bash scripts/setup-mobile.sh",
     "mobile:build": "MOBILE_BUILD=true npm run build",

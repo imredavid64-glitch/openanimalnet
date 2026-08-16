@@ -2,7 +2,24 @@
 
 All notable changes to this project are documented in this file.
 
-## [Unreleased]
+## [1.18.19] - 2026-08-16
+
+### Added
+- **`npm run clean`**: one-command sweep of scratch build artifacts — the
+  preview scratch tree (`/tmp/oan-fresh`), build/verification logs, and
+  the `.freebuff` preview logs — so cleanup is a single command instead of
+  a manual sweep. Files only; running servers are left alone with a
+  heads-up if port 3100 is still in use.
+- **`npm run clean -- --dry-run`** (`-n`): lists exactly what would be
+  removed (scratch tree, each build log, each preview log) without
+  deleting anything — handy for confirming the sweep before running it.
+
+### Changed
+- **Preview logs are now timestamped per session**: `start-preview.js`
+  writes each preview session to its own `.freebuff/logs/preview-<ts>.log`
+  instead of appending to one ever-growing file, so old sessions are
+  naturally separated and easy to clean. Each log opens with a header line
+  recording the session's start time, mode (dev/start), root, and PID.
 
 ### Fixed
 - The weekly data-drift check now commits the regenerated verification

@@ -22,7 +22,7 @@
 .freebuff/*.db
 .freebuff/*.db-shm
 .freebuff/*.db-wal
-.freebuff/preview-*.log
+.freebuff/logs/
 
 # Debug
 npm-debug.log*
