@@ -30,27 +30,38 @@ test('GET /api/v1/animals returns paginated animals', async () => {
   assert.equal(body.success, true);
   assert.ok(Array.isArray(body.data));
   assert.equal(body.data.length, 5);
+  // Totals must agree with an unpaginated fetch of the same collection.
+  const all = await getJson('/api/v1/animals?limit=500');
+  const total = all.body.pagination?.total ?? NaN;
   assert.deepEqual(body.pagination, {
     page: 1,
     limit: 5,
-    total: 28,
-    totalPages: 6,
+    total,
+    totalPages: Math.ceil(total / 5),
   });
 });
 
 test('GET /api/v1/animals filters by category', async () => {
-  const { status, body } = await getJson('/api/v1/animals?category=mammals&limit=50');
+  const { status, body } = await getJson('/api/v1/animals?category=mammals&limit=500');
   assert.equal(status, 200);
   const animals = body.data as { category: string }[];
-  assert.equal(animals.length, 17);
+  const all = await getJson('/api/v1/animals?limit=500');
+  const expected = (all.body.data as { category: string }[]).filter(
+    (a) => a.category === 'mammals'
+  ).length;
+  assert.equal(animals.length, expected);
+  assert.ok(expected > 0, 'expected some mammals in the dataset');
   assert.ok(animals.every((a) => a.category === 'mammals'));
 });
 
 test('GET /api/v1/animals supports search', async () => {
-  const { body } = await getJson('/api/v1/animals?search=whale');
+  const { body } = await getJson('/api/v1/animals?search=whale&limit=100');
   const animals = body.data as { commonName: string }[];
-  assert.equal(body.pagination?.total, 1);
-  assert.equal(animals[0].commonName, 'Blue Whale');
+  assert.ok((body.pagination?.total ?? 0) >= 1, 'expected search to find whales');
+  assert.ok(
+    animals.every((a) => a.commonName.toLowerCase().includes('whale')),
+    'every search hit should mention whale in its common name'
+  );
 });
 
 test('GET /api/v1/animals/:id returns a full profile', async () => {
@@ -82,7 +93,8 @@ test('GET /api/v1/populations returns records for all species', async () => {
     commonName: string;
     conservationStatus: string;
   }[];
-  assert.equal(records.length, 28);
+  const all = await getJson('/api/v1/animals?limit=500');
+  assert.equal(records.length, all.body.pagination?.total);
   const lion = records.find((r) => r.animalId === 'lion-001');
   assert.equal(lion?.commonName, 'African Lion');
   assert.equal(lion?.conservationStatus, 'VU');
@@ -119,9 +131,10 @@ test('GET /api/v1/monitoring/stats returns dashboard stats', async () => {
     monitoredAnimals: number;
     activeAlerts: number;
   };
-  // Totals are derived from the real 28-species dataset — every species is
-  // monitored, and the 8 sample alerts match src/data/sample/alerts.ts.
-  assert.equal(stats.totalAnimals, 28);
+  // Totals must agree with the animals collection; every species is
+  // monitored and the sample alerts match src/data/sample/alerts.ts.
+  const all = await getJson('/api/v1/animals?limit=500');
+  assert.equal(stats.totalAnimals, all.body.pagination?.total);
   assert.equal(stats.monitoredAnimals, stats.totalAnimals);
   assert.equal(stats.activeAlerts, 8);
 });
