@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { exportSpeciesGeoJSON, exportSpeciesCSV } from '@/lib/exportUtils';
-import { animals } from '@/data/sample/animals';
+import { sampleAnimals } from '@/data/sample/animals';
 
 export default function DataExportPage() {
   const downloadFile = (content: string, fileName: string, contentType: string) => {
@@ -26,7 +26,7 @@ export default function DataExportPage() {
   };
 
   const handleExportJSON = () => {
-    downloadFile(JSON.stringify(animals, null, 2), 'openanimalnet-full-catalog.json', 'application/json');
+      downloadFile(JSON.stringify(sampleAnimals, null, 2), 'openanimalnet-full-catalog.json', 'application/json');
   };
 
   return (
