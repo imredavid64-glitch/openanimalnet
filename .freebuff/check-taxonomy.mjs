@@ -39,13 +39,22 @@ async function sparql(query, tries = 3) {
 // path-alias imports for its types).
 function parseSpecies() {
   const src = readFileSync(ANIMALS_PATH, 'utf8');
-  const chunks = src.split(/^  \{\n    id: /m).slice(1);
+  // Entries exist in two shapes: hand-written (4-space fields, single quotes)
+  // and generator-produced (2-space fields, double quotes).
+  const chunks = src.split(/^ {2}\{\n(?: {4}| {2})id: /m).slice(1);
   return chunks.map((chunk) => {
-    const id = chunk.slice(1, chunk.indexOf("',"));
-    const scientificName = chunk.match(/scientificName: '([^']+)'/)?.[1] ?? null;
-    const conservationStatus = chunk.match(/conservationStatus: '([^']+)'/)?.[1] ?? null;
-    const klass = chunk.match(/      class: '([^']+)'/)?.[1] ?? null;
-    return { id, scientificName, conservationStatus, class: klass };
+    const dq = chunk.startsWith('"');
+    const q = dq ? '"' : "'";
+    const id = chunk.slice(1, chunk.indexOf(q + ','));
+    const sciRe = dq ? /scientificName: "([^"]+)"/ : /scientificName: '([^']+)'/;
+    const csRe = dq ? /conservationStatus: "([^"]+)"/ : /conservationStatus: '([^']+)'/;
+    const clsRe = dq ? /class: "([^"]+)"/ : /class: '([^']+)'/;
+    return {
+      id,
+      scientificName: chunk.match(sciRe)?.[1] ?? null,
+      conservationStatus: chunk.match(csRe)?.[1] ?? null,
+      class: chunk.match(clsRe)?.[1] ?? null,
+    };
   });
 }
 

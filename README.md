@@ -18,7 +18,7 @@
 
 ## Features
 
-- **Interactive Globe**: 3D globe with all 33 species, search, conservation-status
+- **Interactive Globe**: 3D globe with all 42 species, search, conservation-status
   filters, click-to-focus popups, and animated migration routes.
 - **Live observations layer**: recent GBIF occurrences rendered as recency-
   colored dots on the globe (green = this week, amber = this month, blue =

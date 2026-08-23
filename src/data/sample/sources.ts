@@ -387,4 +387,85 @@ export const speciesSources: SpeciesSource[] = [
   conservationStatus: "NT",
   populationNote: "~256,500 breeding pairs (SCAR 2019/2021; IUCN 2020, NT)"
 },
+  {
+  animalId: "philippine-eagle-001",
+  commonName: "Philippine Eagle",
+  scientificName: "Pithecophaga jefferyi",
+  wikipediaTitle: "Philippine eagle",
+  iucnId: 22696012,
+  conservationStatus: "CR",
+  populationNote: "~392 breeding pairs (range 318–447), ≈784 mature individuals — Sutton et al. 2023 SDM-based global estimate (Animal Conservation 26:684); declining; old-growth dipterocarp loss is the main driver"
+},
+  {
+  animalId: "harpy-eagle-001",
+  commonName: "Harpy Eagle",
+  scientificName: "Harpia harpyja",
+  wikipediaTitle: "Harpy eagle",
+  iucnId: 22695998,
+  conservationStatus: "VU",
+  populationNote: "IUCN band 100,000–250,000 mature individuals (BirdLife International 2021, VU); Panama holds ~227 nesting pairs (2012); declining with Amazon deforestation"
+},
+  {
+  animalId: "golden-poison-frog-001",
+  commonName: "Golden Poison Frog",
+  scientificName: "Phyllobates terribilis",
+  wikipediaTitle: "Golden poison frog",
+  iucnId: 55264,
+  conservationStatus: "EN",
+  populationNote: "No absolute census available — known only from a handful of localities in Chocó, Colombia; trend decreasing (IUCN EN)"
+},
+  {
+  animalId: "chinese-giant-salamander-001",
+  commonName: "Chinese giant salamander",
+  scientificName: "Andrias davidianus",
+  wikipediaTitle: "Chinese giant salamander",
+  iucnId: 1272,
+  conservationStatus: "CR",
+  populationNote: "<50,000 wild individuals widely cited; >80% decline since the 1950s from overexploitation and dams (IUCN CR); farmed stock (~millions) excluded — not self-sustaining wild population"
+},
+  {
+  animalId: "elkhorn-coral-001",
+  commonName: "Elkhorn Coral",
+  scientificName: "Acropora palmata",
+  wikipediaTitle: "Elkhorn coral",
+  iucnId: 133006,
+  conservationStatus: "CR",
+  populationNote: "Measured as reef cover, not individuals: >95% decline in Caribbean cover since the 1980s (IUCN CR 2008; NOAA Acropora Recovery Plan); white-band disease, heat bleaching and hurricanes drive losses"
+},
+  {
+  animalId: "staghorn-coral-001",
+  commonName: "Staghorn Coral",
+  scientificName: "Acropora cervicornis",
+  wikipediaTitle: "Staghorn coral",
+  iucnId: 133381,
+  conservationStatus: "CR",
+  populationNote: "Measured as reef cover, not individuals: ~97–98% decline since the 1980s across most of the Caribbean (IUCN CR 2008); fastest recovery potential via fragmentation but recurring bleaching limits it"
+},
+  {
+  animalId: "lord-howe-tree-lobster-001",
+  commonName: "Lord Howe tree lobster",
+  scientificName: "Dryococelus australis",
+  wikipediaTitle: "Dryococelus",
+  iucnId: 6852,
+  conservationStatus: "CR",
+  populationNote: "24 adults found on Ball's Pyramid in 2001 — the only known wild population; wild size remains tiny and unquantified; large insurance colony at Melbourne Zoo (IUCN CR)"
+},
+  {
+  animalId: "rusty-patched-bumble-bee-001",
+  commonName: "Rusty Patched Bumble Bee",
+  scientificName: "Bombus affinis",
+  wikipediaTitle: "Bombus affinis",
+  iucnId: 44937399,
+  conservationStatus: "CR",
+  populationNote: "No absolute census — relative abundance fell an estimated 87–96% since the late 1990s (USFWS SSA 2016; ESA Endangered 2017); now confined to scattered patches, mostly upper Midwest"
+},
+  {
+  animalId: "whale-shark-001",
+  commonName: "Whale shark",
+  scientificName: "Rhincodon typus",
+  wikipediaTitle: "Whale shark",
+  iucnId: 19488,
+  conservationStatus: "EN",
+  populationNote: "No robust global census — best estimates ~100,000–200,000 (genetic Ne 119k–238k breeding females, Castro et al. 2007); >50% decline over 75 years (IUCN EN 2025): Indo-Pacific −63%, Atlantic ≥30%"
+},
 ];

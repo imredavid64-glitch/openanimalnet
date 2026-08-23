@@ -1456,6 +1456,384 @@ export const sampleAnimals: Animal[] = [
   ]
 },
 
+  {
+  id: "philippine-eagle-001",
+  commonName: "Philippine Eagle",
+  scientificName: "Pithecophaga jefferyi",
+  category: "birds",
+  description: "The Philippine eagle, also known as the monkey-eating eagle or great Philippine eagle, is a critically endangered species of eagle of the family Accipitridae which is endemic to forests in the Philippines. It has brown and white-coloured plumage, a shaggy crest, and generally measures 86 to 102 cm in length and weighs 4.04 to 8.0 kg.",
+  images: [
+    "/images/animals/philippine-eagle-001.jpg"
+  ],
+  conservationStatus: "CR",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Aves",
+    order: "Accipitriformes",
+    family: "Accipitridae",
+    genus: "Pithecophaga",
+    species: "jefferyi"
+  },
+  location: {
+    latitude: 7.5,
+    longitude: 125.5,
+    altitude: 0,
+    accuracy: 50,
+    timestamp: new Date('2026-08-23'),
+    source: "Range centroid: Mindanao, Philippines"
+  },
+  habitat: ['rainforest', 'dipterocarp forest', 'montane forest'],
+  populationEstimate: 784,
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "harpy-eagle-001",
+  commonName: "Harpy Eagle",
+  scientificName: "Harpia harpyja",
+  category: "birds",
+  description: "The harpy eagle is a large neotropical species of eagle. It is also called the American harpy eagle to distinguish it from the Papuan eagle, which is sometimes known as the New Guinea harpy eagle or Papuan harpy eagle. It is the largest bird of prey throughout its range, and among the largest extant species of eagles in the world. It usually inhabits tropical lowland rainforests in the upper (emergent) canopy layer. Destruction of its natural habitat has caused it to vanish from many parts of its former range, and it is nearly extirpated from much of Central America. It is the only member of the genus Harpia, which, together with Harpyopsis, Macheiramphus and Morphnus, forms the subfamily Harpiinae.",
+  images: [
+    "/images/animals/harpy-eagle-001.jpg"
+  ],
+  conservationStatus: "VU",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Aves",
+    order: "Accipitriformes",
+    family: "Accipitridae",
+    genus: "Harpia",
+    species: "harpyja"
+  },
+  location: {
+    latitude: 8.5,
+    longitude: -77,
+    altitude: 0,
+    accuracy: 50,
+    timestamp: new Date('2026-08-23'),
+    source: "Range centroid: Darién, Panama"
+  },
+  habitat: ['tropical rainforest', 'lowland forest'],
+  populationEstimate: 175000,
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "golden-poison-frog-001",
+  commonName: "Golden Poison Frog",
+  scientificName: "Phyllobates terribilis",
+  category: "amphibians",
+  description: "The golden poison frog, also known as the golden dart frog or golden poison arrow frog, is a poison dart frog endemic from the rainforests of Colombia. The golden poison frog has become endangered due to habitat destruction within its naturally limited range. Despite its small size, this frog is considered to be the most poisonous extant animal species on the planet.",
+  images: [
+    "/images/animals/golden-poison-frog-001.jpg"
+  ],
+  conservationStatus: "EN",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Amphibia",
+    order: "Anura",
+    family: "Dendrobatidae",
+    genus: "Phyllobates",
+    species: "terribilis"
+  },
+  location: {
+    latitude: 3.9,
+    longitude: -77.05,
+    altitude: 0,
+    accuracy: 50,
+    timestamp: new Date('2026-08-23'),
+    source: "Known localities: Chocó, Colombia"
+  },
+  habitat: ['rainforest leaf litter'],
+  
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "chinese-giant-salamander-001",
+  commonName: "Chinese giant salamander",
+  scientificName: "Andrias davidianus",
+  category: "amphibians",
+  description: "The Chinese giant salamander is one of the largest salamanders and one of the largest amphibians in the world. It is fully aquatic, and is endemic to rocky mountain streams and lakes in the Yangtze river basin of central China. It has also been introduced to Kyoto Prefecture in Japan, and possibly to Taiwan. It is considered critically endangered in the wild due to habitat loss, pollution, and overcollection, as it is considered a delicacy and used in traditional Chinese medicine. On farms in central China, it is extensively farmed and sometimes bred, although many of the salamanders on the farms are caught in the wild. It has been listed as one of the top-10 \"focal species\" in 2008 by the Evolutionarily Distinct and Globally Endangered project.",
+  images: [
+    "/images/animals/chinese-giant-salamander-001.jpg"
+  ],
+  conservationStatus: "CR",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Amphibia",
+    order: "Caudata",
+    family: "Cryptobranchidae",
+    genus: "Andrias",
+    species: "davidianus"
+  },
+  location: {
+    latitude: 29.1,
+    longitude: 110.5,
+    altitude: 0,
+    accuracy: 50,
+    timestamp: new Date('2026-08-23'),
+    source: "Stronghold: Zhangjiajie Nature Reserve, Hunan"
+  },
+  habitat: ['cold mountain streams'],
+  populationEstimate: 50000,
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "elkhorn-coral-001",
+  commonName: "Elkhorn Coral",
+  scientificName: "Acropora palmata",
+  category: "marine",
+  description: "Elkhorn coral is an important reef-building coral in the Caribbean. The species has a complex structure with many branches which resemble that of elk antlers; hence, the common name. The branching structure creates habitat and shelter for many other reef species. Elkhorn coral is known to grow quickly with an average growth rate of 5 to 10 cm per year. They can reproduce both sexually and asexually, though asexual reproduction is much more common and occurs through a process called fragmentation.",
+  images: [
+    "/images/animals/elkhorn-coral-001.jpg"
+  ],
+  conservationStatus: "CR",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Cnidaria",
+    class: "Hexacorallia",
+    order: "Scleractinia",
+    family: "Acroporidae",
+    genus: "Acropora",
+    species: "palmata"
+  },
+  location: {
+    latitude: 18.3,
+    longitude: -75,
+    altitude: 0,
+    accuracy: 50,
+    timestamp: new Date('2026-08-23'),
+    source: "Range centroid: Caribbean basin"
+  },
+  habitat: ['coral reefs', 'shallow fore-reefs'],
+  
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "staghorn-coral-001",
+  commonName: "Staghorn Coral",
+  scientificName: "Acropora cervicornis",
+  category: "marine",
+  description: "The staghorn coral is a branching, stony coral, within the Order Scleractinia. It is characterized by thick, upright branches which can grow in excess of 2 meters (6.5 ft) in height and resemble the antlers of a stag, hence the name, Staghorn. It grows within various areas of a reef but is most commonly found within shallow fore and back reefs, as well as patch reefs, where water depths rarely exceed 20 meters (65 ft). Staghorn corals can exhibit very fast growth, adding up to 5 cm in new skeleton for every 1 cm of existing skeleton each year, making them one of the fastest growing fringe coral species in the Western Atlantic. Due to this fast growth, Acropora cervicornis, serve as one of the most important reef building corals, functioning as marine nurseries for juvenile fish, buffer zones for erosion and storms, and center points of biodiversity in the Western Atlantic.",
+  images: [
+    "/images/animals/staghorn-coral-001.jpg"
+  ],
+  conservationStatus: "CR",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Cnidaria",
+    class: "Hexacorallia",
+    order: "Scleractinia",
+    family: "Acroporidae",
+    genus: "Acropora",
+    species: "cervicornis"
+  },
+  location: {
+    latitude: 17.8,
+    longitude: -74.5,
+    altitude: 0,
+    accuracy: 50,
+    timestamp: new Date('2026-08-23'),
+    source: "Range centroid: wider Caribbean"
+  },
+  habitat: ['coral reefs', 'shallow fore-reefs'],
+  
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "lord-howe-tree-lobster-001",
+  commonName: "Lord Howe tree lobster",
+  scientificName: "Dryococelus australis",
+  category: "insects",
+  description: "Dryococelus australis, also known as the Lord Howe Island stick insect, Lord Howe Island phasmid or, locally, as the tree lobster, is a species of stick insect that lives in the Lord Howe Island Group. It is the only member of the monotypic genus Dryococelus. Thought to be extinct by 1920, it was rediscovered in 2001. Although it had been extirpated from Lord Howe itself, a remnant population of 24 individuals was rediscovered on the sea stack of Ball's Pyramid. The species has been called \"the rarest insect in the world\".",
+  images: [
+    "/images/animals/lord-howe-tree-lobster-001.jpg"
+  ],
+  conservationStatus: "CR",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Arthropoda",
+    class: "Insecta",
+    order: "Phasmida",
+    family: "Phasmatidae",
+    genus: "Dryococelus",
+    species: "australis"
+  },
+  location: {
+    latitude: -31.75,
+    longitude: 159.25,
+    altitude: 0,
+    accuracy: 50,
+    timestamp: new Date('2026-08-23'),
+    source: "Ball's Pyramid / Lord Howe Island, NSW"
+  },
+  habitat: ['sea-stack rock crevices', 'tepid low shrubland'],
+  
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "rusty-patched-bumble-bee-001",
+  commonName: "Rusty Patched Bumble Bee",
+  scientificName: "Bombus affinis",
+  category: "insects",
+  description: "Bombus affinis, commonly known as the rusty patched bumble bee, is a species of bumblebee endemic to North America. Its historical range in North America has been throughout the east and upper Midwest of the United States, north to Ontario, Canada, where it is considered a \"species at risk\", east to Quebec, south to Georgia, and west to the Dakotas. Its numbers have declined in 87% of its historical habitat range. In April 2010 it was assessed as Endangered in Canada, through the work of Sheila Colla and colleagues. On January 10, 2017, the United States Fish and Wildlife Service placed B. affinis on the list of endangered species, making the rusty patched bumble bee the first bee to be added to the list in the continental United States.",
+  images: [
+    "/images/animals/rusty-patched-bumble-bee-001.jpg"
+  ],
+  conservationStatus: "CR",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Arthropoda",
+    class: "Insecta",
+    order: "Hymenoptera",
+    family: "Apidae",
+    genus: "Bombus",
+    species: "affinis"
+  },
+  location: {
+    latitude: 43.1,
+    longitude: -89.4,
+    altitude: 0,
+    accuracy: 50,
+    timestamp: new Date('2026-08-23'),
+    source: "Core extant range: Wisconsin, USA"
+  },
+  habitat: ['grasslands', 'woodlands', 'prairie remnants', 'urban gardens'],
+  
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "whale-shark-001",
+  commonName: "Whale shark",
+  scientificName: "Rhincodon typus",
+  category: "marine",
+  description: "The whale shark is a slow-moving, filter-feeding carpet shark and the largest known extant fish species. An individual with a length of 18.8 m (61.7 ft) has been considered the largest reliably recorded. The whale shark holds many records for size in the animal kingdom, most notably being by far the largest living non-cetacean animal. It is the only living species of the genus Rhincodon and the only extant member of the family Rhincodontidae, which belongs to the subclass Elasmobranchii in the class Chondrichthyes. Before 1984, it was classified as Rhiniodon into Rhinodontidae. An extinct species, Rhincodon ferriolensis, was described in Europe, in the Late Burdigalian stage.",
+  images: [
+    "/images/animals/whale-shark-001.jpg"
+  ],
+  conservationStatus: "EN",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Chondrichthyes",
+    order: "Orectolobiformes",
+    family: "Rhincodontidae",
+    genus: "Rhincodon",
+    species: "typus"
+  },
+  location: {
+    latitude: -21.9,
+    longitude: 113.8,
+    altitude: 0,
+    accuracy: 50,
+    timestamp: new Date('2026-08-23'),
+    source: "Aggregation site: Ningaloo Reef, Australia"
+  },
+  habitat: ['pelagic ocean', 'coastal aggregation sites'],
+migrationRoutes: [
+      {
+        name: 'Ningaloo feeding aggregation — Indian Ocean pelagic dispersal',
+        color: '#38bdf8',
+        season: 'spring',
+        distanceKm: 5500,
+        durationDays: 210,
+        startMonth: 3,
+        endMonth: 12,
+        description: 'Juveniles feed off Ningaloo (Mar–Aug) then disperse into open Indian Ocean waters toward Indonesia and the central Indian Ocean per satellite-tag studies.',
+        waypoints: [
+          { name: 'Ningaloo Reef, Australia', lat: -21.9, lng: 113.8 },
+          { name: 'Rowley Shoals', lat: -17.5, lng: 119.3 },
+          { name: 'Christmas Island', lat: -10.5, lng: 105.6 },
+          { name: 'West Sumatra margin', lat: 2, lng: 96 },
+        ],
+      },
+    ],
+  populationEstimate: 150000,
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
 ];
 
 // Sample animal data with detailed information

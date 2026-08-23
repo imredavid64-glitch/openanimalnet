@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.23.0] - 2026-08-23
+
+### Added
+- **9 new species (33 → 42):** Philippine Eagle (CR), Harpy Eagle (VU),
+  Golden Poison Frog (EN), Chinese Giant Salamander (CR), Elkhorn & Staghorn
+  Corals (CR, first Cnidaria — category marine), Lord Howe Island Stick Insect
+  (CR), Rusty Patched Bumble Bee (CR), Whale Shark (EN) with a documented
+  Indian Ocean corridor.
+- Every population figure is sourced in its note (Sutton et al. 2023 for the
+  Philippine Eagle, IUCN 2025 for the whale shark, USFWS SSA 2016 for the bee);
+  count-less species honestly omit the estimate instead of inventing one.
+
+### Fixed
+- `check:taxonomy` parser only read hand-written entries — now handles both
+  entry formats; weekly drift watch covers all 42.
+- Generator category fallback assigned corals to mammals; curated to marine.
+
 ## [1.22.0] - 2026-08-23
 
 ### Fixed

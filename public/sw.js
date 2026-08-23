@@ -1,7 +1,7 @@
 // PWA Service Worker for offline caching of the app shell and core assets.
 // Plain JavaScript — browsers parse service workers as-is (no TS transforms).
 
-const CACHE_NAME = 'openanimalnet-v1.22.0';
+const CACHE_NAME = 'openanimalnet-v1.23.0';
 const ASSETS_TO_CACHE = [
   '/',
   '/animal',

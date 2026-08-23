@@ -23,6 +23,8 @@
 .freebuff/*.db-shm
 .freebuff/*.db-wal
 .freebuff/logs/
+.freebuff/project-id
+terminal_logs/
 
 # Debug
 npm-debug.log*
