@@ -519,7 +519,7 @@ export default function InteractiveGlobe() {
               <div className="flex items-start gap-3">
                 <div className="w-14 h-14 rounded-xl overflow-hidden bg-secondary-200 dark:bg-secondary-700 shrink-0">
                   {animal.images?.[0] ? (
-                    <img src={animal.images[0]} alt={animal.commonName} className="w-full h-full object-cover" />
+                    <img src={animal.images?.[0]} alt={animal.commonName} className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-secondary-400">
                       <CategoryIcon category={animal.category} className="w-6 h-6" />

@@ -12,8 +12,8 @@ export default function GalleryPage() {
     title: a.commonName,
     category: a.category,
     status: a.conservationStatus,
-    image: a.images[0] || '/images/earth.jpg',
-    location: a.habitat.join(', '),
+    image: a.images?.[0] || '/images/earth.jpg',
+    location: a.habitat?.join(', ') || '',
   }));
 
   const filtered = galleryItems.filter(
