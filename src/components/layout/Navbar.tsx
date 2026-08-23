@@ -11,9 +11,14 @@ const navItems = [
   { name: 'Home', path: '/' },
   { name: 'Animals', path: '/animal' },
   { name: 'Migrations', path: '/migration' },
-  { name: 'Dashboard', path: '/dashboard' },
+  { name: 'Live Feed', path: '/live-feed' },
+  { name: 'Reserves', path: '/reserves' },
+  { name: 'Acoustics', path: '/acoustics' },
+  { name: 'Challenge', path: '/challenge' },
+  { name: 'Habitat', path: '/habitat' },
+  { name: 'API', path: '/api/playground' },
+  { name: 'Export', path: '/data/export' },
   { name: 'Monitor', path: '/monitor' },
-  { name: 'AI Analysis', path: '/ai' },
 ];
 
 export default function Navbar() {

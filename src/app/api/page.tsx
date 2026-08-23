@@ -94,16 +94,20 @@ export default function ApiPage() {
         <code className="px-1.5 py-0.5 rounded bg-secondary-100 dark:bg-secondary-800 font-mono text-xs">/api/v1/*</code>:
       </p>
       <pre className="rounded-xl bg-secondary-900 text-secondary-100 p-6 overflow-x-auto text-sm">
-{`curl "http://localhost:3100/api/v1/animals?category=mammals&limit=5"`}
+{`curl "https://openanimalnet.vercel.app/api/v1/animals?category=mammals&limit=5"`}
       </pre>
       <p className="text-sm text-secondary-500 dark:text-secondary-400">
-        The production API is served from <code>https://api.openanimalnet.org/v1/*</code>.
+        The public API is served from{' '}
+        <code>https://openanimalnet.vercel.app/api/v1/*</code> — same origin, no key
+        required, rate limited to 60 requests per minute per IP.
       </p>
 
-      <Section>SDKs</Section>
+      <Section>Exploring the API</Section>
       <p>
-        Official client libraries are maintained for Python and JavaScript. See the{' '}
-        <PageLink href="/docs">documentation</PageLink> for installation and usage guides.
+        Try endpoints interactively in the{' '}
+        <PageLink href="/api/playground">API playground</PageLink>, or download the{' '}
+        <PageLink href="/docs">OpenAPI 3.1 spec</PageLink> to generate a client in any
+        language with tools like Swagger Codegen or openapi-generator.
       </p>
     </StaticPage>
   );

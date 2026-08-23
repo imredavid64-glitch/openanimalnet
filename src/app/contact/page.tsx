@@ -6,26 +6,24 @@ export const metadata: Metadata = {
   description: 'Get in touch with the OpenAnimalNet team.',
 };
 
-const contacts = [
+const channels = [
   {
-    icon: '📧',
-    label: 'General Inquiries',
-    value: 'hello@openanimalnet.org',
-  },
-  {
-    icon: '🔬',
-    label: 'Research & Data Partnerships',
-    value: 'science@openanimalnet.org',
+    icon: '🐛',
+    label: 'Bug Reports & Feature Requests',
+    value: 'GitHub Issues — github.com/imredavid64-glitch/openanimalnet/issues',
+    href: 'https://github.com/imredavid64-glitch/openanimalnet/issues',
   },
   {
     icon: '🔌',
     label: 'API & Developer Support',
-    value: 'developers@openanimalnet.org',
+    value: 'Open a GitHub issue with the "api" label, or read the API docs',
+    href: '/docs',
   },
   {
-    icon: '🏢',
-    label: 'Office',
-    value: 'OpenAnimalNet Foundation, Nairobi · Amsterdam · Remote',
+    icon: '🔬',
+    label: 'Research & Data Corrections',
+    value: 'Spotted inaccurate data? Open an issue labeled "data-correction"',
+    href: 'https://github.com/imredavid64-glitch/openanimalnet/issues',
   },
 ];
 
@@ -34,35 +32,39 @@ export default function ContactPage() {
     <StaticPage
       icon="📬"
       title="Contact Us"
-      subtitle="Questions, data partnerships, press, or feedback — we'd love to hear from you."
+      subtitle="Questions, data corrections, or feedback — here's how to reach us."
     >
-      <Section>Email Us</Section>
+      <Section>Get in Touch</Section>
       <div className="space-y-4">
-        {contacts.map((contact) => (
-          <div
-            key={contact.label}
-            className="flex items-start space-x-4 rounded-xl border border-secondary-200 dark:border-secondary-700 p-5"
+        {channels.map((channel) => (
+          <a
+            key={channel.label}
+            href={channel.href}
+            target={channel.href.startsWith('http') ? '_blank' : undefined}
+            rel={channel.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+            className="flex items-start space-x-4 rounded-xl border border-secondary-200 dark:border-secondary-700 p-5 hover:border-primary-400 dark:hover:border-primary-500 transition-colors"
           >
-            <div className="text-2xl">{contact.icon}</div>
+            <div className="text-2xl">{channel.icon}</div>
             <div>
-              <div className="text-sm font-semibold text-secondary-900 dark:text-white">{contact.label}</div>
-              <div className="text-sm text-secondary-600 dark:text-secondary-400">{contact.value}</div>
+              <div className="text-sm font-semibold text-secondary-900 dark:text-white">{channel.label}</div>
+              <div className="text-sm text-secondary-600 dark:text-secondary-400">{channel.value}</div>
             </div>
-          </div>
+          </a>
         ))}
       </div>
 
-      <Section>Response Time</Section>
+      <Section>About Responses</Section>
       <p>
-        We typically respond within two business days. For urgent conservation or animal
-        welfare matters, include &quot;URGENT&quot; in the subject line.
+        OpenAnimalNet is an open-source project maintained by volunteers. There is no
+        dedicated support desk — issues on GitHub are the fastest way to get an answer,
+        and data corrections are reviewed alongside the weekly source-verification runs.
       </p>
 
       <Section>Press</Section>
       <p>
-        Media inquiries, imagery, and interview requests: press@openanimalnet.org. See our{' '}
+        OpenAnimalNet is free to cover — see the{' '}
         <a href="/about" className="text-primary-600 dark:text-primary-400 hover:underline font-medium">about page</a>{' '}
-        for background on the platform.
+        for background, or open a GitHub issue labeled &quot;press&quot; with specific questions.
       </p>
     </StaticPage>
   );

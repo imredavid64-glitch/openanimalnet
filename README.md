@@ -16,16 +16,16 @@
 
 </div>
 
-> **Demo** — seasonal migration corridor scrubber on the globe: `docs/demo.gif`
-> (drop a screen recording here; the globe + month scrubber + corridor arcs).
-
 ## Features
 
-- **Interactive Globe**: 3D globe with all 28 species, search, conservation-status
+- **Interactive Globe**: 3D globe with all 33 species, search, conservation-status
   filters, click-to-focus popups, and animated migration routes.
 - **Live observations layer**: recent GBIF occurrences rendered as recency-
   colored dots on the globe (green = this week, amber = this month, blue =
   this year), filtered by the same species/status filters as the markers.
+- **User sightings layer**: sightings reported on the Interactive Platform
+  (/interact) render on the globe too — rose dots pending verification,
+  purple dots verified — on both the 3D globe and the 2D fallback.
 - **Live GBIF ingestion**: species pages show a "Last synced from GBIF" badge
   with recent georeferenced occurrence counts, polled live from the GBIF API
   (`/api/v1/live/sync`).

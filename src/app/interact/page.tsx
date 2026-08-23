@@ -33,7 +33,7 @@ export default function InteractPage() {
           <span className="text-5xl">🌐</span>
           <h1 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-white mt-4">Interactive Platform</h1>
           <p className="text-lg text-secondary-600 dark:text-secondary-400 mt-4 max-w-3xl mx-auto">
-            From passive browsing to active participation. Report sightings, monitor sensors, identify species, match pets, and track access — all in real-time.
+            From passive browsing to active participation. Report sightings, monitor sensors, identify species, match pets, and track access — right in your browser.
           </p>
         </motion.div>
 
@@ -129,9 +129,17 @@ function SensorDashboard({ sensors, onRefresh }: { sensors: SensorReading[]; onR
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-secondary-900 dark:text-white">Live Sensor Feed ({sensors.length})</h3>
+        <h3 className="text-lg font-semibold text-secondary-900 dark:text-white">
+          Sensor Feed ({sensors.length})
+          <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-warning-100 text-warning-700 dark:bg-warning-900/30 dark:text-warning-400" title="This feed is generated on-device for demonstration — it is not live telemetry">
+            Simulated
+          </span>
+        </h3>
         <button onClick={onRefresh} className="px-4 py-2 rounded-xl bg-primary-600 text-white text-sm hover:bg-primary-700">Refresh</button>
       </div>
+      <p className="text-xs text-secondary-400 dark:text-secondary-500 -mt-2">
+        Demo feed: readings are generated on your device to illustrate the dashboard — no live sensors are connected.
+      </p>
       <div className="flex gap-2">
         {[{ id: 'all', label: `All (${sensors.length})` }, { id: 'critical', label: `Critical (${statusCounts.critical})` }, { id: 'warning', label: `Warning (${statusCounts.warning})` }, { id: 'normal', label: `Normal (${statusCounts.normal})` }].map(f => (
           <button key={f.id} onClick={() => setFilter(f.id)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${filter === f.id ? 'bg-primary-600 text-white' : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-600'}`}>{f.label}</button>

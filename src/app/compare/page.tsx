@@ -1,42 +1,82 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import SpeciesComparison from '@/components/compare/SpeciesComparison';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import { ChartIcon } from '@/components/icons';
+import React, { useState } from 'react';
+import { sampleAnimals } from '@/data/sample/animals';
+import Link from 'next/link';
 
 export default function ComparePage() {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white dark:from-secondary-900 dark:to-secondary-950">
-      <Navbar />
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="inline-block"
-          >
-            <ChartIcon className="w-12 h-12 text-primary-600 dark:text-primary-400" />
-          </motion.div>
-          <h1 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-white mt-4">
-            Species Comparison
-          </h1>
-          <p className="text-lg text-secondary-600 dark:text-secondary-400 mt-4 max-w-2xl mx-auto">
-            Select up to 6 species to compare their population trends side by side.
-            All data is sourced from IUCN assessments, census reports, and peer-reviewed surveys.
-          </p>
-        </motion.div>
+  const [selectedIds, setSelectedIds] = useState<string[]>(['lion-001', 'tiger-001']);
 
-        <SpeciesComparison />
-      </main>
-      <Footer />
+  const selectedSpecies = sampleAnimals.filter((a) => selectedIds.includes(a.id));
+
+  const toggleSpecies = (id: string) => {
+    if (selectedIds.includes(id)) {
+      if (selectedIds.length > 1) {
+        setSelectedIds(selectedIds.filter((sid) => sid !== id));
+      }
+    } else if (selectedIds.length < 4) {
+      setSelectedIds([...selectedIds, id]);
+    }
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      <div>
+        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Species Comparison</h1>
+        <p className="text-slate-600 dark:text-slate-300 mt-2">Select up to 4 species for a side-by-side analysis.</p>
+      </div>
+
+      {/* Species Selector */}
+      <div className="flex flex-wrap gap-2">
+        {sampleAnimals.slice(0, 10).map((a) => (
+          <button
+            key={a.id}
+            onClick={() => toggleSpecies(a.id)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+              selectedIds.includes(a.id)
+                ? 'bg-emerald-600 text-white'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+            }`}
+          >
+            {a.commonName}
+          </button>
+        ))}
+      </div>
+
+      {/* Comparison Matrix */}
+      <div className="overflow-x-auto bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md">
+        <table className="w-full text-left text-sm">
+          <thead className="bg-slate-50 dark:bg-slate-800">
+            <tr>
+              <th className="p-4 font-bold text-slate-900 dark:text-white">Feature</th>
+              {selectedSpecies.map((s) => (
+                <th key={s.id} className="p-4 font-bold text-slate-900 dark:text-white min-w-[200px]">
+                  {s.commonName}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            {[
+              { label: 'Scientific Name', getter: (s: any) => s.scientificName },
+              { label: 'Category', getter: (s: any) => s.category },
+              { label: 'Conservation Status', getter: (s: any) => s.conservationStatus },
+              { label: 'Population', getter: (s: any) => s.populationEstimate?.toLocaleString() },
+              { label: 'Habitat', getter: (s: any) => s.habitat.join(', ') },
+              { label: 'Migration', getter: (s: any) => s.migrationRoutes?.length > 0 ? 'Yes' : 'No' },
+            ].map((row) => (
+              <tr key={row.label}>
+                <td className="p-4 font-semibold text-slate-500 dark:text-slate-400">{row.label}</td>
+                {selectedSpecies.map((s) => (
+                  <td key={s.id} className="p-4 text-slate-900 dark:text-slate-200 font-mono">
+                    {row.getter(s) ?? 'N/A'}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

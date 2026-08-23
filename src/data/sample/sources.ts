@@ -332,4 +332,59 @@ export const speciesSources: SpeciesSource[] = [
   conservationStatus: "LC",
   populationNote: "Over 2 million individuals worldwide (1–2 million breeding pairs); global trend assessed as decreasing (IUCN 2018)"
 },
+  {
+  animalId: "cheetah-001",
+  commonName: "Cheetah",
+  scientificName: "Acinonyx jubatus",
+  wikipediaTitle: "Cheetah",
+  iucnId: 219,
+  gbifKey: 2435270,
+    inaturalistId: 41955,
+  conservationStatus: "VU",
+  populationNote: "~6,517 mature individuals (Durant et al. 2017; IUCN 2021, VU)"
+},
+  {
+  animalId: "timber-wolf-001",
+  commonName: "Timber wolf",
+  scientificName: "Canis lupus",
+  wikipediaTitle: "Wolf",
+  iucnId: 3746,
+  gbifKey: 5219173,
+    inaturalistId: 42048,
+  conservationStatus: "LC",
+  populationNote: "200,000–250,000 globally (IUCN 2018, LC; Boitani et al. 2018)"
+},
+  {
+  animalId: "jaguar-001",
+  commonName: "Jaguar",
+  scientificName: "Panthera onca",
+  wikipediaTitle: "Jaguar",
+  iucnId: 15953,
+  gbifKey: 5219426,
+    inaturalistId: 41970,
+  conservationStatus: "NT",
+  populationNote: "~173,000 individuals (95% CI 138–208k; Jędrzejewski et al. 2018, NT)"
+},
+  {
+  animalId: "humpback-whale-001",
+  commonName: "Humpback whale",
+  scientificName: "Megaptera novaeangliae",
+  wikipediaTitle: "Humpback whale",
+  iucnId: 13006,
+  gbifKey: 5220086,
+    inaturalistId: 41566,
+  conservationStatus: "LC",
+  populationNote: "~135,000 total, ~84,000 mature (IUCN 2018, LC; Cooke 2018)"
+},
+  {
+  animalId: "emperor-penguin-001",
+  commonName: "Emperor Penguin",
+  scientificName: "Aptenodytes forsteri",
+  wikipediaTitle: "Emperor penguin",
+  iucnId: 22697752,
+  gbifKey: 2481661,
+    inaturalistId: 3820,
+  conservationStatus: "NT",
+  populationNote: "~256,500 breeding pairs (SCAR 2019/2021; IUCN 2020, NT)"
+},
 ];

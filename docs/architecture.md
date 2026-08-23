@@ -35,7 +35,7 @@ separation between data ingestion, verification, and presentation.
 All species data lives in TypeScript files that are imported directly at
 build time. No database required.
 
-- **`animals.ts`** — 28 species with full profiles, population history,
+- **`animals.ts`** — 33 species with full profiles, population history,
   migration routes, and five data categories
 - **`sources.ts`** — Per-species verification keys (Wikidata ID, IUCN
   assessment ID, GBIF key, iNaturalist ID, Wikipedia title)

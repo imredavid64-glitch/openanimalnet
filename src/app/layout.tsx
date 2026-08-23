@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
+import ServiceWorkerRegistrar from '@/components/ServiceWorkerRegistrar';
+import { SITE_URL } from '@/lib/site';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'OpenAnimalNet - Global Animal Data Platform',
   description: 'Monitor, analyze, and explore comprehensive animal data from around the world. Track biological, behavioral, ecological, and conservation data for all species.',
   keywords: ['animals', 'wildlife', 'conservation', 'monitoring', 'biodiversity', 'ecology', 'zoology'],
@@ -9,15 +12,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://openanimalnet.org',
+    url: SITE_URL,
     siteName: 'OpenAnimalNet',
     title: 'OpenAnimalNet - Global Animal Data Platform',
     description: 'Monitor, analyze, and explore comprehensive animal data from around the world.',
+    images: [{ url: '/images/animals/tiger-001.jpg', width: 500, height: 333, alt: 'Bengal tiger' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'OpenAnimalNet - Global Animal Data Platform',
     description: 'Monitor, analyze, and explore comprehensive animal data from around the world.',
+    images: ['/images/animals/tiger-001.jpg'],
   },
   manifest: '/site.webmanifest',
 };
@@ -45,6 +50,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         {children}
+        <ServiceWorkerRegistrar />
       </body>
     </html>
   );

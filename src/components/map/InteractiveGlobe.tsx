@@ -10,6 +10,7 @@ import { routeDistanceKm, formatKm, formatDurationDays } from '@/lib/geo';
 import { CategoryIcon, CalendarIcon, UsersIcon } from '@/components/icons';
 import type { SeasonFilter } from './GlobeComponent';
 import { ObservationPoint, RECENCY_COLORS, RECENCY_LABELS } from '@/lib/observations';
+import { loadUserSightings, type StoredSighting } from '@/lib/userSightings';
 
 // Dynamically import Three.js components to avoid SSR issues
 const Globe = dynamic(() => import('./GlobeComponent').catch(() => import('./GlobeComponentFallback')), {
@@ -55,6 +56,7 @@ const ICON_PATHS: Record<string, React.ReactNode> = {
   chevronRight: <path d="m9 18 6-6-6-6" />,
   globe: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z" /></>,
   sparkle: <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" />,
+  users: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>,
 };
 
 function CtrlIcon({ name, className = 'w-5 h-5' }: { name: keyof typeof ICON_PATHS; className?: string }) {
@@ -121,6 +123,11 @@ export default function InteractiveGlobe() {
   // /api/v1/live/observations whenever the filters change (debounced).
   const [observations, setObservations] = useState<ObservationPoint[]>([]);
   const [showObservations, setShowObservations] = useState(true);
+  // Crowdsourced sightings (reported on /interact, stored in localStorage).
+  // Loaded on mount and refreshed on cross-tab 'storage' events + the local
+  // 'oan-sightings-updated' event fired after a report/verify.
+  const [userSightings, setUserSightings] = useState<StoredSighting[]>([]);
+  const [showSightings, setShowSightings] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [seasonFilter, setSeasonFilter] = useState<SeasonFilter>('all');
@@ -131,6 +138,19 @@ export default function InteractiveGlobe() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Load + keep the sightings layer in sync with reports made on /interact.
+  useEffect(() => {
+    if (!isClient) return;
+    const reload = () => setUserSightings(loadUserSightings());
+    reload();
+    window.addEventListener('storage', reload);
+    window.addEventListener('oan-sightings-updated', reload);
+    return () => {
+      window.removeEventListener('storage', reload);
+      window.removeEventListener('oan-sightings-updated', reload);
+    };
+  }, [isClient]);
 
   // Month-linked deep link from the migration calendar: /?season=spring#globe
   // pre-filters the globe to that season and scrolls it into view.
@@ -485,6 +505,7 @@ export default function InteractiveGlobe() {
             onRouteClick={handleRouteClick}
             seasonFilter={seasonFilter}
             observations={showObservations ? observations : []}
+            sightings={showSightings ? userSightings : []}
           />
         )}
 
@@ -698,6 +719,15 @@ export default function InteractiveGlobe() {
             <CtrlIcon name="sparkle" />
           </button>
           <button
+            onClick={() => setShowSightings((prev) => !prev)}
+            className={`p-3 rounded-xl transition-colors duration-300 ${
+              showSightings ? 'bg-primary-500 text-white shadow-lg' : 'bg-white/20 hover:bg-white/30 text-white'
+            }`}
+            title={showSightings ? 'Hide user sightings' : 'Show user sightings'}
+          >
+            <CtrlIcon name="users" />
+          </button>
+          <button
             onClick={() => globeRef.current?.zoomIn()}
             className="p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-colors duration-300 text-white"
             title="Zoom In"
@@ -821,6 +851,26 @@ export default function InteractiveGlobe() {
         <span className="inline-flex items-center gap-1">
           <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: RECENCY_COLORS.year }} />
           {RECENCY_LABELS.year}
+        </span>
+      </div>
+
+      {/* User sightings legend — crowdsourced layer from /interact */}
+      <div className="mt-1 flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-xs text-secondary-500 dark:text-secondary-400">
+        <span className="inline-flex items-center gap-1.5">
+          <CtrlIcon name="users" className="w-3.5 h-3.5" />
+          {showSightings
+            ? userSightings.length > 0
+              ? `${userSightings.length} user sighting${userSightings.length === 1 ? '' : 's'}`
+              : 'user sightings (report one on /interact)'
+            : 'user sightings hidden'}
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#fb7185' }} />
+          pending
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#c084fc' }} />
+          verified
         </span>
       </div>
     </motion.div>

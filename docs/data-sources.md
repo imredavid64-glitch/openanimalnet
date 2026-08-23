@@ -58,7 +58,7 @@ Provides independently observed conservation status. Each species has an
 npm run verify:data
 ```
 
-Cross-checks all 28 species across all four sources. Exits with code 0 if all
+Cross-checks all 33 species across all four sources. Exits with code 0 if all
 pass, non-zero if any drift is detected.
 
 ### Verify and fix keys

@@ -1,6 +1,6 @@
 {
   "name": "openanimalnet",
-  "version": "1.18.19",
+  "version": "1.22.0",
   "private": true,
   "engines": {
     "node": ">=22.6"
@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --test src/lib/animalFiltering.test.ts src/lib/rateLimit.test.ts src/lib/geo.test.ts src/lib/interactMatching.test.ts src/lib/observations.test.ts",
+    "test": "node --test src/lib/animalFiltering.test.ts src/lib/rateLimit.test.ts src/lib/geo.test.ts src/lib/interactMatching.test.ts src/lib/observations.test.ts src/lib/userSightings.test.ts",
     "test:api": "node --test tests/api.integration.test.ts",
     "refresh:data": "node .freebuff/refresh-sources.mjs",
     "verify:data": "node .freebuff/verify-multisource.mjs",
@@ -27,6 +27,7 @@
     "@react-leaflet/core": "^2.0.0",
     "@react-three/drei": "^9.92.7",
     "@react-three/fiber": "^8.15.12",
+    "@supabase/supabase-js": "^2.39.0",
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.0",
     "leaflet": "^1.9.4",

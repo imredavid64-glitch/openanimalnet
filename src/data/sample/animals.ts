@@ -1217,6 +1217,245 @@ export const sampleAnimals: Animal[] = [
   ]
 },
 
+  {
+  id: "cheetah-001",
+  commonName: "Cheetah",
+  scientificName: "Acinonyx jubatus",
+  category: "mammals",
+  description: "The cheetah is a species of large feline and the only living member of the genus Acinonyx. The cheetah is a pursuit predator and the fastest land animal, capable of running at 93–104 km/h (58–65 mph); it has evolved for speed, having powerful hindlimb muscles, long limbs and a flexible spine. The cheetah has a tawny to creamy white or pale buff fur that is marked with evenly spaced, solid black spots. The head is small and rounded, with a short snout and black tear-like facial streaks. It has a height of 67–94 cm (2.20–3.08 ft) at the shoulder, and the head-and-body length is between 1.1 and 1.5 m. Adults weigh between 21 and 65 kg.",
+  images: [
+    "/images/animals/cheetah-001.jpg"
+  ],
+  conservationStatus: "VU",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Mammalia",
+    order: "Carnivora",
+    family: "Felidae",
+    genus: "Acinonyx",
+    species: "jubatus"
+  },
+  location: {
+    latitude: -19.3,
+    longitude: 22.5,
+    altitude: 950,
+    accuracy: 250,
+    timestamp: new Date('2026-08-11'),
+    source: "Range centroid (southern Africa stronghold, Durant et al. 2017)"
+  },
+  habitat: ["savanna", "grassland", "semi-desert", "scrub"],
+  populationEstimate: 6517,
+  populationHistory: [
+    { year: 1975, estimate: 15000 },
+    { year: 2017, estimate: 6517 }
+  ],
+  populationHistoryNote: "Mature individuals: ~6,517 (Durant et al. 2017; IUCN 2021 assessment, VU) vs ~15,000 (1975, Myers 1975); confined to ~9% of historical range",
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "timber-wolf-001",
+  commonName: "Timber wolf",
+  scientificName: "Canis lupus",
+  category: "mammals",
+  description: "The wolf, also known as the grey wolf or gray wolf, is a canine native to Eurasia and North America. More than thirty subspecies of Canis lupus have been recognized, including the dog and dingo, though grey wolves, as popularly understood, include only naturally occurring wild subspecies. The wolf is the largest wild extant member of the family Canidae, and is further distinguished from other Canis species by its less pointed ears and muzzle, as well as a shorter torso and a longer tail. The wolf is nonetheless related closely enough to smaller Canis species, such as the coyote and the golden jackal, to produce fertile hybrids with them. The wolf's fur is usually mottled white, brown, grey, and black, although subspecies in the arctic region may be nearly all white.",
+  images: [
+    "/images/animals/timber-wolf-001.jpg"
+  ],
+  conservationStatus: "LC",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Mammalia",
+    order: "Carnivora",
+    family: "Canidae",
+    genus: "Canis",
+    species: "lupus"
+  },
+  location: {
+    latitude: 55,
+    longitude: -105,
+    altitude: 400,
+    accuracy: 500,
+    timestamp: new Date('2026-08-11'),
+    source: "Range centroid (North America, IUCN 2018)"
+  },
+  habitat: ["forest", "tundra", "grassland", "mountain"],
+  populationEstimate: 200000,
+  populationHistory: [
+    { year: 2018, estimate: 200000 }
+  ],
+  populationHistoryNote: "Global estimate 200,000–250,000 individuals (IUCN 2018, LC; Boitani et al. 2018); Canada ~60,000, contiguous US ~18,000 (2023), Europe ~17,000",
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "jaguar-001",
+  commonName: "Jaguar",
+  scientificName: "Panthera onca",
+  category: "mammals",
+  description: "The jaguar is a large cat species and the only living member of the genus Panthera that is native to the Americas. Its distinctively marked coat features pale yellow to tan colored fur covered by spots that transition to rosettes on the sides, although a melanistic black coat appears in some individuals. With a body length of up to 1.85 m and a weight of up to 158 kg (348 lb), it is the biggest cat species in the Americas and the third largest in the world. The jaguar's powerful bite allows it to pierce the carapaces of turtles and tortoises, and to employ an unusual killing method: it bites directly through the skull of mammalian prey between the ears to deliver a fatal blow to the brain.",
+  images: [
+    "/images/animals/jaguar-001.jpg"
+  ],
+  conservationStatus: "NT",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Mammalia",
+    order: "Carnivora",
+    family: "Felidae",
+    genus: "Panthera",
+    species: "onca"
+  },
+  location: {
+    latitude: -4.0,
+    longitude: -63.0,
+    altitude: 100,
+    accuracy: 500,
+    timestamp: new Date('2026-08-11'),
+    source: "Range centroid (Amazon basin stronghold, Jędrzejewski et al. 2018)"
+  },
+  habitat: ["rainforest", "savanna", "wetland"],
+  populationEstimate: 173000,
+  populationHistory: [
+    { year: 2018, estimate: 173000 }
+  ],
+  populationHistoryNote: "~173,000 individuals (95% CI 138,000–208,000; Jędrzejewski et al. 2018, PLOS ONE); ~half in Brazil (~86,800); IUCN Near Threatened (2016)",
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "humpback-whale-001",
+  commonName: "Humpback whale",
+  scientificName: "Megaptera novaeangliae",
+  category: "mammals",
+  description: "The humpback whale is a species of baleen whale. It is a rorqual and is the only species in the genus Megaptera. Adults range in length from 14–17 m (46–56 ft) and weigh up to 40 metric tons. The humpback has a distinctive body shape, with long pectoral fins and tubercles on its head. It is known for breaching and other distinctive surface behaviors, making it popular with whale watchers. Males produce a complex song that typically lasts from 4 to 33 minutes.",
+  images: [
+    "/images/animals/humpback-whale-001.jpg"
+  ],
+  conservationStatus: "LC",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Mammalia",
+    order: "Artiodactyla",
+    family: "Balaenopteridae",
+    genus: "Megaptera",
+    species: "novaeangliae"
+  },
+  location: {
+    latitude: 19.5,
+    longitude: -155.5,
+    altitude: 0,
+    accuracy: 200,
+    timestamp: new Date('2026-08-11'),
+    source: "Hawaiʻi breeding grounds (North Pacific stock)"
+  },
+  habitat: ["ocean", "coastal waters"],
+  populationEstimate: 135000,
+  populationHistory: [
+    { year: 1966, estimate: 1500 },
+    { year: 2015, estimate: 96675 },
+    { year: 2018, estimate: 135000 }
+  ],
+  populationHistoryNote: "~135,000 total individuals, ~84,000 mature (IUCN 2018, LC; Cooke 2018); North Pacific stock ~1,500 (1966, post-whaling low) → ~33,000 (2012–2016); Southern Hemisphere ~96,675 (IWC 2016)",
+  migrationRoutes: [
+    {
+      name: "North Pacific: Hawaiʻi breeding grounds → Alaska feeding grounds — spring migration",
+      season: "spring",
+      startMonth: 3,
+      endMonth: 5,
+      points: [
+        { latitude: 19.5, longitude: -155.5 },
+        { latitude: 30.0, longitude: -160.0 },
+        { latitude: 40.0, longitude: -150.0 },
+        { latitude: 50.0, longitude: -145.0 },
+        { latitude: 58.4, longitude: -140.9 }
+      ]
+    }
+  ],
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
+  {
+  id: "emperor-penguin-001",
+  commonName: "Emperor Penguin",
+  scientificName: "Aptenodytes forsteri",
+  category: "birds",
+  description: "The emperor penguin is the tallest and heaviest of all living penguin species and lives exclusively in Antarctica. The male and female are similar in plumage and size, reaching 100 cm (39 in) in length and weighing from 22 to 45 kg. Feathers of the head and back are black and sharply delineated from the white belly, pale-yellow breast and bright-yellow ear patches.",
+  images: [
+    "/images/animals/emperor-penguin-001.jpg"
+  ],
+  conservationStatus: "NT",
+  taxonomy: {
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Aves",
+    order: "Sphenisciformes",
+    family: "Spheniscidae",
+    genus: "Aptenodytes",
+    species: "forsteri"
+  },
+  location: {
+    latitude: -70.6,
+    longitude: -7.5,
+    altitude: 0,
+    accuracy: 100,
+    timestamp: new Date('2026-08-11'),
+    source: "Atka Bay colony, Weddell Sea (Fretwell et al. 2012)"
+  },
+  habitat: ["sea ice", "coastal", "ocean"],
+  populationEstimate: 256500,
+  populationHistory: [
+    { year: 2009, estimate: 238000 },
+    { year: 2020, estimate: 256500 }
+  ],
+  populationHistoryNote: "Breeding pairs: ~238,000 across 46 colonies (2009, Fretwell et al. 2012) → ~256,500 incl. 15 colonies found since 2014 (SCAR 2019/2021); IUCN Near Threatened (2020)",
+  isMonitored: true,
+  lastUpdated: new Date('2026-08-11'),
+  dataCategories: [
+    "biological",
+    "behavioral",
+    "ecological",
+    "population",
+    "health"
+  ]
+},
+
 ];
 
 // Sample animal data with detailed information
@@ -1560,7 +1799,7 @@ export const conservationStatusData = [
 
 // Animal category data
 // Counts are derived from the actual species in `sampleAnimals` above — never
-// hand-written totals (the dataset is 28 species, not a million).
+// hand-written totals (the dataset is 33 species, not a million).
 const categoryCounts = sampleAnimals.reduce((m, a) => {
   m[a.category] = (m[a.category] ?? 0) + 1;
   return m;
@@ -1603,7 +1842,7 @@ export const sampleMonitoringData = {
     { type: 'data_update', animal: 'Bald Eagle', count: 18, timestamp: new Date() },
   ],
   // Real derived values: monitored / total per animal category.
-  // All 28 species have isMonitored: true.
+  // All species have isMonitored: true.
   monitoringCoverage: {
     mammals: 1.0,
     birds: 1.0,

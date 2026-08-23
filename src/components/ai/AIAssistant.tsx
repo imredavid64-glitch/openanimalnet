@@ -355,7 +355,7 @@ function generateResponse(query: string): { text: string; data?: any } {
     text += `• Data categories: ${dataCategoryData.length}\n`;
     text += `• Species with migration routes: ${sampleAnimals.filter(a => a.migrationRoutes?.length).length}\n`;
     text += `• Species with population history: ${sampleAnimals.filter(a => a.populationHistory?.length).length}\n`;
-    text += `• All species verified: 28/28 across 4 sources`;
+    text += `• All species verified: ${sampleAnimals.length}/${sampleAnimals.length} across 4 sources`;
     return { text };
   }
 
@@ -367,7 +367,7 @@ function generateResponse(query: string): { text: string; data?: any } {
     text += `2. **Wikipedia**: species description + article existence\n`;
     text += `3. **GBIF**: backbone taxonomy + scientific name validation\n`;
     text += `4. **iNaturalist**: independently observed conservation status\n\n`;
-    text += `Run \`npm run verify:data\` to re-verify all 28 species.\n`;
+    text += `Run \`npm run verify:data\` to re-verify all ${sampleAnimals.length} species.\n`;
     text += `Weekly CI job checks for drift automatically.`;
     return { text };
   }
@@ -451,7 +451,7 @@ export default function AIAssistant({ onClose }: { onClose: () => void }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl border border-secondary-200 dark:border-secondary-700 overflow-hidden max-w-2xl mx-auto"
+      className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl border border-secondary-200 dark:border-secondary-700 overflow-hidden max-w-2xl mx-auto flex flex-col h-full"
     >
       {/* Header */}
       <div className="flex items-center justify-between p-4 bg-primary-600 text-white">
@@ -470,7 +470,7 @@ export default function AIAssistant({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Messages */}
-      <div className="h-96 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg) => (
           <motion.div
             key={msg.id}

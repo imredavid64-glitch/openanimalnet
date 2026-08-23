@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 import { ObservationPoint, recencyColor } from '@/lib/observations';
+import type { StoredSighting } from '@/lib/userSightings';
 
 interface RoutePoint {
   latitude: number;
@@ -77,6 +78,8 @@ interface GlobeProps {
   seasonFilter?: SeasonFilter;
   /** Live observations (recency-colored dots) from the GBIF layer. */
   observations?: ObservationPoint[];
+  /** User-reported sightings (crowdsourced layer, rose = unverified, purple = verified). */
+  sightings?: StoredSighting[];
 }
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
@@ -115,6 +118,7 @@ export default forwardRef(function GlobeComponent(
     onRouteClick,
     seasonFilter = 'all',
     observations = [],
+    sightings = [],
   }: GlobeProps,
   ref
 ) {
@@ -131,6 +135,7 @@ export default forwardRef(function GlobeComponent(
   const pointsRef = useRef<THREE.Points | THREE.Group | null>(null);
   const routesRef = useRef<THREE.Group | null>(null);
   const observationsRef = useRef<THREE.Points | null>(null);
+  const sightingsRef = useRef<THREE.Points | null>(null);
   const raycasterRef = useRef<THREE.Raycaster | null>(null);
   const mouseRef = useRef<THREE.Vector2 | null>(null);
 
@@ -423,6 +428,24 @@ export default forwardRef(function GlobeComponent(
     // `observations`, which is already the dependency.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [observations]);
+
+  // Rebuild the user-sightings dot cloud the same way as observations. The
+  // parent passes [] to hide the layer; dots are never picked.
+  useEffect(() => {
+    if (!sceneRef.current) return;
+
+    if (sightingsRef.current) {
+      sceneRef.current.remove(sightingsRef.current);
+      sightingsRef.current.geometry.dispose();
+      (sightingsRef.current.material as THREE.Material).dispose();
+      sightingsRef.current = null;
+    }
+
+    createSightings(sceneRef.current, sightings);
+    // createSightings is a component-scope helper; its only input is
+    // `sightings`, which is already the dependency.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sightings]);
   
   // Re-apply the season filter when the scrubber moves (routes are rebuilt on
   // data changes but not on season changes — just toggle visibility here)
@@ -885,6 +908,41 @@ export default forwardRef(function GlobeComponent(
 
     const points = new THREE.Points(geometry, material);
     observationsRef.current = points;
+    scene.add(points);
+  };
+
+  // Crowdsourced sightings: a points cloud just above the observations layer.
+  // Verified reports are purple, pending ones rose — distinct from the GBIF
+  // recency bands (green/amber/blue) and the IUCN marker colors.
+  const SIGHTING_COLORS = { verified: '#c084fc', pending: '#fb7185' };
+  const createSightings = (scene: THREE.Scene, sightings: StoredSighting[]) => {
+    if (sightings.length === 0) return;
+
+    const positions: number[] = [];
+    const colors: number[] = [];
+
+    sightings.forEach((s) => {
+      const pos = latLngToVector3(s.location.lat, s.location.lng, 2.06);
+      positions.push(pos.x, pos.y, pos.z);
+      const c = new THREE.Color(s.verified ? SIGHTING_COLORS.verified : SIGHTING_COLORS.pending);
+      colors.push(c.r, c.g, c.b);
+    });
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({
+      size: 0.045,
+      vertexColors: true,
+      sizeAttenuation: true,
+      transparent: true,
+      opacity: 0.95,
+      depthWrite: false,
+    });
+
+    const points = new THREE.Points(geometry, material);
+    sightingsRef.current = points;
     scene.add(points);
   };
 

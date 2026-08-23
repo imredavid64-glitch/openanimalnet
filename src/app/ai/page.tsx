@@ -246,7 +246,7 @@ export default function AIPage() {
               initial={{ opacity: 0, scale: 0.8, y: 50 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 50 }}
-              className="w-full max-w-4xl h-[80vh] bg-white dark:bg-secondary-800 rounded-3xl shadow-2xl overflow-hidden"
+              className="w-full max-w-4xl h-[80vh] bg-white dark:bg-secondary-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
             >
               <div className="flex items-center justify-between p-4 border-b border-secondary-200 dark:border-secondary-700">
                 <div className="flex items-center space-x-3">
@@ -267,7 +267,7 @@ export default function AIPage() {
                   <span className="text-xl">×</span>
                 </button>
               </div>
-              <div className="flex-1 overflow-hidden">
+              <div className="flex-1 overflow-y-auto p-4">
                 <AIAssistant onClose={() => setShowFullScreenAI(false)} />
               </div>
             </motion.div>

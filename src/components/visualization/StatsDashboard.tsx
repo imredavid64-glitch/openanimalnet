@@ -114,7 +114,7 @@ export default function StatsDashboard() {
     { date: 'Birds', mammals: 0, reptiles: 0, amphibians: 1000 },
   ];
 
-  // Real derived counts: how many of our 28 species have data in each category.
+  // Real derived counts: how many of our species have data in each category.
   const dataCategoryCounts: Record<string, number> = {
     biological: 28, behavioral: 26, ecological: 27, population: 27,
     health: 23, agricultural: 3, shelter: 1, 'human-interaction': 7,

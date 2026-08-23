@@ -9,6 +9,7 @@ import { AnimalCategory, ConservationStatus } from '@/types/animal/types';
 import { CategoryIcon } from '@/components/icons';
 import type { SeasonFilter } from './GlobeComponent';
 import { ObservationPoint, recencyColor } from '@/lib/observations';
+import type { StoredSighting } from '@/lib/userSightings';
 
 const animalCategoryColors: Record<AnimalCategory, string> = {
   mammals: '#0ea5e9',
@@ -56,12 +57,14 @@ export default function SimpleWorldMap({
   showMarkers = true,
   seasonFilter = 'all',
   observations = [],
+  sightings = [],
 }: {
   onAnimalClick?: (animalId: string) => void;
   showRoutes?: boolean;
   showMarkers?: boolean;
   seasonFilter?: SeasonFilter;
   observations?: ObservationPoint[];
+  sightings?: StoredSighting[];
 }) {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -161,6 +164,26 @@ export default function SimpleWorldMap({
         ctx.fillStyle = recencyColor(obs.eventDate);
         ctx.globalAlpha = 0.9;
         ctx.fill();
+        ctx.globalAlpha = 1;
+      });
+
+      // Crowdsourced sightings — rose (pending) / purple (verified) dots,
+      // drawn between the observations and the species markers.
+      sightings.forEach((s) => {
+        const sx = ((s.location.lng + 180) / 360) * canvas.width;
+        const sy = ((90 - s.location.lat) / 180) * canvas.height;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = s.verified ? '#c084fc' : '#fb7185';
+        ctx.globalAlpha = 0.95;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 5, 0, Math.PI * 2);
+        ctx.strokeStyle = s.verified ? '#c084fc' : '#fb7185';
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = 0.5;
+        ctx.stroke();
         ctx.globalAlpha = 1;
       });
 
@@ -292,7 +315,7 @@ export default function SimpleWorldMap({
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [points, routes, hoveredPoint, showRoutes, showMarkers, observations]);
+  }, [points, routes, hoveredPoint, showRoutes, showMarkers, observations, sightings]);
 
   // Find the closest map point to given canvas coordinates (in % of canvas)
   const findClosestPoint = (x: number, y: number): MapPoint | null => {
