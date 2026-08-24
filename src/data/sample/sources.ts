@@ -393,6 +393,8 @@ export const speciesSources: SpeciesSource[] = [
   scientificName: "Pithecophaga jefferyi",
   wikipediaTitle: "Philippine eagle",
   iucnId: 22696012,
+  gbifKey: 2480381,
+    inaturalistId: 5413,
   conservationStatus: "CR",
   populationNote: "~392 breeding pairs (range 318–447), ≈784 mature individuals — Sutton et al. 2023 SDM-based global estimate (Animal Conservation 26:684); declining; old-growth dipterocarp loss is the main driver"
 },
@@ -402,6 +404,8 @@ export const speciesSources: SpeciesSource[] = [
   scientificName: "Harpia harpyja",
   wikipediaTitle: "Harpy eagle",
   iucnId: 22695998,
+  gbifKey: 2480516,
+    inaturalistId: 5321,
   conservationStatus: "VU",
   populationNote: "IUCN band 100,000–250,000 mature individuals (BirdLife International 2021, VU); Panama holds ~227 nesting pairs (2012); declining with Amazon deforestation"
 },
@@ -411,6 +415,8 @@ export const speciesSources: SpeciesSource[] = [
   scientificName: "Phyllobates terribilis",
   wikipediaTitle: "Golden poison frog",
   iucnId: 55264,
+  gbifKey: 5218020,
+    inaturalistId: 21217,
   conservationStatus: "EN",
   populationNote: "No absolute census available — known only from a handful of localities in Chocó, Colombia; trend decreasing (IUCN EN)"
 },
@@ -420,6 +426,8 @@ export const speciesSources: SpeciesSource[] = [
   scientificName: "Andrias davidianus",
   wikipediaTitle: "Chinese giant salamander",
   iucnId: 1272,
+  gbifKey: 2432037,
+    inaturalistId: 26811,
   conservationStatus: "CR",
   populationNote: "<50,000 wild individuals widely cited; >80% decline since the 1950s from overexploitation and dams (IUCN CR); farmed stock (~millions) excluded — not self-sustaining wild population"
 },
@@ -429,6 +437,8 @@ export const speciesSources: SpeciesSource[] = [
   scientificName: "Acropora palmata",
   wikipediaTitle: "Elkhorn coral",
   iucnId: 133006,
+  gbifKey: 5184657,
+    inaturalistId: 93312,
   conservationStatus: "CR",
   populationNote: "Measured as reef cover, not individuals: >95% decline in Caribbean cover since the 1980s (IUCN CR 2008; NOAA Acropora Recovery Plan); white-band disease, heat bleaching and hurricanes drive losses"
 },
@@ -438,6 +448,8 @@ export const speciesSources: SpeciesSource[] = [
   scientificName: "Acropora cervicornis",
   wikipediaTitle: "Staghorn coral",
   iucnId: 133381,
+  gbifKey: 5184681,
+    inaturalistId: 93234,
   conservationStatus: "CR",
   populationNote: "Measured as reef cover, not individuals: ~97–98% decline since the 1980s across most of the Caribbean (IUCN CR 2008); fastest recovery potential via fragmentation but recurring bleaching limits it"
 },
@@ -447,6 +459,8 @@ export const speciesSources: SpeciesSource[] = [
   scientificName: "Dryococelus australis",
   wikipediaTitle: "Dryococelus",
   iucnId: 6852,
+  gbifKey: 1412367,
+    inaturalistId: 99617,
   conservationStatus: "CR",
   populationNote: "24 adults found on Ball's Pyramid in 2001 — the only known wild population; wild size remains tiny and unquantified; large insurance colony at Melbourne Zoo (IUCN CR)"
 },
@@ -456,6 +470,8 @@ export const speciesSources: SpeciesSource[] = [
   scientificName: "Bombus affinis",
   wikipediaTitle: "Bombus affinis",
   iucnId: 44937399,
+  gbifKey: 1340481,
+    inaturalistId: 121519,
   conservationStatus: "CR",
   populationNote: "No absolute census — relative abundance fell an estimated 87–96% since the late 1990s (USFWS SSA 2016; ESA Endangered 2017); now confined to scattered patches, mostly upper Midwest"
 },
@@ -465,6 +481,8 @@ export const speciesSources: SpeciesSource[] = [
   scientificName: "Rhincodon typus",
   wikipediaTitle: "Whale shark",
   iucnId: 19488,
+  gbifKey: 2417522,
+    inaturalistId: 52188,
   conservationStatus: "EN",
   populationNote: "No robust global census — best estimates ~100,000–200,000 (genetic Ne 119k–238k breeding females, Castro et al. 2007); >50% decline over 75 years (IUCN EN 2025): Indo-Pacific −63%, Atlantic ≥30%"
 },
