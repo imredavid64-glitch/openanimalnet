@@ -1804,21 +1804,17 @@ export const sampleAnimals: Animal[] = [
     source: "Aggregation site: Ningaloo Reef, Australia"
   },
   habitat: ['pelagic ocean', 'coastal aggregation sites'],
-migrationRoutes: [
+    migrationRoutes: [
       {
         name: 'Ningaloo feeding aggregation — Indian Ocean pelagic dispersal',
-        color: '#38bdf8',
         season: 'spring',
-        distanceKm: 5500,
-        durationDays: 210,
         startMonth: 3,
-        endMonth: 12,
-        description: 'Juveniles feed off Ningaloo (Mar–Aug) then disperse into open Indian Ocean waters toward Indonesia and the central Indian Ocean per satellite-tag studies.',
-        waypoints: [
-          { name: 'Ningaloo Reef, Australia', lat: -21.9, lng: 113.8 },
-          { name: 'Rowley Shoals', lat: -17.5, lng: 119.3 },
-          { name: 'Christmas Island', lat: -10.5, lng: 105.6 },
-          { name: 'West Sumatra margin', lat: 2, lng: 96 },
+        endMonth: 8,
+        points: [
+          { latitude: -21.9, longitude: 113.8 },
+          { latitude: -17.5, longitude: 119.3 },
+          { latitude: -10.5, longitude: 105.6 },
+          { latitude: 2.0, longitude: 96.0 },
         ],
       },
     ],
