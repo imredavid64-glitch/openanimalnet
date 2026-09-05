@@ -24,6 +24,14 @@
     "mobile:android": "npm run mobile:sync && npx cap open android"
   },
   "dependencies": {
+    "@capacitor/browser": "^8.0.4",
+    "@capacitor/camera": "^8.2.4",
+    "@capacitor/cli": "^8.5.1",
+    "@capacitor/core": "^8.5.1",
+    "@capacitor/geolocation": "^8.2.2",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/share": "^8.0.1",
     "@react-leaflet/core": "^2.0.0",
     "@react-three/drei": "^9.92.7",
     "@react-three/fiber": "^8.15.12",
