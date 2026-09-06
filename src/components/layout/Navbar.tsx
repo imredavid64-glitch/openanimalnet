@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
 import { PawIcon, SunIcon, MoonIcon } from '@/components/icons';
+import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
 
 const navItems = [
   { name: 'Home', path: '/' },
@@ -16,6 +17,12 @@ const navItems = [
   { name: 'Acoustics', path: '/acoustics' },
   { name: 'Challenge', path: '/challenge' },
   { name: 'Habitat', path: '/habitat' },
+  { name: 'Search', path: '/search' },
+  { name: 'Identify', path: '/identify' },
+  { name: 'Analytics', path: '/analytics' },
+  { name: 'Habitat 3D', path: '/habitat-viz' },
+  { name: 'Subscriptions', path: '/subscriptions' },
+  { name: 'Annotations', path: '/annotations' },
   { name: 'API', path: '/api/playground' },
   { name: 'Export', path: '/data/export' },
   { name: 'Monitor', path: '/monitor' },
@@ -119,7 +126,8 @@ export default function Navbar() {
           </div>
 
           {/* Right Side Items */}
-          <div className="hidden lg:flex items-center space-x-6">
+          <div className="hidden lg:flex items-center space-x-4">
+            <LanguageSwitcher />
             <button
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -180,6 +188,9 @@ export default function Navbar() {
                   <Link href="/dashboard" className="btn-primary text-center">
                     Dashboard
                   </Link>
+                  <div className="flex justify-center py-2">
+                    <LanguageSwitcher />
+                  </div>
                   <button
                     onClick={toggleTheme}
                     className="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300"

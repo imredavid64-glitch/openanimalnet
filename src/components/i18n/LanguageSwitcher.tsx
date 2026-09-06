@@ -23,7 +23,7 @@ export default function LanguageSwitcher() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm bg-white/10 hover:bg-white/20 text-white transition-colors"
+        className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm bg-secondary-100 dark:bg-secondary-800 hover:bg-secondary-200 dark:hover:bg-secondary-700 text-secondary-700 dark:text-secondary-300 transition-colors"
       >
         <span>{current.flag}</span>
         <span className="hidden sm:inline">{current.code.toUpperCase()}</span>
