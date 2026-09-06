@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "animals": "Tiere",
+    "conservation": "Artenschutz",
+    "monitoring": "Monitoring",
+    "migration": "Migration",
+    "safari": "Safari",
+    "ai": "KI-Werkzeuge",
+    "search": "Suche",
+    "identify": "Identifizieren",
+    "analytics": "Analytik",
+    "data": "Daten",
+    "api": "API",
+    "about": "Über uns",
+    "contact": "Kontakt"
+  },
+  "home": {
+    "title": "OpenAnimalNet",
+    "subtitle": "Globale Tierdaten-Plattform",
+    "description": "Überwachung, Analyse und Erkundung von Tierdaten aus der ganzen Welt — mit Echtzeit-Quellenverifizierung.",
+    "explore": "Arten Entdecken",
+    "conservationStatus": "Artenschutzstatus",
+    "speciesCount": "{count} Arten Überwacht",
+    "dataSources": "Datenquellen Verifiziert"
+  },
+  "search": {
+    "title": "Universelle Tiersuche",
+    "subtitle": "Durchsuche jede Art gleichzeitig auf GBIF, Wikipedia, Wikidata und iNaturalist.",
+    "placeholder": "Nach deutschem oder wissenschaftlichem Namen suchen...",
+    "noResults": "Keine Ergebnisse gefunden",
+    "tryDifferent": "Versuche einen anderen deutschen oder wissenschaftlichen Namen.",
+    "results": "Ergebnisse",
+    "viewSource": "Auf {source} ansehen"
+  },
+  "identify": {
+    "title": "KI-Artenerkennung",
+    "subtitle": "Lade ein Foto hoch und unsere KI erkennt die Art.",
+    "upload": "Wildtierfoto Hochladen",
+    "dragDrop": "Drag & Drop oder Klicken zum Auswählen",
+    "analyzing": "Bild wird mit KI analysiert...",
+    "results": "Ergebnisse der Erkennung",
+    "confidence": "Konfidenz"
+  },
+  "monitoring": {
+    "title": "Überwachungszentrum",
+    "alerts": "Warnmeldungen",
+    "critical": "Kritisch",
+    "warning": "Warnung",
+    "info": "Info",
+    "activeAlerts": "Aktive Warnmeldungen",
+    "severity": "Schweregrad",
+    "recommendedAction": "Empfohlene Maßnahme",
+    "monitored": "Überwacht",
+    "notMonitored": "Nicht Überwacht"
+  },
+  "conservation": {
+    "title": "Artenschutzübersicht",
+    "criticallyEndangered": "Vom Aussterben Bedroht",
+    "endangered": "Stark Bedroht",
+    "vulnerable": "Verletzlich",
+    "nearThreatened": "Potenziell Gefährdet",
+    "leastConcern": "Nicht Gefährdet",
+    "dataDeficient": "Daten Defizitär",
+    "notEvaluated": "Nicht Bewertet",
+    "population": "Population",
+    "habitat": "Lebensraum",
+    "threats": "Bedrohungen"
+  },
+  "migration": {
+    "title": "Migrations-Explorer",
+    "seasonalCorridors": "Saisonale Korridore",
+    "spring": "Frühling",
+    "fall": "Herbst",
+    "yearRound": "Ganzjährig",
+    "climateSimulator": "Klima-Korridor-Simulator"
+  },
+  "safari": {
+    "title": "Wildtier-Safari",
+    "discover": "Entdecke Tiere in deiner Nähe",
+    "collection": "Deine Sammlung",
+    "rare": "Selten",
+    "legendary": "Legendär",
+    "common": "Häufig",
+    "uncommon": "Ungewöhnlich"
+  },
+  "ai": {
+    "title": "KI-gestützte Tierintelligenz",
+    "assistant": "KI-Assistent",
+    "conflictPredictor": "Mensch-Wildtier-Konflikt-Vorhersage",
+    "habitatSimulator": "Lebensraumdegradations-Simulator",
+    "askAnything": "Frag mich alles über Tiere...",
+    "predictRisk": "Risiko bewerten",
+    "simulate": "Simulieren"
+  },
+  "data": {
+    "export": "Daten Exportieren",
+    "geojson": "GeoJSON",
+    "csv": "CSV",
+    "kml": "KML",
+    "download": "Herunterladen",
+    "categories": "Datenkategorien",
+    "biological": "Biologische Daten",
+    "behavioral": "Verhaltensdaten",
+    "ecological": "Ökologische Daten",
+    "population": "Populationsdaten",
+    "health": "Gesundheitsdaten"
+  },
+  "api": {
+    "title": "OpenAnimalNet API",
+    "subtitle": "Eine öffentliche JSON-API für Tierdaten — kein API-Schlüssel erforderlich.",
+    "rateLimit": "Begrenzt auf 60 Anfragen/Min",
+    "endpoints": "Endpoints",
+    "playground": "API ausprobieren",
+    "documentation": "Dokumentation"
+  },
+  "footer": {
+    "about": "Über OpenAnimalNet",
+    "description": "Eine globale Plattform für Tierdaten, Artenschutz-Monitoring und Wildtier-Intelligenz.",
+    "links": "Schnellzugriff",
+    "legal": "Rechtliches",
+    "privacy": "Datenschutzrichtlinie",
+    "terms": "Nutzungsbedingungen",
+    "cookies": "Cookie-Richtlinie"
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Etwas ist schiefgelaufen",
+    "retry": "Erneut versuchen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "back": "Zurück",
+    "next": "Weiter",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "sort": "Sortieren",
+    "share": "Teilen",
+    "download": "Herunterladen",
+    "close": "Schließen"
+  }
+}

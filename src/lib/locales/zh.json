@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "home": "首页",
+    "animals": "动物",
+    "conservation": "保护",
+    "monitoring": "监测",
+    "migration": "迁徙",
+    "safari": "探索",
+    "ai": "AI 工具",
+    "search": "搜索",
+    "identify": "识别",
+    "analytics": "数据分析",
+    "data": "数据",
+    "api": "API",
+    "about": "关于",
+    "contact": "联系我们"
+  },
+  "home": {
+    "title": "OpenAnimalNet",
+    "subtitle": "全球动物数据平台",
+    "description": "监测、分析和探索来自世界各地的动物数据——支持实时数据源验证。",
+    "explore": "探索物种",
+    "conservationStatus": "保护状况",
+    "speciesCount": "已追踪 {count} 个物种",
+    "dataSources": "已验证数据源"
+  },
+  "search": {
+    "title": "全球动物搜索",
+    "subtitle": "同时在 GBIF、Wikipedia、Wikidata 和 iNaturalist 上搜索任何物种。",
+    "placeholder": "按常用名或学名搜索...",
+    "noResults": "未找到结果",
+    "tryDifferent": "请尝试其他常用名或学名。",
+    "results": "个结果",
+    "viewSource": "在 {source} 上查看"
+  },
+  "identify": {
+    "title": "AI 物种识别",
+    "subtitle": "上传照片，AI 将为您识别物种。",
+    "upload": "上传野生动物照片",
+    "dragDrop": "拖放或点击选择",
+    "analyzing": "正在使用 AI 分析图像...",
+    "results": "识别结果",
+    "confidence": "置信度"
+  },
+  "monitoring": {
+    "title": "监测中心",
+    "alerts": "警报",
+    "critical": "严重",
+    "warning": "警告",
+    "info": "信息",
+    "activeAlerts": "活跃警报",
+    "severity": "严重程度",
+    "recommendedAction": "建议操作",
+    "monitored": "已监测",
+    "notMonitored": "未监测"
+  },
+  "conservation": {
+    "title": "保护概况",
+    "criticallyEndangered": "极危",
+    "endangered": "濒危",
+    "vulnerable": "易危",
+    "nearThreatened": "近危",
+    "leastConcern": "无危",
+    "dataDeficient": "数据缺乏",
+    "notEvaluated": "未评估",
+    "population": "种群数量",
+    "habitat": "栖息地",
+    "threats": "威胁"
+  },
+  "migration": {
+    "title": "迁徙探索器",
+    "seasonalCorridors": "季节性廊道",
+    "spring": "春季",
+    "fall": "秋季",
+    "yearRound": "全年",
+    "climateSimulator": "气候廊道模拟器"
+  },
+  "safari": {
+    "title": "野生动物探索",
+    "discover": "发现身边的动物",
+    "collection": "我的收藏",
+    "rare": "稀有",
+    "legendary": "传说",
+    "common": "常见",
+    "un uncommon": "不常见"
+  },
+  "ai": {
+    "title": "AI 驱动的动物智能",
+    "assistant": "AI 助手",
+    "conflictPredictor": "人兽冲突预测器",
+    "habitatSimulator": "栖息地退化模拟器",
+    "askAnything": "问我任何关于动物的问题...",
+    "predictRisk": "评估风险",
+    "simulate": "模拟"
+  },
+  "data": {
+    "export": "导出数据",
+    "geojson": "GeoJSON",
+    "csv": "CSV",
+    "kml": "KML",
+    "download": "下载",
+    "categories": "数据类别",
+    "biological": "生物学数据",
+    "behavioral": "行为数据",
+    "ecological": "生态数据",
+    "population": "种群数据",
+    "health": "健康数据"
+  },
+  "api": {
+    "title": "OpenAnimalNet API",
+    "subtitle": "一个公开的 JSON API，提供动物数据——无需 API 密钥。",
+    "rateLimit": "速率限制为 60 请求/分钟",
+    "endpoints": "端点",
+    "playground": "试用 API",
+    "documentation": "文档"
+  },
+  "footer": {
+    "about": "关于 OpenAnimalNet",
+    "description": "一个全球性的动物数据、保护监测和野生动物智能平台。",
+    "links": "快速链接",
+    "legal": "法律声明",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "cookies": "Cookie 政策"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出了点问题",
+    "retry": "重试",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "back": "返回",
+    "next": "下一步",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "share": "分享",
+    "download": "下载",
+    "close": "关闭"
+  }
+}

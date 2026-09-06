@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "home": "Home",
+    "animals": "Animals",
+    "conservation": "Conservation",
+    "monitoring": "Monitoring",
+    "migration": "Migration",
+    "safari": "Safari",
+    "ai": "AI Tools",
+    "search": "Search",
+    "identify": "Identify",
+    "analytics": "Analytics",
+    "data": "Data",
+    "api": "API",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "OpenAnimalNet",
+    "subtitle": "Global Animal Data Platform",
+    "description": "Monitoring, analyzing, and exploring animal data from around the world — with live-source verification.",
+    "explore": "Explore Species",
+    "conservationStatus": "Conservation Status",
+    "speciesCount": "{count} Species Tracked",
+    "dataSources": "Data Sources Verified"
+  },
+  "search": {
+    "title": "Universal Animal Search",
+    "subtitle": "Search any species across GBIF, Wikipedia, Wikidata, and iNaturalist simultaneously.",
+    "placeholder": "Search by common or scientific name...",
+    "noResults": "No results found",
+    "tryDifferent": "Try a different common or scientific name.",
+    "results": "results",
+    "viewSource": "View on {source}"
+  },
+  "identify": {
+    "title": "AI Species Identification",
+    "subtitle": "Upload a photo and our AI will identify the species.",
+    "upload": "Upload a Wildlife Photo",
+    "dragDrop": "Drag & drop or click to select",
+    "analyzing": "Analyzing image with AI...",
+    "results": "Identification Results",
+    "confidence": "confidence"
+  },
+  "monitoring": {
+    "title": "Monitoring Center",
+    "alerts": "Alerts",
+    "critical": "Critical",
+    "warning": "Warning",
+    "info": "Info",
+    "activeAlerts": "Active Alerts",
+    "severity": "Severity",
+    "recommendedAction": "Recommended Action",
+    "monitored": "Monitored",
+    "notMonitored": "Not Monitored"
+  },
+  "conservation": {
+    "title": "Conservation Overview",
+    "criticallyEndangered": "Critically Endangered",
+    "endangered": "Endangered",
+    "vulnerable": "Vulnerable",
+    "nearThreatened": "Near Threatened",
+    "leastConcern": "Least Concern",
+    "dataDeficient": "Data Deficient",
+    "notEvaluated": "Not Evaluated",
+    "population": "Population",
+    "habitat": "Habitat",
+    "threats": "Threats"
+  },
+  "migration": {
+    "title": "Migration Explorer",
+    "seasonalCorridors": "Seasonal Corridors",
+    "spring": "Spring",
+    "fall": "Fall",
+    "yearRound": "Year-round",
+    "climateSimulator": "Climate Corridor Simulator"
+  },
+  "safari": {
+    "title": "Wildlife Safari",
+    "discover": "Discover animals near you",
+    "collection": "Your Collection",
+    "rare": "Rare",
+    "legendary": "Legendary",
+    "common": "Common",
+    "uncommon": "Uncommon"
+  },
+  "ai": {
+    "title": "AI-Powered Animal Intelligence",
+    "assistant": "AI Assistant",
+    "conflictPredictor": "Human–Wildlife Conflict Predictor",
+    "habitatSimulator": "Habitat Degradation Simulator",
+    "askAnything": "Ask me anything about animals...",
+    "predictRisk": "Assess risk",
+    "simulate": "Simulate"
+  },
+  "data": {
+    "export": "Export Data",
+    "geojson": "GeoJSON",
+    "csv": "CSV",
+    "kml": "KML",
+    "download": "Download",
+    "categories": "Data Categories",
+    "biological": "Biological Data",
+    "behavioral": "Behavioral Data",
+    "ecological": "Ecological Data",
+    "population": "Population Data",
+    "health": "Health Data"
+  },
+  "api": {
+    "title": "OpenAnimalNet API",
+    "subtitle": "A public JSON API for animal data — no API key required.",
+    "rateLimit": "Rate limited to 60 req/min",
+    "endpoints": "Endpoints",
+    "playground": "Try the API",
+    "documentation": "Documentation"
+  },
+  "footer": {
+    "about": "About OpenAnimalNet",
+    "description": "A global platform for animal data, conservation monitoring, and wildlife intelligence.",
+    "links": "Quick Links",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "share": "Share",
+    "download": "Download",
+    "close": "Close"
+  }
+}

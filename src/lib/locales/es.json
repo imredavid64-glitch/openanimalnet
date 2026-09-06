@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "animals": "Animales",
+    "conservation": "Conservación",
+    "monitoring": "Monitoreo",
+    "migration": "Migración",
+    "safari": "Safari",
+    "ai": "Herramientas IA",
+    "search": "Buscar",
+    "identify": "Identificar",
+    "analytics": "Analítica",
+    "data": "Datos",
+    "api": "API",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+  "home": {
+    "title": "OpenAnimalNet",
+    "subtitle": "Plataforma Global de Datos Animales",
+    "description": "Monitoreo, análisis y exploración de datos de animales de todo el mundo — con verificación de fuentes en tiempo real.",
+    "explore": "Explorar Especies",
+    "conservationStatus": "Estado de Conservación",
+    "speciesCount": "{count} Especies Rastreadas",
+    "dataSources": "Fuentes de Datos Verificadas"
+  },
+  "search": {
+    "title": "Búsqueda Universal de Animales",
+    "subtitle": "Busca cualquier especie en GBIF, Wikipedia, Wikidata e iNaturalist simultáneamente.",
+    "placeholder": "Buscar por nombre común o científico...",
+    "noResults": "No se encontraron resultados",
+    "tryDifferent": "Prueba con otro nombre común o científico.",
+    "results": "resultados",
+    "viewSource": "Ver en {source}"
+  },
+  "identify": {
+    "title": "Identificación de Especies con IA",
+    "subtitle": "Sube una foto y nuestra IA identificará la especie.",
+    "upload": "Subir una Foto de Fauna",
+    "dragDrop": "Arrastra y suelta o haz clic para seleccionar",
+    "analyzing": "Analizando imagen con IA...",
+    "results": "Resultados de la Identificación",
+    "confidence": "confianza"
+  },
+  "monitoring": {
+    "title": "Centro de Monitoreo",
+    "alerts": "Alertas",
+    "critical": "Crítica",
+    "warning": "Advertencia",
+    "info": "Información",
+    "activeAlerts": "Alertas Activas",
+    "severity": "Gravedad",
+    "recommendedAction": "Acción Recomendada",
+    "monitored": "Monitoreado",
+    "notMonitored": "No Monitoreado"
+  },
+  "conservation": {
+    "title": "Resumen de Conservación",
+    "criticallyEndangered": "En Peligro Crítico",
+    "endangered": "En Peligro",
+    "vulnerable": "Vulnerable",
+    "nearThreatened": "Casi Amenazado",
+    "leastConcern": "Preocupación Menor",
+    "dataDeficient": "Datos Insuficientes",
+    "notEvaluated": "No Evaluado",
+    "population": "Población",
+    "habitat": "Hábitat",
+    "threats": "Amenazas"
+  },
+  "migration": {
+    "title": "Explorador de Migración",
+    "seasonalCorridors": "Corredores Estacionales",
+    "spring": "Primavera",
+    "fall": "Otoño",
+    "yearRound": "Todo el año",
+    "climateSimulator": "Simulador de Corredor Climático"
+  },
+  "safari": {
+    "title": "Safari de Fauna",
+    "discover": "Descubre animales cerca de ti",
+    "collection": "Tu Colección",
+    "rare": "Raro",
+    "legendary": "Legendario",
+    "common": "Común",
+    "uncommon": "Poco Común"
+  },
+  "ai": {
+    "title": "Inteligencia Animal Potenciada por IA",
+    "assistant": "Asistente IA",
+    "conflictPredictor": "Predictor de Conflictos Humano-Fauna",
+    "habitatSimulator": "Simulador de Degradación del Hábitat",
+    "askAnything": "Pregúntame cualquier cosa sobre animales...",
+    "predictRisk": "Evaluar riesgo",
+    "simulate": "Simular"
+  },
+  "data": {
+    "export": "Exportar Datos",
+    "geojson": "GeoJSON",
+    "csv": "CSV",
+    "kml": "KML",
+    "download": "Descargar",
+    "categories": "Categorías de Datos",
+    "biological": "Datos Biológicos",
+    "behavioral": "Datos de Comportamiento",
+    "ecological": "Datos Ecológicos",
+    "population": "Datos de Población",
+    "health": "Datos de Salud"
+  },
+  "api": {
+    "title": "API de OpenAnimalNet",
+    "subtitle": "Una API JSON pública para datos de animales — no se requiere clave de API.",
+    "rateLimit": "Limitado a 60 req/min",
+    "endpoints": "Endpoints",
+    "playground": "Probar la API",
+    "documentation": "Documentación"
+  },
+  "footer": {
+    "about": "Acerca de OpenAnimalNet",
+    "description": "Una plataforma global para datos de animales, monitoreo de conservación e inteligencia de fauna.",
+    "links": "Enlaces Rápidos",
+    "legal": "Legal",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "cookies": "Política de Cookies"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "retry": "Intentar de nuevo",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "share": "Compartir",
+    "download": "Descargar",
+    "close": "Cerrar"
+  }
+}

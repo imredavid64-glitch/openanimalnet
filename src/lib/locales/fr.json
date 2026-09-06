@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "animals": "Animaux",
+    "conservation": "Conservation",
+    "monitoring": "Suivi",
+    "migration": "Migration",
+    "safari": "Safari",
+    "ai": "Outils IA",
+    "search": "Rechercher",
+    "identify": "Identifier",
+    "analytics": "Analytique",
+    "data": "Données",
+    "api": "API",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "OpenAnimalNet",
+    "subtitle": "Plateforme Mondiale de Données Animales",
+    "description": "Suivi, analyse et exploration des données animales du monde entier — avec vérification des sources en temps réel.",
+    "explore": "Explorer les Espèces",
+    "conservationStatus": "Statut de Conservation",
+    "speciesCount": "{count} Espèces Suivies",
+    "dataSources": "Sources de Données Vérifiées"
+  },
+  "search": {
+    "title": "Recherche Universelle d'Animaux",
+    "subtitle": "Recherchez n'importe quelle espèce sur GBIF, Wikipedia, Wikidata et iNaturalist simultanément.",
+    "placeholder": "Rechercher par nom commun ou scientifique...",
+    "noResults": "Aucun résultat trouvé",
+    "tryDifferent": "Essayez avec un autre nom commun ou scientifique.",
+    "results": "résultats",
+    "viewSource": "Voir sur {source}"
+  },
+  "identify": {
+    "title": "Identification d'Espèces par IA",
+    "subtitle": "Téléchargez une photo et notre IA identifiera l'espèce.",
+    "upload": "Télécharger une Photo de Faune",
+    "dragDrop": "Glissez-déposez ou cliquez pour sélectionner",
+    "analyzing": "Analyse de l'image avec l'IA...",
+    "results": "Résultats de l'Identification",
+    "confidence": "confiance"
+  },
+  "monitoring": {
+    "title": "Centre de Suivi",
+    "alerts": "Alertes",
+    "critical": "Critique",
+    "warning": "Avertissement",
+    "info": "Information",
+    "activeAlerts": "Alertes Actives",
+    "severity": "Gravité",
+    "recommendedAction": "Action Recommandée",
+    "monitored": "Suivi",
+    "notMonitored": "Non Suivi"
+  },
+  "conservation": {
+    "title": "Aperçu de la Conservation",
+    "criticallyEndangered": "En Danger Critique",
+    "endangered": "En Danger",
+    "vulnerable": "Vulnérable",
+    "nearThreatened": "Quasi Menacé",
+    "leastConcern": "Préoccupation Mineure",
+    "dataDeficient": "Données Insuffisantes",
+    "notEvaluated": "Non Évalué",
+    "population": "Population",
+    "habitat": "Habitat",
+    "threats": "Menaces"
+  },
+  "migration": {
+    "title": "Explorateur de Migration",
+    "seasonalCorridors": "Corridors Saisonniers",
+    "spring": "Printemps",
+    "fall": "Automne",
+    "yearRound": "Toute l'année",
+    "climateSimulator": "Simulateur de Corridor Climatique"
+  },
+  "safari": {
+    "title": "Safari de Faune",
+    "discover": "Découvrez les animaux près de chez vous",
+    "collection": "Votre Collection",
+    "rare": "Rare",
+    "legendary": "Légendaire",
+    "common": "Commun",
+    "uncommon": "Peu Commun"
+  },
+  "ai": {
+    "title": "Intelligence Animale Propulsée par l'IA",
+    "assistant": "Assistant IA",
+    "conflictPredictor": "Prédicteur de Conflits Humains-Faune",
+    "habitatSimulator": "Simulateur de Dégradation de l'Habitat",
+    "askAnything": "Posez-moi n'importe quelle question sur les animaux...",
+    "predictRisk": "Évaluer le risque",
+    "simulate": "Simuler"
+  },
+  "data": {
+    "export": "Exporter les Données",
+    "geojson": "GeoJSON",
+    "csv": "CSV",
+    "kml": "KML",
+    "download": "Télécharger",
+    "categories": "Catégories de Données",
+    "biological": "Données Biologiques",
+    "behavioral": "Données Comportementales",
+    "ecological": "Données Écologiques",
+    "population": "Données de Population",
+    "health": "Données de Santé"
+  },
+  "api": {
+    "title": "API OpenAnimalNet",
+    "subtitle": "Une API JSON publique pour les données animales — aucune clé API requise.",
+    "rateLimit": "Limité à 60 req/min",
+    "endpoints": "Endpoints",
+    "playground": "Tester l'API",
+    "documentation": "Documentation"
+  },
+  "footer": {
+    "about": "À propos d'OpenAnimalNet",
+    "description": "Une plateforme mondiale pour les données animales, le suivi de la conservation et l'intelligence de la faune.",
+    "links": "Liens Rapides",
+    "legal": "Mentions Légales",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation",
+    "cookies": "Politique de Cookies"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "retry": "Réessayer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "back": "Retour",
+    "next": "Suivant",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "share": "Partager",
+    "download": "Télécharger",
+    "close": "Fermer"
+  }
+}

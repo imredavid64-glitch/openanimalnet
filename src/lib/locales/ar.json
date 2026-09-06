@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "animals": "الحيوانات",
+    "conservation": "الحفاظ",
+    "monitoring": "المراقبة",
+    "migration": "الهجرة",
+    "safari": "سفاري",
+    "ai": "أدوات الذكاء الاصطناعي",
+    "search": "بحث",
+    "identify": "تحديد",
+    "analytics": "التحليلات",
+    "data": "البيانات",
+    "api": "API",
+    "about": "حول",
+    "contact": "اتصل بنا"
+  },
+  "home": {
+    "title": "OpenAnimalNet",
+    "subtitle": "منصة البيانات الحيوانية العالمية",
+    "description": "مراقبة وتحليل واستكشاف بيانات الحيوانات من جميع أنحاء العالم — مع التحقق من المصادر في الوقت الفعلي.",
+    "explore": "استكشاف الأنواع",
+    "conservationStatus": "حالة الحفظ",
+    "speciesCount": "{count} نوع يتم تتبّعها",
+    "dataSources": "مصادر البيانات الموثّقة"
+  },
+  "search": {
+    "title": "بحث عالمي في الحيوانات",
+    "subtitle": "ابحث عن أي نوع في GBIF وWikipedia وWikidata وiNaturalist في آن واحد.",
+    "placeholder": "ابحث بالاسم الشائع أو العلمي...",
+    "noResults": "لم يتم العثور على نتائج",
+    "tryDifferent": "جرّب اسمًا شائعًا أو علميًا آخر.",
+    "results": "نتائج",
+    "viewSource": "عرض على {source}"
+  },
+  "identify": {
+    "title": "تحديد الأنواع بالذكاء الاصطناعي",
+    "subtitle": "ارفع صورة وسيقوم الذكاء الاصطناعي بتحديد النوع.",
+    "upload": "ارفع صورة لحيوان بري",
+    "dragDrop": "اسحب وأفلت أو انقر للتحديد",
+    "analyzing": "جارٍ تحليل الصورة بالذكاء الاصطناعي...",
+    "results": "نتائج التحديد",
+    "confidence": "الثقة"
+  },
+  "monitoring": {
+    "title": "مركز المراقبة",
+    "alerts": "تنبيهات",
+    "critical": "حرج",
+    "warning": "تحذير",
+    "info": "معلومات",
+    "activeAlerts": "تنبيهات نشطة",
+    "severity": "الخطورة",
+    "recommendedAction": "الإجراء الموصى به",
+    "monitored": "تمت المراقبة",
+    "notMonitored": "غير مراقب"
+  },
+  "conservation": {
+    "title": "نظرة عامة على الحفظ",
+    "criticallyEndangered": "مهدد بالانقراض حرجاً",
+    "endangered": "مهدد بالانقراض",
+    "vulnerable": "ضعيف",
+    "nearThreatened": "معرض للخطر",
+    "leastConcern": "أقل اهتمام",
+    "dataDeficient": "بيانات غير كافية",
+    "notEvaluated": "لم يتم التقييم",
+    "population": "السكان",
+    "habitat": "الموطن",
+    "threats": "التهديدات"
+  },
+  "migration": {
+    "title": "مستكشف الهجرة",
+    "seasonalCorridors": "ممرات موسمية",
+    "spring": "الربيع",
+    "fall": "الخريف",
+    "yearRound": "على مدار السنة",
+    "climateSimulator": "محاكي الممر المناخي"
+  },
+  "safari": {
+    "title": "سفاري الحياة البرية",
+    "discover": "اكتشف الحيوانات بالقرب منك",
+    "collection": "مجموعتك",
+    "rare": "نادر",
+    "legendary": "أسطوري",
+    "common": "شائع",
+    "uncommon": "غير شائع"
+  },
+  "ai": {
+    "title": "الذكاء الحيواني المدعوم بالذكاء الاصطناعي",
+    "assistant": "مساعد الذكاء الاصطناعي",
+    "conflictPredictor": "متنبئ الصراعات بين الإنسان والحياة البرية",
+    "habitatSimulator": "محاكي تدهور الموطن",
+    "askAnything": "اسألني أي شيء عن الحيوانات...",
+    "predictRisk": "تقييم المخاطر",
+    "simulate": "محاكاة"
+  },
+  "data": {
+    "export": "تصدير البيانات",
+    "geojson": "GeoJSON",
+    "csv": "CSV",
+    "kml": "KML",
+    "download": "تنزيل",
+    "categories": "فئات البيانات",
+    "biological": "بيانات بيولوجية",
+    "behavioral": "بيانات سلوكية",
+    "ecological": "بيانات بيئية",
+    "population": "بيانات السكان",
+    "health": "بيانات صحية"
+  },
+  "api": {
+    "title": "API OpenAnimalNet",
+    "subtitle": "API عامة بصيغة JSON لبيانات الحيوانات — لا حاجة لمفتاح API.",
+    "rateLimit": "محدود إلى 60 طلب/دقيقة",
+    "endpoints": "نقاط النهاية",
+    "playground": "جرّب الـ API",
+    "documentation": "التوثيق"
+  },
+  "footer": {
+    "about": "حول OpenAnimalNet",
+    "description": "منصة عالمية لبيانات الحيوانات ومراقبة الحفظ والذكاء البري.",
+    "links": "روابط سريعة",
+    "legal": "قانوني",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "cookies": "سياسة ملفات تعريف الارتباط"
+  },
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "error": "حدث خطأ ما",
+    "retry": "حاول مرة أخرى",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "back": "رجوع",
+    "next": "التالي",
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "ترتيب",
+    "share": "مشاركة",
+    "download": "تنزيل",
+    "close": "إغلاق"
+  }
+}

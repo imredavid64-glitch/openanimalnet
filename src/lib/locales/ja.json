@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "animals": "動物",
+    "conservation": "保全",
+    "monitoring": "モニタリング",
+    "migration": "渡り",
+    "safari": "サファリ",
+    "ai": "AI ツール",
+    "search": "検索",
+    "identify": "識別",
+    "analytics": "分析",
+    "data": "データ",
+    "api": "API",
+    "about": "概要",
+    "contact": "お問い合わせ"
+  },
+  "home": {
+    "title": "OpenAnimalNet",
+    "subtitle": "グローバル動物データプラットフォーム",
+    "description": "世界中の動物データをモニタリング、分析、探索 — リアルタイムのソース検証付き。",
+    "explore": "種を探索",
+    "conservationStatus": "保全状況",
+    "speciesCount": "{count} 種を追跡中",
+    "dataSources": "検証済みデータソース"
+  },
+  "search": {
+    "title": "万能動物検索",
+    "subtitle": "GBIF、Wikipedia、Wikidata、iNaturalist で同時に任意の種を検索。",
+    "placeholder": "和名または学名で検索...",
+    "noResults": "結果が見つかりません",
+    "tryDifferent": "別の和名または学名をお試しください。",
+    "results": "件の結果",
+    "viewSource": "{source} で見る"
+  },
+  "identify": {
+    "title": "AI 種識別",
+    "subtitle": "写真をアップロードすると、AI が種を識別します。",
+    "upload": "野生動物の写真をアップロード",
+    "dragDrop": "ドラッグ＆ドロップまたはクリックして選択",
+    "analyzing": "AI で画像を分析中...",
+    "results": "識別結果",
+    "confidence": "信頼度"
+  },
+  "monitoring": {
+    "title": "モニタリングセンター",
+    "alerts": "アラート",
+    "critical": "緊急",
+    "warning": "警告",
+    "info": "情報",
+    "activeAlerts": "有効なアラート",
+    "severity": "深刻度",
+    "recommendedAction": "推奨アクション",
+    "monitored": "監視中",
+    "notMonitored": "未監視"
+  },
+  "conservation": {
+    "title": "保全概要",
+    "criticallyEndangered": "絶滅危惧I類",
+    "endangered": "絶滅危惧II類",
+    "vulnerable": "絶滅危惧",
+    "nearThreatened": "準絶滅危惧",
+    "leastConcern": "危機が低い",
+    "dataDeficient": "データ不足",
+    "notEvaluated": "未評価",
+    "population": "個体群",
+    "habitat": "生息地",
+    "threats": "脅威"
+  },
+  "migration": {
+    "title": "渡りエクスプローラー",
+    "seasonalCorridors": "季節回廊",
+    "spring": "春",
+    "fall": "秋",
+    "yearRound": "通年",
+    "climateSimulator": "気候回廊シミュレーター"
+  },
+  "safari": {
+    "title": "野生動物サファリ",
+    "discover": "近くの動物を発見",
+    "collection": "コレクション",
+    "rare": "レア",
+    "legendary": "レジェンダリー",
+    "common": "コモン",
+    "uncommon": "アンコモン"
+  },
+  "ai": {
+    "title": "AI 駆動の動物インテリジェンス",
+    "assistant": "AI アシスタント",
+    "conflictPredictor": "人間・野生動物紛争予測",
+    "habitatSimulator": "生息地劣化シミュレーター",
+    "askAnything": "動物について何でも聞いてください...",
+    "predictRisk": "リスクを評価",
+    "simulate": "シミュレーション"
+  },
+  "data": {
+    "export": "データエクスポート",
+    "geojson": "GeoJSON",
+    "csv": "CSV",
+    "kml": "KML",
+    "download": "ダウンロード",
+    "categories": "データカテゴリ",
+    "biological": "生物学データ",
+    "behavioral": "行動データ",
+    "ecological": "生態データ",
+    "population": "個体群データ",
+    "health": "健康データ"
+  },
+  "api": {
+    "title": "OpenAnimalNet API",
+    "subtitle": "動物データ用の公開 JSON API — API キー不要。",
+    "rateLimit": "レート制限: 60リクエスト/分",
+    "endpoints": "エンドポイント",
+    "playground": "API を試す",
+    "documentation": "ドキュメント"
+  },
+  "footer": {
+    "about": "OpenAnimalNet について",
+    "description": "動物データ、保全モニタリング、野生インテリジェンスのためのグローバルプラットフォーム。",
+    "links": "クイックリンク",
+    "legal": "法的情報",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "cookies": "Cookie ポリシー"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "error": "問題が発生しました",
+    "retry": "再試行",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "back": "戻る",
+    "next": "次へ",
+    "search": "検索",
+    "filter": "フィルター",
+    "sort": "並べ替え",
+    "share": "共有",
+    "download": "ダウンロード",
+    "close": "閉じる"
+  }
+}

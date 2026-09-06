@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "home": "Início",
+    "animals": "Animais",
+    "conservation": "Conservação",
+    "monitoring": "Monitoramento",
+    "migration": "Migração",
+    "safari": "Safári",
+    "ai": "Ferramentas de IA",
+    "search": "Pesquisar",
+    "identify": "Identificar",
+    "analytics": "Análises",
+    "data": "Dados",
+    "api": "API",
+    "about": "Sobre",
+    "contact": "Contato"
+  },
+  "home": {
+    "title": "OpenAnimalNet",
+    "subtitle": "Plataforma Global de Dados Animais",
+    "description": "Monitoramento, análise e exploração de dados de animais do mundo todo — com verificação de fontes em tempo real.",
+    "explore": "Explorar Espécies",
+    "conservationStatus": "Estado de Conservação",
+    "speciesCount": "{count} Espécies Rastreadas",
+    "dataSources": "Fontes de Dados Verificadas"
+  },
+  "search": {
+    "title": "Pesquisa Universal de Animais",
+    "subtitle": "Pesquise qualquer espécie no GBIF, Wikipedia, Wikidata e iNaturalist simultaneamente.",
+    "placeholder": "Pesquisar por nome comum ou científico...",
+    "noResults": "Nenhum resultado encontrado",
+    "tryDifferent": "Tente outro nome comum ou científico.",
+    "results": "resultados",
+    "viewSource": "Ver no {source}"
+  },
+  "identify": {
+    "title": "Identificação de Espécies por IA",
+    "subtitle": "Envie uma foto e nossa IA identificará a espécie.",
+    "upload": "Enviar uma Foto de Fauna",
+    "dragDrop": "Arraste e solte ou clique para selecionar",
+    "analyzing": "Analisando imagem com IA...",
+    "results": "Resultados da Identificação",
+    "confidence": "confiança"
+  },
+  "monitoring": {
+    "title": "Centro de Monitoramento",
+    "alerts": "Alertas",
+    "critical": "Crítico",
+    "warning": "Aviso",
+    "info": "Informação",
+    "activeAlerts": "Alertas Ativos",
+    "severity": "Gravidade",
+    "recommendedAction": "Ação Recomendada",
+    "monitored": "Monitorado",
+    "notMonitored": "Não Monitorado"
+  },
+  "conservation": {
+    "title": "Visão Geral da Conservação",
+    "criticallyEndangered": "Criticamente Ameaçado",
+    "endangered": "Ameaçado",
+    "vulnerable": "Vulnerável",
+    "nearThreatened": "Quase Ameaçado",
+    "leastConcern": "Pouco Preocupante",
+    "dataDeficient": "Dados Insuficientes",
+    "notEvaluated": "Não Avaliado",
+    "population": "População",
+    "habitat": "Habitat",
+    "threats": "Ameaças"
+  },
+  "migration": {
+    "title": "Explorador de Migração",
+    "seasonalCorridors": "Corredores Sazonais",
+    "spring": "Primavera",
+    "fall": "Outono",
+    "yearRound": "O ano todo",
+    "climateSimulator": "Simulador de Corredor Climático"
+  },
+  "safari": {
+    "title": "Safári de Fauna",
+    "discover": "Descubra animais perto de você",
+    "collection": "Sua Coleção",
+    "rare": "Raro",
+    "legendary": "Lendário",
+    "common": "Comum",
+    "uncommon": "Incomum"
+  },
+  "ai": {
+    "title": "Inteligência Animal com IA",
+    "assistant": "Assistente IA",
+    "conflictPredictor": "Previsor de Conflitos Humanos-Fauna",
+    "habitatSimulator": "Simulador de Degradação do Habitat",
+    "askAnything": "Pergunte qualquer coisa sobre animais...",
+    "predictRisk": "Avaliar risco",
+    "simulate": "Simular"
+  },
+  "data": {
+    "export": "Exportar Dados",
+    "geojson": "GeoJSON",
+    "csv": "CSV",
+    "kml": "KML",
+    "download": "Baixar",
+    "categories": "Categorias de Dados",
+    "biological": "Dados Biológicos",
+    "behavioral": "Dados Comportamentais",
+    "ecological": "Dados Ecológicos",
+    "population": "Dados Populacionais",
+    "health": "Dados de Saúde"
+  },
+  "api": {
+    "title": "API do OpenAnimalNet",
+    "subtitle": "Uma API JSON pública para dados animais — não é necessária chave de API.",
+    "rateLimit": "Limitado a 60 req/min",
+    "endpoints": "Endpoints",
+    "playground": "Testar a API",
+    "documentation": "Documentação"
+  },
+  "footer": {
+    "about": "Sobre o OpenAnimalNet",
+    "description": "Uma plataforma global para dados animais, monitoramento de conservação e inteligência de fauna.",
+    "links": "Links Rápidos",
+    "legal": "Legal",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Serviço",
+    "cookies": "Política de Cookies"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Algo deu errado",
+    "retry": "Tentar novamente",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "search": "Pesquisar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "share": "Compartilhar",
+    "download": "Baixar",
+    "close": "Fechar"
+  }
+}
