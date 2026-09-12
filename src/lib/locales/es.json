@@ -1,0 +1,254 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "retry": "Reintentar",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "submit": "Enviar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "download": "Descargar",
+    "share": "Compartir",
+    "copy": "Copiar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "view": "Ver",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "continue": "Continuar",
+    "finish": "Finalizar",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK",
+    "confirm": "Confirmar"
+  },
+  "nav": {
+    "home": "Inicio",
+    "animals": "Animales",
+    "analytics": "Analítica",
+    "migration": "Migración",
+    "identify": "Identificar",
+    "ai": "IA",
+    "safari": "Safari",
+    "tracker": "Rastreador",
+    "laws": "Leyes",
+    "acoustics": "Acústica",
+    "monitor": "Monitoreo",
+    "data": "Datos",
+    "dashboard": "Panel",
+    "community": "Comunidad",
+    "challenge": "Desafío",
+    "liveFeed": "Transmisión en Vivo",
+    "api": "API",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "docs": "Documentación",
+    "careers": "Carreras",
+    "partners": "Socios",
+    "assistance": "Asistencia",
+    "reunite": "Reunir",
+    "reserves": "Reservas",
+    "habitat": "Hábitat",
+    "conservation": "Conservación",
+    "impact": "Impacto",
+    "gallery": "Galería",
+    "compare": "Comparar",
+    "search": "Buscar",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "cookies": "Cookies",
+    "methodology": "Metodología",
+    "sources": "Fuentes",
+    "dataQuality": "Calidad de Datos"
+  },
+  "home": {
+    "hero": {
+      "title": "OpenAnimalNet",
+      "subtitle": "Plataforma global de inteligencia de vida silvestre",
+      "cta": "Explorar Especies"
+    },
+    "stats": {
+      "species": "Especies Rastreadas",
+      "population": "Población Total",
+      "alerts": "Alertas Activas",
+      "laws": "Leyes de Protección"
+    }
+  },
+  "animals": {
+    "title": "Todas las Especies",
+    "subtitle": "Explora nuestra base de datos verificada de especies animales",
+    "search": "Buscar especies...",
+    "filter": {
+      "category": "Categoría",
+      "status": "Estado de Conservación",
+      "region": "Región"
+    },
+    "conservation": {
+      "CR": "En Peligro Crítico",
+      "EN": "En Peligro",
+      "VU": "Vulnerable",
+      "NT": "Casi Amenazado",
+      "LC": "Preocupación Menor",
+      "DD": "Datos Insuficientes",
+      "NE": "No Evaluado"
+    }
+  },
+  "analytics": {
+    "title": "Panel de Analítica",
+    "subtitle": "Analítica avanzada, detección de tendencias e información de poblaciones",
+    "threatMatrix": "Matriz de Amenazas",
+    "exportCSV": "Exportar CSV",
+    "filters": {
+      "category": "Categoría",
+      "status": "Estado",
+      "dimensions": "Dimensiones"
+    },
+    "dimensions": {
+      "poaching": "Furtivismo",
+      "climate": "Clima",
+      "habitatLoss": "Pérdida de Hábitat",
+      "invasiveSpecies": "Especies Invasoras"
+    },
+    "charts": {
+      "conservationStatus": "Distribución del Estado de Conservación",
+      "speciesByCategory": "Especies por Categoría",
+      "populationTrends": "Tendencias de Población",
+      "alertActivity": "Actividad de Alertas por Mes",
+      "topHabitats": "Principales Hábitats",
+      "vulnerabilityRanking": "Ranking General de Vulnerabilidad",
+      "threatProfile": "Perfil de Amenazas"
+    }
+  },
+  "identify": {
+    "title": "Identificación de Especies con IA",
+    "subtitle": "Sube una foto y nuestra IA identificará la especie",
+    "upload": "Subir Foto de Vida Silvestre",
+    "dragDrop": "Arrastra y suelta o haz clic para seleccionar",
+    "analyzing": "Analizando imagen con IA...",
+    "results": "Resultados de Identificación",
+    "confidence": "confianza",
+    "viewProfile": "Ver perfil completo →",
+    "heuristicWarning": "Resultados heurísticos (simulados) — no hay modelo de visión IA configurado. Configura GEMINI_API_KEY o ANTHROPIC_API_KEY para habilitar identificación real de especies."
+  },
+  "ai": {
+    "title": "Inteligencia Animal Impulsada por IA",
+    "subtitle": "Desbloquea el poder de la IA para explorar, analizar y entender datos de animales como nunca antes.",
+    "features": {
+      "naturalLanguage": "Consultas en Lenguaje Natural",
+      "dataAnalysis": "Análisis de Datos",
+      "speciesIdentification": "Identificación de Especies",
+      "conservationInsights": "Perspectivas de Conservación",
+      "comparativeAnalysis": "Análisis Comparativo",
+      "predictiveAnalytics": "Analítica Predictiva"
+    },
+    "quickQueries": [
+      "Muéstrame todas las especies en peligro",
+      "¿Qué animales se monitorean en Norteamérica?",
+      "Compara poblaciones de leones y tigres",
+      "¿Cuál es el estado de conservación de los elefantes?",
+      "Muéstrame animales con datos de telemetría",
+      "¿Qué especies tienen el mayor declive poblacional?"
+    ],
+    "predictiveTools": "Herramientas Predictivas",
+    "conflictPredictor": "Predictor de Conflictos Humano-Vida Silvestre",
+    "habitatSimulator": "Simulador de Degradación de Hábitat",
+    "startChatting": "Empezar a Chatear con IA"
+  },
+  "migration": {
+    "title": "Corredores Migratorios",
+    "subtitle": "Explora rutas de migración documentadas y proyecciones de impacto climático",
+    "climateSimulator": "Simulador de Corredores Climáticos",
+    "scenarios": "Escenarios SSP",
+    "exportICS": "Exportar ICS"
+  },
+  "monitor": {
+    "title": "Panel de Monitoreo",
+    "subtitle": "Monitoreo y alertas de vida silvestre en tiempo real",
+    "alerts": "Alertas Activas",
+    "coverage": "Cobertura de Monitoreo",
+    "stats": {
+      "totalAnimals": "Total de Animales",
+      "monitored": "Monitoreados",
+      "activeAlerts": "Alertas Activas"
+    }
+  },
+  "data": {
+    "title": "Explorador de Datos",
+    "subtitle": "Explora y exporta datos de animales",
+    "categories": {
+      "biological": "Biológico y Fisiológico",
+      "behavioral": "Conductual y Espacial",
+      "ecological": "Ecológico y Ambiental",
+      "population": "Poblacional y Demográfico",
+      "health": "Salud, Enfermedades y Zoonóticas",
+      "agricultural": "Agrícola y Ganadero",
+      "shelter": "Refugio y Bienestar",
+      "humanInteraction": "Interacción Humano-Animal"
+    },
+    "export": "Exportar Datos"
+  },
+  "acoustics": {
+    "title": "Simulador Acústico",
+    "subtitle": "Modelado interactivo de vocalizaciones animales y paisajes sonoros",
+    "species": "Especie",
+    "environment": "Entorno",
+    "play": "Reproducir",
+    "stop": "Detener",
+    "visualize": "Visualizar"
+  },
+  "tracker": {
+    "title": "Rastreador de Mascotas",
+    "subtitle": "Rastrea la salud, vacunas y horarios de cuidado de tus mascotas",
+    "addPet": "Agregar Mascota",
+    "vaccinations": "Vacunas",
+    "vetVisits": "Visitas al Veterinario",
+    "feeding": "Horario de Alimentación",
+    "exercise": "Metas de Ejercicio"
+  },
+  "safari": {
+    "title": "Safari de Vida Silvestre",
+    "subtitle": "Descubre animales cerca de ti con encuentros basados en GPS",
+    "startSafari": "Iniciar Safari",
+    "myCollection": "Mi Colección",
+    "spawnRates": {
+      "common": "Común (50%)",
+      "uncommon": "Poco Común (30%)",
+      "rare": "Raro (15%)",
+      "legendary": "Legendario (5%)"
+    }
+  },
+  "laws": {
+    "title": "Leyes de Protección Animal",
+    "subtitle": "Explora leyes y regulaciones de todo el mundo",
+    "categories": {
+      "wildlife": "Protección de Vida Silvestre",
+      "companion": "Bienestar Animal de Compañía",
+      "service": "Derechos de Animales de Servicio",
+      "farm": "Bienestar Animal de Granja",
+      "trafficking": "Tráfico de Vida Silvestre"
+    }
+  },
+  "footer": {
+    "about": "Acerca de",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "contact": "Contacto",
+    "docs": "Documentación",
+    "api": "API",
+    "github": "GitHub",
+    "copyright": "© 2026 OpenAnimalNet. Todos los derechos reservados."
+  },
+  "errors": {
+    "notFound": "Página no encontrada",
+    "serverError": "Error del servidor",
+    "networkError": "Error de red",
+    "unauthorized": "No autorizado",
+    "forbidden": "Prohibido",
+    "rateLimited": "Demasiadas solicitudes",
+    "tryAgain": "Por favor, inténtalo de nuevo"
+  }
+}

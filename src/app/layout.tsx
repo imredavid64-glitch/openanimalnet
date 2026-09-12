@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import ServiceWorkerRegistrar from '@/components/ServiceWorkerRegistrar';
 import { SITE_URL } from '@/lib/site';
+import { I18nProvider } from '@/components/i18n/I18nProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -49,7 +50,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {children}
+        <I18nProvider>
+          {children}
+        </I18nProvider>
         <ServiceWorkerRegistrar />
       </body>
     </html>

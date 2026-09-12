@@ -1,0 +1,254 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "download": "Download",
+    "share": "Share",
+    "copy": "Copy",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "continue": "Continue",
+    "finish": "Finish",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "confirm": "Confirm"
+  },
+  "nav": {
+    "home": "Home",
+    "animals": "Animals",
+    "analytics": "Analytics",
+    "migration": "Migration",
+    "identify": "Identify",
+    "ai": "AI",
+    "safari": "Safari",
+    "tracker": "Tracker",
+    "laws": "Laws",
+    "acoustics": "Acoustics",
+    "monitor": "Monitor",
+    "data": "Data",
+    "dashboard": "Dashboard",
+    "community": "Community",
+    "challenge": "Challenge",
+    "liveFeed": "Live Feed",
+    "api": "API",
+    "about": "About",
+    "contact": "Contact",
+    "docs": "Docs",
+    "careers": "Careers",
+    "partners": "Partners",
+    "assistance": "Assistance",
+    "reunite": "Reunite",
+    "reserves": "Reserves",
+    "habitat": "Habitat",
+    "conservation": "Conservation",
+    "impact": "Impact",
+    "gallery": "Gallery",
+    "compare": "Compare",
+    "search": "Search",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies",
+    "methodology": "Methodology",
+    "sources": "Sources",
+    "dataQuality": "Data Quality"
+  },
+  "home": {
+    "hero": {
+      "title": "OpenAnimalNet",
+      "subtitle": "Global wildlife intelligence platform",
+      "cta": "Explore Species"
+    },
+    "stats": {
+      "species": "Species Tracked",
+      "population": "Total Population",
+      "alerts": "Active Alerts",
+      "laws": "Protection Laws"
+    }
+  },
+  "animals": {
+    "title": "All Species",
+    "subtitle": "Browse our verified database of animal species",
+    "search": "Search species...",
+    "filter": {
+      "category": "Category",
+      "status": "Conservation Status",
+      "region": "Region"
+    },
+    "conservation": {
+      "CR": "Critically Endangered",
+      "EN": "Endangered",
+      "VU": "Vulnerable",
+      "NT": "Near Threatened",
+      "LC": "Least Concern",
+      "DD": "Data Deficient",
+      "NE": "Not Evaluated"
+    }
+  },
+  "analytics": {
+    "title": "Analytics Dashboard",
+    "subtitle": "Advanced analytics, trend detection, and population insights",
+    "threatMatrix": "Threat Matrix",
+    "exportCSV": "Export CSV",
+    "filters": {
+      "category": "Category",
+      "status": "Status",
+      "dimensions": "Dimensions"
+    },
+    "dimensions": {
+      "poaching": "Poaching",
+      "climate": "Climate",
+      "habitatLoss": "Habitat Loss",
+      "invasiveSpecies": "Invasive Species"
+    },
+    "charts": {
+      "conservationStatus": "Conservation Status Distribution",
+      "speciesByCategory": "Species by Category",
+      "populationTrends": "Population Trends",
+      "alertActivity": "Alert Activity by Month",
+      "topHabitats": "Top Habitats",
+      "vulnerabilityRanking": "Overall Vulnerability Ranking",
+      "threatProfile": "Threat Profile"
+    }
+  },
+  "identify": {
+    "title": "AI Species Identification",
+    "subtitle": "Upload a photo and our AI will identify the species",
+    "upload": "Upload a Wildlife Photo",
+    "dragDrop": "Drag & drop or click to select",
+    "analyzing": "Analyzing image with AI...",
+    "results": "Identification Results",
+    "confidence": "confidence",
+    "viewProfile": "View full profile →",
+    "heuristicWarning": "Heuristic (simulated) results — no AI vision model is configured. Set GEMINI_API_KEY or ANTHROPIC_API_KEY to enable real species identification."
+  },
+  "ai": {
+    "title": "AI-Powered Animal Intelligence",
+    "subtitle": "Unlock the power of AI to explore, analyze, and understand animal data like never before.",
+    "features": {
+      "naturalLanguage": "Natural Language Queries",
+      "dataAnalysis": "Data Analysis",
+      "speciesIdentification": "Species Identification",
+      "conservationInsights": "Conservation Insights",
+      "comparativeAnalysis": "Comparative Analysis",
+      "predictiveAnalytics": "Predictive Analytics"
+    },
+    "quickQueries": [
+      "Show me all endangered species",
+      "What animals are monitored in North America?",
+      "Compare lion and tiger populations",
+      "What is the conservation status of elephants?",
+      "Show me animals with telemetry data",
+      "Which species have the largest population decline?"
+    ],
+    "predictiveTools": "Predictive Tools",
+    "conflictPredictor": "Human–Wildlife Conflict Predictor",
+    "habitatSimulator": "Habitat Degradation Simulator",
+    "startChatting": "Start Chatting with AI"
+  },
+  "migration": {
+    "title": "Migration Corridors",
+    "subtitle": "Explore documented migration routes and climate impact projections",
+    "climateSimulator": "Climate Corridor Simulator",
+    "scenarios": "SSP Scenarios",
+    "exportICS": "Export ICS"
+  },
+  "monitor": {
+    "title": "Monitoring Dashboard",
+    "subtitle": "Real-time wildlife monitoring and alerts",
+    "alerts": "Active Alerts",
+    "coverage": "Monitoring Coverage",
+    "stats": {
+      "totalAnimals": "Total Animals",
+      "monitored": "Monitored",
+      "activeAlerts": "Active Alerts"
+    }
+  },
+  "data": {
+    "title": "Data Explorer",
+    "subtitle": "Browse and export animal data",
+    "categories": {
+      "biological": "Biological & Physiological",
+      "behavioral": "Behavioral & Spatial",
+      "ecological": "Ecological & Environmental",
+      "population": "Population & Demographic",
+      "health": "Health, Disease & Zoonotic",
+      "agricultural": "Agricultural & Livestock",
+      "shelter": "Shelter & Welfare",
+      "humanInteraction": "Human-Animal Interaction"
+    },
+    "export": "Export Data"
+  },
+  "acoustics": {
+    "title": "Acoustics Simulator",
+    "subtitle": "Interactive animal vocalization and soundscape modeling",
+    "species": "Species",
+    "environment": "Environment",
+    "play": "Play",
+    "stop": "Stop",
+    "visualize": "Visualize"
+  },
+  "tracker": {
+    "title": "Pet Tracker",
+    "subtitle": "Track your pets' health, vaccinations, and care schedules",
+    "addPet": "Add Pet",
+    "vaccinations": "Vaccinations",
+    "vetVisits": "Vet Visits",
+    "feeding": "Feeding Schedule",
+    "exercise": "Exercise Goals"
+  },
+  "safari": {
+    "title": "Wildlife Safari",
+    "subtitle": "Discover animals near you with GPS-based encounters",
+    "startSafari": "Start Safari",
+    "myCollection": "My Collection",
+    "spawnRates": {
+      "common": "Common (50%)",
+      "uncommon": "Uncommon (30%)",
+      "rare": "Rare (15%)",
+      "legendary": "Legendary (5%)"
+    }
+  },
+  "laws": {
+    "title": "Animal Protection Laws",
+    "subtitle": "Browse laws and regulations from around the world",
+    "categories": {
+      "wildlife": "Wildlife Protection",
+      "companion": "Companion Animal Welfare",
+      "service": "Service Animal Rights",
+      "farm": "Farm Animal Welfare",
+      "trafficking": "Wildlife Trafficking"
+    }
+  },
+  "footer": {
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "docs": "Documentation",
+    "api": "API",
+    "github": "GitHub",
+    "copyright": "© 2026 OpenAnimalNet. All rights reserved."
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "serverError": "Server error",
+    "networkError": "Network error",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Forbidden",
+    "rateLimited": "Too many requests",
+    "tryAgain": "Please try again"
+  }
+}

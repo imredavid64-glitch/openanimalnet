@@ -1,0 +1,254 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "retry": "重试",
+    "close": "关闭",
+    "save": "保存",
+    "cancel": "取消",
+    "submit": "提交",
+    "search": "搜索",
+    "filter": "筛选",
+    "export": "导出",
+    "download": "下载",
+    "share": "分享",
+    "copy": "复制",
+    "edit": "编辑",
+    "delete": "删除",
+    "view": "查看",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "continue": "继续",
+    "finish": "完成",
+    "yes": "是",
+    "no": "否",
+    "ok": "确定",
+    "confirm": "确认"
+  },
+  "nav": {
+    "home": "首页",
+    "animals": "动物",
+    "analytics": "分析",
+    "migration": "迁徙",
+    "identify": "识别",
+    "ai": "AI",
+    "safari": "探险",
+    "tracker": "追踪器",
+    "laws": "法律",
+    "acoustics": "声学",
+    "monitor": "监测",
+    "data": "数据",
+    "dashboard": "仪表板",
+    "community": "社区",
+    "challenge": "挑战",
+    "liveFeed": "实时流",
+    "api": "API",
+    "about": "关于",
+    "contact": "联系",
+    "docs": "文档",
+    "careers": "职位",
+    "partners": "合作伙伴",
+    "assistance": "帮助",
+    "reunite": "团聚",
+    "reserves": "保护区",
+    "habitat": "栖息地",
+    "conservation": "保护",
+    "impact": "影响",
+    "gallery": "图库",
+    "compare": "对比",
+    "search": "搜索",
+    "privacy": "隐私",
+    "terms": "条款",
+    "cookies": "Cookie",
+    "methodology": "方法论",
+    "sources": "来源",
+    "dataQuality": "数据质量"
+  },
+  "home": {
+    "hero": {
+      "title": "OpenAnimalNet",
+      "subtitle": "全球野生动物智能平台",
+      "cta": "探索物种"
+    },
+    "stats": {
+      "species": "追踪物种",
+      "population": "总种群数",
+      "alerts": "活跃警报",
+      "laws": "保护法律"
+    }
+  },
+  "animals": {
+    "title": "所有物种",
+    "subtitle": "浏览我们经过验证的动物物种数据库",
+    "search": "搜索物种...",
+    "filter": {
+      "category": "类别",
+      "status": "保护状态",
+      "region": "地区"
+    },
+    "conservation": {
+      "CR": "极危",
+      "EN": "濒危",
+      "VU": "易危",
+      "NT": "近危",
+      "LC": "无危",
+      "DD": "数据缺乏",
+      "NE": "未评估"
+    }
+  },
+  "analytics": {
+    "title": "分析仪表板",
+    "subtitle": "高级分析、趋势检测和种群洞察",
+    "threatMatrix": "威胁矩阵",
+    "exportCSV": "导出 CSV",
+    "filters": {
+      "category": "类别",
+      "status": "状态",
+      "dimensions": "维度"
+    },
+    "dimensions": {
+      "poaching": "偷猎",
+      "climate": "气候",
+      "habitatLoss": "栖息地丧失",
+      "invasiveSpecies": "入侵物种"
+    },
+    "charts": {
+      "conservationStatus": "保护状态分布",
+      "speciesByCategory": "按类别分类的物种",
+      "populationTrends": "种群趋势",
+      "alertActivity": "按月警报活动",
+      "topHabitats": "主要栖息地",
+      "vulnerabilityRanking": "总体脆弱性排名",
+      "threatProfile": "威胁概况"
+    }
+  },
+  "identify": {
+    "title": "AI 物种识别",
+    "subtitle": "上传照片，我们的 AI 将识别物种",
+    "upload": "上传野生动物照片",
+    "dragDrop": "拖放或点击选择",
+    "analyzing": "正在用 AI 分析图像...",
+    "results": "识别结果",
+    "confidence": "置信度",
+    "viewProfile": "查看完整档案 →",
+    "heuristicWarning": "启发式（模拟）结果 — 未配置 AI 视觉模型。设置 GEMINI_API_KEY 或 ANTHROPIC_API_KEY 以启用真实物种识别。"
+  },
+  "ai": {
+    "title": "AI 驱动的动物智能",
+    "subtitle": "释放 AI 的力量，以前所未有的方式探索、分析和理解动物数据。",
+    "features": {
+      "naturalLanguage": "自然语言查询",
+      "dataAnalysis": "数据分析",
+      "speciesIdentification": "物种识别",
+      "conservationInsights": "保护洞察",
+      "comparativeAnalysis": "对比分析",
+      "predictiveAnalytics": "预测分析"
+    },
+    "quickQueries": [
+      "显示所有濒危物种",
+      "北美监测哪些动物？",
+      "比较狮子和老虎种群",
+      "大象的保护状态是什么？",
+      "显示有遥测数据的动物",
+      "哪些物种种群下降最多？"
+    ],
+    "predictiveTools": "预测工具",
+    "conflictPredictor": "人兽冲突预测器",
+    "habitatSimulator": "栖息地退化模拟器",
+    "startChatting": "开始与 AI 对话"
+  },
+  "migration": {
+    "title": "迁徙走廊",
+    "subtitle": "探索记录在案的迁徙路线和气候影响预测",
+    "climateSimulator": "气候走廊模拟器",
+    "scenarios": "SSP 情景",
+    "exportICS": "导出 ICS"
+  },
+  "monitor": {
+    "title": "监测仪表板",
+    "subtitle": "实时野生动物监测和警报",
+    "alerts": "活跃警报",
+    "coverage": "监测覆盖率",
+    "stats": {
+      "totalAnimals": "动物总数",
+      "monitored": "已监测",
+      "activeAlerts": "活跃警报"
+    }
+  },
+  "data": {
+    "title": "数据浏览器",
+    "subtitle": "浏览和导出动物数据",
+    "categories": {
+      "biological": "生物与生理学",
+      "behavioral": "行为与空间",
+      "ecological": "生态与环境",
+      "population": "种群与人口统计",
+      "health": "健康、疾病与人畜共患病",
+      "agricultural": "农业与畜牧",
+      "shelter": "庇护所与福利",
+      "humanInteraction": "人兽互动"
+    },
+    "export": "导出数据"
+  },
+  "acoustics": {
+    "title": "声学模拟器",
+    "subtitle": "交互式动物发声和声景建模",
+    "species": "物种",
+    "environment": "环境",
+    "play": "播放",
+    "stop": "停止",
+    "visualize": "可视化"
+  },
+  "tracker": {
+    "title": "宠物追踪器",
+    "subtitle": "追踪宠物的健康、疫苗和护理时间表",
+    "addPet": "添加宠物",
+    "vaccinations": "疫苗接种",
+    "vetVisits": "兽医就诊",
+    "feeding": "喂食时间表",
+    "exercise": "运动目标"
+  },
+  "safari": {
+    "title": "野生动物探险",
+    "subtitle": "通过基于 GPS 的遭遇发现您附近的动物",
+    "startSafari": "开始探险",
+    "myCollection": "我的收藏",
+    "spawnRates": {
+      "common": "常见 (50%)",
+      "uncommon": "不常见 (30%)",
+      "rare": "稀有 (15%)",
+      "legendary": "传说 (5%)"
+    }
+  },
+  "laws": {
+    "title": "动物保护法",
+    "subtitle": "浏览来自世界各地的法律法规",
+    "categories": {
+      "wildlife": "野生动物保护",
+      "companion": "伴侣动物福利",
+      "service": "服务动物权利",
+      "farm": "农场动物福利",
+      "trafficking": "野生动物走私"
+    }
+  },
+  "footer": {
+    "about": "关于",
+    "privacy": "隐私",
+    "terms": "条款",
+    "contact": "联系",
+    "docs": "文档",
+    "api": "API",
+    "github": "GitHub",
+    "copyright": "© 2026 OpenAnimalNet. 保留所有权利。"
+  },
+  "errors": {
+    "notFound": "页面未找到",
+    "serverError": "服务器错误",
+    "networkError": "网络错误",
+    "unauthorized": "未授权",
+    "forbidden": "禁止访问",
+    "rateLimited": "请求过多",
+    "tryAgain": "请重试"
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "retry": "Erneut versuchen",
+    "close": "Schließen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "submit": "Absenden",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "export": "Exportieren",
+    "download": "Herunterladen",
+    "share": "Teilen",
+    "copy": "Kopieren",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "view": "Anzeigen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "continue": "Fortfahren",
+    "finish": "Beenden",
+    "yes": "Ja",
+    "no": "Nein",
+    "ok": "OK",
+    "confirm": "Bestätigen"
+  },
+  "nav": {
+    "home": "Startseite",
+    "animals": "Tiere",
+    "analytics": "Analytik",
+    "migration": "Migration",
+    "identify": "Identifizieren",
+    "ai": "KI",
+    "safari": "Safari",
+    "tracker": "Tracker",
+    "laws": "Gesetze",
+    "acoustics": "Akustik",
+    "monitor": "Überwachung",
+    "data": "Daten",
+    "dashboard": "Dashboard",
+    "community": "Community",
+    "challenge": "Herausforderung",
+    "liveFeed": "Live-Feed",
+    "api": "API",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "docs": "Dokumentation",
+    "careers": "Karriere",
+    "partners": "Partner",
+    "assistance": "Hilfe",
+    "reunite": "Wiedervereinigung",
+    "reserves": "Reservate",
+    "habitat": "Lebensraum",
+    "conservation": "Schutz",
+    "impact": "Auswirkung",
+    "gallery": "Galerie",
+    "compare": "Vergleichen",
+    "search": "Suche",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "cookies": "Cookies",
+    "methodology": "Methodik",
+    "sources": "Quellen",
+    "dataQuality": "Datenqualität"
+  },
+  "home": {
+    "hero": {
+      "title": "OpenAnimalNet",
+      "subtitle": "Globale Plattform für Wildtierintelligenz",
+      "cta": "Arten Entdecken"
+    },
+    "stats": {
+      "species": "Verfolgte Arten",
+      "population": "Gesamtpopulation",
+      "alerts": "Aktive Warnungen",
+      "laws": "Schutzgesetze"
+    }
+  },
+  "animals": {
+    "title": "Alle Arten",
+    "subtitle": "Durchsuchen Sie unsere verifizierte Datenbank von Tierarten",
+    "search": "Arten suchen...",
+    "filter": {
+      "category": "Kategorie",
+      "status": "Schutzstatus",
+      "region": "Region"
+    },
+    "conservation": {
+      "CR": "Vom Aussterben Bedroht",
+      "EN": "Stark Gefährdet",
+      "VU": "Gefährdet",
+      "NT": "Potenziell Gefährdet",
+      "LC": "Nicht Gefährdet",
+      "DD": "Unzureichende Daten",
+      "NE": "Nicht Bewertet"
+    }
+  },
+  "analytics": {
+    "title": "Analytik-Dashboard",
+    "subtitle": "Erweiterte Analytik, Trendanalyse und Populationsdaten",
+    "threatMatrix": "Bedrohungsmatrix",
+    "exportCSV": "CSV Exportieren",
+    "filters": {
+      "category": "Kategorie",
+      "status": "Status",
+      "dimensions": "Dimensionen"
+    },
+    "dimensions": {
+      "poaching": "Wilderei",
+      "climate": "Klima",
+      "habitatLoss": "Lebensraumverlust",
+      "invasiveSpecies": "Invasive Arten"
+    },
+    "charts": {
+      "conservationStatus": "Verteilung des Schutzstatus",
+      "speciesByCategory": "Arten nach Kategorie",
+      "populationTrends": "Populationstrends",
+      "alertActivity": "Warnungsaktivität pro Monat",
+      "topHabitats": "Top-Lebensräume",
+      "vulnerabilityRanking": "Gesamtranking der Verwundbarkeit",
+      "threatProfile": "Bedrohungsprofil"
+    }
+  },
+  "identify": {
+    "title": "KI-Artenidentifikation",
+    "subtitle": "Laden Sie ein Foto hoch und unsere KI identifiziert die Art",
+    "upload": "Wildtierfoto Hochladen",
+    "dragDrop": "Ziehen & Ablegen oder Klicken zum Auswählen",
+    "analyzing": "Bild wird mit KI analysiert...",
+    "results": "Identifikationsergebnisse",
+    "confidence": "Vertrauen",
+    "viewProfile": "Vollständiges Profil Anzeigen →",
+    "heuristicWarning": "Heuristische (simulierte) Ergebnisse — kein KI-Sehmodell konfiguriert. Setzen Sie GEMINI_API_KEY oder ANTHROPIC_API_KEY, um echte Arterkennung zu aktivieren."
+  },
+  "ai": {
+    "title": "KI-gestützte Tierintelligenz",
+    "subtitle": "Entfesseln Sie die Kraft der KI, um Tierdaten wie nie zuvor zu erforschen, zu analysieren und zu verstehen.",
+    "features": {
+      "naturalLanguage": "Natürliche Sprachanfragen",
+      "dataAnalysis": "Datenanalyse",
+      "speciesIdentification": "Artenidentifikation",
+      "conservationInsights": "Schutz-Einblicke",
+      "comparativeAnalysis": "Vergleichende Analyse",
+      "predictiveAnalytics": "Prädiktive Analytik"
+    },
+    "quickQueries": [
+      "Zeige mir alle gefährdeten Arten",
+      "Welche Tiere werden in Nordamerika überwacht?",
+      "Vergleiche Löwen- und Tigerpopulationen",
+      "Was ist der Schutzstatus von Elefanten?",
+      "Zeige mir Tiere mit Telemetriedaten",
+      "Welche Arten haben den größten Populationsrückgang?"
+    ],
+    "predictiveTools": "Prädiktive Tools",
+    "conflictPredictor": "Mensch-Wildtier-Konflikt-Prädiktor",
+    "habitatSimulator": "Lebensraumdegradations-Simulator",
+    "startChatting": "Mit KI Chatten Starten"
+  },
+  "migration": {
+    "title": "Migrationskorridore",
+    "subtitle": "Erkunden Sie dokumentierte Migrationsrouten und Klimaprojektionen",
+    "climateSimulator": "Klima-Korridor-Simulator",
+    "scenarios": "SSP-Szenarien",
+    "exportICS": "ICS Exportieren"
+  },
+  "monitor": {
+    "title": "Überwachungs-Dashboard",
+    "subtitle": "Echtzeit-Wildtierüberwachung und Warnungen",
+    "alerts": "Aktive Warnungen",
+    "coverage": "Überwachungsabdeckung",
+    "stats": {
+      "totalAnimals": "Gesamttiere",
+      "monitored": "Überwacht",
+      "activeAlerts": "Aktive Warnungen"
+    }
+  },
+  "data": {
+    "title": "Daten-Explorer",
+    "subtitle": "Tierdaten durchsuchen und exportieren",
+    "categories": {
+      "biological": "Biologisch & Physiologisch",
+      "behavioral": "Verhaltensbezogen & Räumlich",
+      "ecological": "Ökologisch & Umweltbezogen",
+      "population": "Bevölkerung & Demografisch",
+      "health": "Gesundheit, Krankheiten & Zoonosen",
+      "agricultural": "Landwirtschaftlich & Viehzucht",
+      "shelter": "Unterkunft & Wohlergehen",
+      "humanInteraction": "Mensch-Tier-Interaktion"
+    },
+    "export": "Daten Exportieren"
+  },
+  "acoustics": {
+    "title": "Akustik-Simulator",
+    "subtitle": "Interaktive Tiervokalisations- und Klanglandschaftsmodellierung",
+    "species": "Art",
+    "environment": "Umgebung",
+    "play": "Abspielen",
+    "stop": "Stoppen",
+    "visualize": "Visualisieren"
+  },
+  "tracker": {
+    "title": "Haustier-Tracker",
+    "subtitle": "Verfolgen Sie die Gesundheit, Impfungen und Pflegepläne Ihrer Haustiere",
+    "addPet": "Haustier Hinzufügen",
+    "vaccinations": "Impfungen",
+    "vetVisits": "Tierarztbesuche",
+    "feeding": "Fütterungsplan",
+    "exercise": "Bewegungsziele"
+  },
+  "safari": {
+    "title": "Wildtier-Safari",
+    "subtitle": "Entdecken Sie Tiere in Ihrer Nähe mit GPS-basierten Begegnungen",
+    "startSafari": "Safari Starten",
+    "myCollection": "Meine Sammlung",
+    "spawnRates": {
+      "common": "Häufig (50%)",
+      "uncommon": "Gelegentlich (30%)",
+      "rare": "Selten (15%)",
+      "legendary": "Legendär (5%)"
+    }
+  },
+  "laws": {
+    "title": "Tierschutzgesetze",
+    "subtitle": "Gesetze und Vorschriften aus aller Welt durchsuchen",
+    "categories": {
+      "wildlife": "Wildtierschutz",
+      "companion": "Heimtierwohl",
+      "service": "Assistenztierrechte",
+      "farm": "Nutztierwohl",
+      "trafficking": "Wildtierhandel"
+    }
+  },
+  "footer": {
+    "about": "Über uns",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "contact": "Kontakt",
+    "docs": "Dokumentation",
+    "api": "API",
+    "github": "GitHub",
+    "copyright": "© 2026 OpenAnimalNet. Alle Rechte vorbehalten."
+  },
+  "errors": {
+    "notFound": "Seite nicht gefunden",
+    "serverError": "Serverfehler",
+    "networkError": "Netzwerkfehler",
+    "unauthorized": "Nicht autorisiert",
+    "forbidden": "Verboten",
+    "rateLimited": "Zu viele Anfragen",
+    "tryAgain": "Bitte versuchen Sie es erneut"
+  }
+}

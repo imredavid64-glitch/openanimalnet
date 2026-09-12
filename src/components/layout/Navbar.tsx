@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
 import { PawIcon, SunIcon, MoonIcon } from '@/components/icons';
+import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
 
 const navItems = [
   { name: 'Home', path: '/' },
@@ -120,6 +121,7 @@ export default function Navbar() {
 
           {/* Right Side Items */}
           <div className="hidden lg:flex items-center space-x-6">
+            <LanguageSwitcher />
             <button
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -180,6 +182,7 @@ export default function Navbar() {
                   <Link href="/dashboard" className="btn-primary text-center">
                     Dashboard
                   </Link>
+                  <LanguageSwitcher />
                   <button
                     onClick={toggleTheme}
                     className="flex items-center justify-center space-x-2 py-3 px-4 rounded-xl hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors duration-300"
