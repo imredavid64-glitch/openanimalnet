@@ -543,3 +543,15 @@ export function RefreshCwIcon({ className }: { className?: string }) {
     </Svg>
   );
 }
+
+export function WaveformIcon({ className }: { className?: string }) {
+  return (
+    <Svg className={className}>
+      <path d="M4 17v-4" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M8 12v-9" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M12 17v-4" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M16 12v-9" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M20 17v-4" strokeWidth="1.5" strokeLinecap="round" />
+    </Svg>
+  );
+}
