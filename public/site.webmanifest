@@ -6,11 +6,14 @@
   "display": "standalone",
   "background_color": "#f8fafc",
   "theme_color": "#0ea5e9",
+  "orientation": "any",
+  "categories": ["education", "entertainment"],
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     },
     {
       "src": "/favicon.ico",

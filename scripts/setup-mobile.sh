@@ -9,15 +9,15 @@ echo ""
 echo "Step 1: Installing Capacitor dependencies..."
 npm install @capacitor/core @capacitor/cli @capacitor/camera @capacitor/geolocation @capacitor/local-notifications @capacitor/haptics @capacitor/share @capacitor/browser
 
-# Step 2: Build the static export for mobile
+# Step 2: Build the app shell for mobile
 echo ""
-echo "Step 2: Building static export for mobile..."
-MOBILE_BUILD=true npm run build
+echo "Step 2: Building app shell for mobile..."
+npm run mobile:build
 
 # Step 3: Initialize Capacitor (if not already done)
 echo ""
 echo "Step 3: Initializing Capacitor..."
-if [ ! -f "capacitor.config.ts" ]; then
+if [ ! -f "capacitor.config.js" ]; then
   npx cap init "OpenAnimalNet" "com.openanimalnet.app" --web-dir out
 fi
 
@@ -60,7 +60,7 @@ echo "    npx cap open android"
 echo "    (Opens Android Studio — select device/emulator and run)"
 echo ""
 echo "  Quick sync after code changes:"
-echo "    MOBILE_BUILD=true npm run build && npx cap sync"
+echo "    npm run mobile:sync"
 echo ""
 echo "  Live reload during development:"
 echo "    npx cap run ios --livereload --external"

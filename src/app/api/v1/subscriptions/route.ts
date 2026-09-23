@@ -52,7 +52,7 @@ export async function POST(request: Request) {
   };
   subscriptions.push(sub);
 
-  return NextResponse.json({ success: true, data: sub } satisfies ApiResponse<Subscription>);
+  return NextResponse.json({ success: true, data: sub } satisfies ApiResponse<Subscription>, { status: 201 });
 }
 
 export async function DELETE(request: Request) {

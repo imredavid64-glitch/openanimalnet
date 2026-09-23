@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
 import { PawIcon, SunIcon, MoonIcon } from '@/components/icons';
 import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 const navItems = [
   { name: 'Home', path: '/' },
@@ -30,9 +31,30 @@ const navItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { t } = useI18n();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  const navItems = [
+    { name: t('nav.home', 'Home'), path: '/' },
+    { name: t('nav.animals', 'Animals'), path: '/animal' },
+    { name: t('nav.migration', 'Migrations'), path: '/migration' },
+    { name: 'Live Feed', path: '/live-feed' },
+    { name: 'Reserves', path: '/reserves' },
+    { name: 'Acoustics', path: '/acoustics' },
+    { name: 'Challenge', path: '/challenge' },
+    { name: 'Habitat', path: '/habitat' },
+    { name: t('nav.search', 'Search'), path: '/search' },
+    { name: t('nav.identify', 'Identify'), path: '/identify' },
+    { name: t('nav.analytics', 'Analytics'), path: '/analytics' },
+    { name: 'Habitat 3D', path: '/habitat-viz' },
+    { name: 'Subscriptions', path: '/subscriptions' },
+    { name: 'Annotations', path: '/annotations' },
+    { name: t('nav.api', 'API'), path: '/api/playground' },
+    { name: t('nav.data', 'Export'), path: '/data/export' },
+    { name: t('nav.monitoring', 'Monitor'), path: '/monitor' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,9 +69,22 @@ export default function Navbar() {
     const stored = localStorage.getItem('theme');
     const isDark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
     setTheme(isDark ? 'dark' : 'light');
-    // Apply the class on mount too — the inline head script handles the very
-    // first paint, this keeps it correct for subsequent client-side loads.
     document.documentElement.classList.toggle('dark', isDark);
+
+    // Sync theme across tabs via BroadcastChannel
+    let bc: BroadcastChannel | null = null;
+    try { bc = new BroadcastChannel('oan-theme'); } catch {}
+    if (bc) {
+      bc.onmessage = (e) => {
+        if (e.data === 'theme-change') {
+          const t = localStorage.getItem('theme');
+          const d = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          setTheme(d ? 'dark' : 'light');
+          document.documentElement.classList.toggle('dark', d);
+        }
+      };
+    }
+    return () => { bc?.close(); };
   }, []);
 
   const toggleTheme = () => {
@@ -57,6 +92,8 @@ export default function Navbar() {
     setTheme(next);
     document.documentElement.classList.toggle('dark', next === 'dark');
     localStorage.setItem('theme', next);
+    // Notify other tabs
+    try { new BroadcastChannel('oan-theme').postMessage('theme-change'); } catch {}
   };
 
   useEffect(() => {

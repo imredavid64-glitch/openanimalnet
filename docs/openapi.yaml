@@ -7,9 +7,9 @@ info:
     All endpoints are rate-limited to **60 requests per minute per IP** and
     return `Cache-Control: public, s-maxage=60` headers.
 
-    No API keys required — all data is derived from the 28-species dataset
+    No API keys required — all data is derived from the 42-species dataset
     and live public APIs (GBIF, Wikidata, Wikipedia, iNaturalist).
-  version: 1.18.5
+  version: 1.23.0
   contact:
     name: OpenAnimalNet
     url: https://github.com/imredavid64-glitch/openanimalnet
@@ -331,6 +331,317 @@ paths:
         "429":
           $ref: "#/components/responses/RateLimited"
 
+  /api/v1/live/observations:
+    post:
+      operationId: submitObservation
+      summary: Submit a crowd-sourced observation
+      description: |
+        Accept a wildlife observation (replayed by the service worker's
+        background sync when connectivity returns). Broadcasts an SSE alert.
+      tags: [Live Sync]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [animalId]
+              properties:
+                animalId: { type: string }
+                species: { type: string }
+                latitude: { type: number }
+                longitude: { type: number }
+                notes: { type: string }
+                reportedBy: { type: string }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/SuccessResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/SubmittedObservation"
+        "400":
+          description: Invalid fields
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/search:
+    get:
+      operationId: universalSearch
+      summary: Universal species search
+      description: Search across GBIF, Wikipedia, Wikidata, and iNaturalist.
+      tags: [Search]
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Missing q parameter
+        "502":
+          description: Upstream search failed
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/identify:
+    post:
+      operationId: identifySpecies
+      summary: Identify a species from an image
+      tags: [Identify]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [image]
+              properties:
+                image: { type: string, description: Base64 or data-URL image }
+                topK: { type: integer, description: Max results, default: 5 }
+      responses:
+        "200":
+          description: Matches returned
+        "400":
+          description: Missing image field
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/subscriptions:
+    get:
+      operationId: listSubscriptions
+      summary: List alert subscriptions
+      tags: [Subscriptions]
+      parameters:
+        - name: email
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Success
+        "429":
+          $ref: "#/components/responses/RateLimited"
+    post:
+      operationId: createSubscription
+      summary: Create an alert subscription
+      tags: [Subscriptions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string }
+                speciesIds: { type: array, items: { type: string } }
+                regions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lat: { type: number }
+                      lng: { type: number }
+                      radiusKm: { type: number }
+                alertTypes:
+                  type: array
+                  items: { type: string, enum: [critical, warning, info] }
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Invalid email
+        "429":
+          $ref: "#/components/responses/RateLimited"
+    delete:
+      operationId: deleteSubscription
+      summary: Remove a subscription
+      tags: [Subscriptions]
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Deleted
+        "400":
+          description: Missing id
+        "404":
+          description: Not found
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/annotations:
+    get:
+      operationId: listAnnotations
+      summary: List annotations
+      tags: [Annotations]
+      parameters:
+        - name: animalId
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Success
+        "429":
+          $ref: "#/components/responses/RateLimited"
+    post:
+      operationId: createAnnotation
+      summary: Create an annotation
+      tags: [Annotations]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [animalId, author, content]
+              properties:
+                animalId: { type: string }
+                author: { type: string }
+                content: { type: string }
+                category: { type: string, enum: [observation, correction, note, sighting] }
+                location:
+                  type: object
+                  properties:
+                    lat: { type: number }
+                    lng: { type: number }
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Invalid fields
+        "429":
+          $ref: "#/components/responses/RateLimited"
+    delete:
+      operationId: deleteAnnotation
+      summary: Remove an annotation
+      tags: [Annotations]
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Deleted
+        "404":
+          description: Not found
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/webhooks:
+    get:
+      operationId: listWebhooks
+      summary: List registered webhooks
+      tags: [Webhooks]
+      responses:
+        "200":
+          description: Success
+        "429":
+          $ref: "#/components/responses/RateLimited"
+    post:
+      operationId: registerWebhook
+      summary: Register a webhook
+      tags: [Webhooks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url: { type: string }
+                events:
+                  type: array
+                  items: { type: string }
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Invalid URL
+        "429":
+          $ref: "#/components/responses/RateLimited"
+    delete:
+      operationId: deleteWebhook
+      summary: Remove a webhook
+      tags: [Webhooks]
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Deleted
+        "404":
+          description: Not found
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/export:
+    get:
+      operationId: exportSpecies
+      summary: Export the species dataset
+      tags: [Export]
+      parameters:
+        - name: format
+          in: query
+          schema: { type: string, enum: [geojson, csv, kml], default: geojson }
+        - name: category
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: File download
+          content:
+            application/json: {}
+            text/csv: {}
+            application/vnd.google-earth.kml+xml: {}
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/v1/feed:
+    get:
+      operationId: alertFeed
+      summary: Conservation-alert feed
+      tags: [Feed]
+      parameters:
+        - name: format
+          in: query
+          schema: { type: string, enum: [atom, rss], default: atom }
+      responses:
+        "200":
+          description: XML feed
+          content:
+            application/atom+xml: {}
+            application/rss+xml: {}
+
+  /api/v1/live/alerts:
+    get:
+      operationId: liveAlertsStream
+      summary: Live alert SSE stream
+      description: Server-sent-events stream of live conservation alerts.
+      tags: [Live Sync]
+      responses:
+        "200":
+          description: text/event-stream
+
 components:
   schemas:
     Animal:
@@ -534,6 +845,18 @@ components:
               longitude: { type: number }
               eventDate: { type: string, nullable: true }
 
+    SubmittedObservation:
+      type: object
+      properties:
+        id: { type: string }
+        animalId: { type: string }
+        species: { type: string, nullable: true }
+        latitude: { type: number, nullable: true }
+        longitude: { type: number, nullable: true }
+        notes: { type: string, nullable: true }
+        reportedBy: { type: string, nullable: true }
+        timestamp: { type: string, format: date-time }
+
     SuccessResponse:
       type: object
       properties:
@@ -593,3 +916,17 @@ components:
       description: Telemetry tracking data
     - name: Live Sync
       description: Real-time GBIF occurrence data
+    - name: Search
+      description: Universal species search
+    - name: Identify
+      description: Image-based species identification
+    - name: Subscriptions
+      description: Alert subscriptions
+    - name: Annotations
+      description: Per-species notes and sightings
+    - name: Webhooks
+      description: Outbound alert webhooks
+    - name: Export
+      description: Full dataset export
+    - name: Feed
+      description: Atom/RSS conservation feeds

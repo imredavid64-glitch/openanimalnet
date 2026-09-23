@@ -11,9 +11,11 @@ All endpoints are rate-limited to **60 requests per minute per IP** and return
 {
   "success": true,
   "data": { ... },
-  "meta": { "page": 1, "limit": 20, "total": 28 }
+  "pagination": { "page": 1, "limit": 20, "total": 42, "totalPages": 3 }
 }
 ```
+
+`pagination` is present only on endpoints that paginate (e.g. `/animals`).
 
 ---
 
@@ -60,7 +62,7 @@ curl "http://localhost:3000/api/v1/animals?category=mammals&conservationStatus=E
       "dataCategories": ["biological", "behavioral", "ecological", "population", "health", "human-interaction"]
     }
   ],
-  "meta": { "page": 1, "limit": 5, "total": 9 }
+  "pagination": { "page": 1, "limit": 5, "total": 42, "totalPages": 9 }
 }
 ```
 
@@ -108,29 +110,23 @@ curl "http://localhost:3000/api/v1/populations"
 
 **Response:**
 
+`data` is a flat array of records (one per species):
+
 ```json
 {
   "success": true,
-  "data": {
-    "totalSpecies": 28,
-    "byStatus": {
-      "CR": 5,
-      "EN": 9,
-      "VU": 8,
-      "NT": 1,
-      "LC": 2,
-      "DD": 1,
-      "NE": 1
-    },
-    "species": [
-      {
-        "id": "elephant-001",
-        "commonName": "African Bush Elephant",
-        "populationEstimate": 415000,
-        "conservationStatus": "EN"
-      }
-    ]
-  }
+  "data": [
+    {
+      "animalId": "elephant-001",
+      "commonName": "African Bush Elephant",
+      "scientificName": "Loxodonta africana",
+      "conservationStatus": "EN",
+      "populationEstimate": 415000,
+      "aerialSurveyCounts": 352271,
+      "cameraTrapCaptureRates": null,
+      "rangeContractionPercentage": 24
+    }
+  ]
 }
 ```
 
@@ -166,8 +162,8 @@ Aggregated dashboard statistics.
 {
   "success": true,
   "data": {
-    "totalAnimals": 28,
-    "monitoredAnimals": 28,
+    "totalAnimals": 42,
+    "monitoredAnimals": 42,
     "activeAlerts": 8,
     "monitoringCoverage": {
       "mammals": 1.0,
@@ -283,6 +279,218 @@ curl "http://localhost:3000/api/v1/live/observations?ids=lion-001,tiger-001"
     ]
   }
 }
+```
+
+---
+
+## Search
+
+### `GET /api/v1/search?q=<query>`
+
+Universal species lookup across GBIF, Wikipedia, Wikidata, and iNaturalist.
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `q` | `string` | Yes | Search query (species common/scientific name) |
+
+**Example:**
+
+```bash
+curl "http://localhost:3000/api/v1/search?q=lion"
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "results": [ { "commonName": "African Lion" } ],
+    "sources": { "gbif": 3, "wikipedia": 2, "wikidata": 1, "inaturalist": 1 }
+  }
+}
+```
+
+Returns HTTP `400` when `q` is missing, and `502` when an upstream service fails.
+
+---
+
+## Identify
+
+### `POST /api/v1/identify`
+
+Identify a species from a base64 (or data-URL) image.
+
+**Body (JSON):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `image` | `string` | Yes | Base64-encoded image or data URL |
+| `topK` | `number` | No | Max results to return (default: 5) |
+
+**Example:**
+
+```bash
+curl -X POST "http://localhost:3000/api/v1/identify" \
+  -H "Content-Type: application/json" \
+  -d '{"image":"data:image/png;base64,....","topK":3}'
+```
+
+**Response:** `data` is an array of ranked matches, each with a `commonName`,
+`scientificName`, `confidence` (0–100), and `matchFactors`.
+
+Returns HTTP `400` when `image` is missing.
+
+---
+
+## Subscriptions
+
+Alert subscriptions, stored in-memory (demo).
+
+### `GET /api/v1/subscriptions?email=<email>`
+
+List subscriptions, optionally filtered by email.
+
+### `POST /api/v1/subscriptions`
+
+Create a subscription. Returns HTTP `201`.
+
+**Body (JSON):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `email` | `string` | Yes | Subscriber email |
+| `speciesIds` | `string[]` | No | Species IDs to follow |
+| `regions` | `object[]` | No | `{ lat, lng, radiusKm }` regions |
+| `alertTypes` | `string[]` | No | `critical` / `warning` / `info` (default both critical+warning) |
+
+Returns HTTP `400` for an invalid email.
+
+### `DELETE /api/v1/subscriptions?id=<id>`
+
+Remove a subscription. Returns HTTP `404` if not found.
+
+---
+
+## Annotations
+
+Per-species notes / corrections / sightings, stored in-memory (demo).
+
+### `GET /api/v1/annotations?animalId=<id>`
+
+List annotations, optionally filtered by species.
+
+### `POST /api/v1/annotations`
+
+Create an annotation. Returns HTTP `201`.
+
+**Body (JSON):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `animalId` | `string` | Yes | Species ID |
+| `author` | `string` | Yes | Author name (≤100 chars) |
+| `content` | `string` | Yes | Annotation text (≤2000 chars) |
+| `category` | `string` | No | `observation` / `correction` / `note` / `sighting` |
+| `location` | `object` | No | `{ lat, lng }` |
+
+Returns HTTP `400` for missing fields or content over 2000 characters.
+
+### `DELETE /api/v1/annotations?id=<id>`
+
+Remove an annotation. Returns HTTP `404` if not found.
+
+---
+
+## Webhooks
+
+Outbound alert webhooks, stored in-memory (demo).
+
+### `GET /api/v1/webhooks`
+
+List registered webhooks.
+
+### `POST /api/v1/webhooks`
+
+Register a webhook. Returns HTTP `201`.
+
+**Body (JSON):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `url` | `string` | Yes | Callback URL |
+| `events` | `string[]` | No | Events to receive (default `alert.critical`, `alert.warning`) |
+
+Returns HTTP `400` for an invalid URL. Response includes a generated `secret`
+(`whsec_...`).
+
+### `DELETE /api/v1/webhooks?id=<id>`
+
+Remove a webhook. Returns HTTP `404` if not found.
+
+---
+
+## Export
+
+### `GET /api/v1/export?format=<format>&category=<category>`
+
+Export the entire species dataset as GeoJSON (default), CSV, or KML.
+
+**Query Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `format` | `string` | `geojson` (default), `csv`, or `kml` |
+| `category` | `string` | Optional category filter |
+
+**Example:**
+
+```bash
+curl "http://localhost:3000/api/v1/export?format=csv"
+```
+
+GeoJSON output is a `FeatureCollection` with one `Point` feature per species;
+CSV includes a `commonName` header row; KML contains a `<Placemark>` per species.
+
+---
+
+## Feed
+
+### `GET /api/v1/feed?format=<format>`
+
+Conservation-alert feed as Atom XML (default) or RSS.
+
+**Query Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `format` | `string` | `atom` (default) or `rss` |
+
+**Example:**
+
+```bash
+curl "http://localhost:3000/api/v1/feed?format=rss"
+```
+
+Returns `application/atom+xml` or `application/rss+xml` content.
+
+---
+
+## Live Alerts (SSE)
+
+### `GET /api/v1/live/alerts`
+
+Server-sent-events stream of live conservation alerts. Sends a `connected`
+event on open, periodic `heartbeat` events (every 30s), and `alert` events as
+they occur — including crowd-sourced observations submitted via
+`POST /api/v1/live/observations`. Closes automatically after 5 minutes.
+
+**Example (curl):**
+
+```bash
+curl -N "http://localhost:3000/api/v1/live/alerts"
 ```
 
 ---

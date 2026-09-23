@@ -66,7 +66,7 @@ export async function POST(request: Request) {
   };
   annotations.push(annotation);
 
-  return NextResponse.json({ success: true, data: annotation } satisfies ApiResponse<Annotation>);
+  return NextResponse.json({ success: true, data: annotation } satisfies ApiResponse<Annotation>, { status: 201 });
 }
 
 export async function DELETE(request: Request) {

@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { matchAudioSignature } from './acoustics';
-import { RANGER_QUESTIONS, RANGER_BADGES } from './challenge';
-import { BIOMES } from './habitat';
-import { exportSpeciesGeoJSON, exportSpeciesCSV } from './exportUtils';
+import { matchAudioSignature } from './acoustics.ts';
+import { RANGER_QUESTIONS, RANGER_BADGES } from './challenge.ts';
+import { BIOMES } from './habitat.ts';
+import { exportSpeciesGeoJSON, exportSpeciesCSV } from './exportUtils.ts';
 
 test('acoustics: matches frequency to signature correctly', () => {
   const matches = matchAudioSignature(250);

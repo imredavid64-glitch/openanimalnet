@@ -51,7 +51,7 @@ export async function POST(request: Request) {
   };
   webhooks.push(webhook);
 
-  return NextResponse.json({ success: true, data: webhook } satisfies ApiResponse<Webhook>);
+  return NextResponse.json({ success: true, data: webhook } satisfies ApiResponse<Webhook>, { status: 201 });
 }
 
 export async function DELETE(request: Request) {

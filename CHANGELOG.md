@@ -32,7 +32,7 @@
 
 ### Added
 - **SEO:** `app/robots.ts` + `app/sitemap.xml` via `app/sitemap.ts`
-  (43 static routes + all 33 species pages); Open Graph / Twitter card images.
+  (43 static routes + all 42 species pages); Open Graph / Twitter card images.
 - `src/lib/site.ts` as the single source of truth for the site URL.
 
 ### Removed

@@ -47,6 +47,66 @@ const endpoints = [
     path: '/api/v1/live/observations',
     detail: 'Batched recent GBIF occurrences for several species — powers the globe\'s live-observations layer.',
   },
+  {
+    method: 'POST',
+    path: '/api/v1/live/observations',
+    detail: 'Submit a crowd-sourced wildlife observation (broadcast on the live alert stream).',
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/search',
+    detail: 'Universal species search across GBIF, Wikipedia, Wikidata, and iNaturalist.',
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/identify',
+    detail: 'Identify a species from a base64 image, ranked by confidence.',
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/subscriptions',
+    detail: 'List alert subscriptions (optionally by email).',
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/subscriptions',
+    detail: 'Create an alert subscription for species and regions.',
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/annotations',
+    detail: 'List per-species annotations, notes, corrections, and sightings.',
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/annotations',
+    detail: 'Add an annotation or sighting to a species profile.',
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/webhooks',
+    detail: 'List registered alert webhooks.',
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/webhooks',
+    detail: 'Register a webhook for outbound conservation alerts.',
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/export',
+    detail: 'Export the full species dataset as GeoJSON, CSV, or KML.',
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/feed',
+    detail: 'Conservation alert feed in Atom or RSS format.',
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/live/alerts',
+    detail: 'Live server-sent-events stream of conservation alerts.',
+  },
 ];
 
 export default function ApiPage() {
@@ -90,7 +150,7 @@ export default function ApiPage() {
 
       <Section>Example</Section>
       <p>
-        All five endpoints above are live on this deployment under{' '}
+        All the endpoints above are live on this deployment under{' '}
         <code className="px-1.5 py-0.5 rounded bg-secondary-100 dark:bg-secondary-800 font-mono text-xs">/api/v1/*</code>:
       </p>
       <pre className="rounded-xl bg-secondary-900 text-secondary-100 p-6 overflow-x-auto text-sm">

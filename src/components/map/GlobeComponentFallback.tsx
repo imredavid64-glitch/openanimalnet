@@ -22,21 +22,32 @@ interface GlobeProps {
   sightings?: StoredSighting[];
 }
 
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 2.5;
+const ZOOM_STEP = 0.25;
+
 export default forwardRef(function GlobeComponentFallback(
   { onAnimalClick, showRoutes = true, showMarkers = true, seasonFilter = 'all', observations = [], sightings = [] }: GlobeProps,
   ref
 ) {
   const [isClient, setIsClient] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Expose methods to parent component
+  // Expose methods to parent component. The 2D Leaflet-free canvas has no
+  // orbitable camera, so zoom/pan are applied as CSS transforms and rotation
+  // is not applicable to a flat map.
   useImperativeHandle(ref, () => ({
-    resetCamera: () => {},
-    zoomIn: () => {},
-    zoomOut: () => {},
+    resetCamera: () => {
+      setZoom(1);
+      setPan({ x: 0, y: 0 });
+    },
+    zoomIn: () => setZoom((z) => Math.min(MAX_ZOOM, z + ZOOM_STEP)),
+    zoomOut: () => setZoom((z) => Math.max(MIN_ZOOM, z - ZOOM_STEP)),
     toggleRotation: () => {},
   }));
 
@@ -49,15 +60,25 @@ export default forwardRef(function GlobeComponentFallback(
   }
 
   return (
-    <div className="w-full h-full">
-      <SimpleWorldMap
-        onAnimalClick={onAnimalClick}
-        showRoutes={showRoutes}
-        showMarkers={showMarkers}
-        seasonFilter={seasonFilter}
-        observations={observations}
-        sightings={sightings}
-      />
+    <div className="w-full h-full overflow-hidden relative" style={{ touchAction: 'none' }}>
+      <div
+        style={{
+          transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+          transformOrigin: 'center center',
+          transition: 'transform 0.15s ease-out',
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <SimpleWorldMap
+          onAnimalClick={onAnimalClick}
+          showRoutes={showRoutes}
+          showMarkers={showMarkers}
+          seasonFilter={seasonFilter}
+          observations={observations}
+          sightings={sightings}
+        />
+      </div>
     </div>
   );
 });

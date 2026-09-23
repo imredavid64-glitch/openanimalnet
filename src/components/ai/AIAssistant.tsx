@@ -322,7 +322,15 @@ function generateResponse(query: string): { text: string; data?: any } {
     text += `• \`GET /api/v1/monitoring/alerts\` — Active alerts\n`;
     text += `• \`GET /api/v1/monitoring/stats\` — Dashboard stats\n`;
     text += `• \`GET /api/v1/locations\` — Telemetry locations\n`;
-    text += `• \`GET /api/v1/live/sync?id=<id>\` — Live GBIF sync\n\n`;
+    text += `• \`GET /api/v1/live/sync?id=<id>\` — Live GBIF sync\n`;
+    text += `• \`POST /api/v1/identify\` — Identify a species from an image\n`;
+    text += `• \`GET /api/v1/search?q=<query>\` — Universal species search\n`;
+    text += `• \`POST /api/v1/subscriptions\` — Alert subscriptions\n`;
+    text += `• \`POST /api/v1/annotations\` — Species annotations\n`;
+    text += `• \`POST /api/v1/webhooks\` — Alert webhooks\n`;
+    text += `• \`GET /api/v1/export?format=csv\` — Dataset export (GeoJSON/CSV/KML)\n`;
+    text += `• \`GET /api/v1/feed?format=atom\` — Atom/RSS alert feed\n`;
+    text += `• \`GET /api/v1/live/alerts\` — Live SSE alert stream\n\n`;
     text += `OpenAPI spec: \`docs/openapi.yaml\`\n`;
     text += `Docs: \`docs/api-reference.md\``;
     return { text };
@@ -387,11 +395,25 @@ export default function AIAssistant({ onClose }: { onClose: () => void }) {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [aiMode, setAiMode] = useState<'checking' | 'live' | 'offline'>('checking');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch('/api/v1/ai/chat')
+      .then(r => r.json())
+      .then(data => {
+        if (mounted) setAiMode(data.aiConfigured ? 'live' : 'offline');
+      })
+      .catch(() => {
+        if (mounted) setAiMode('offline');
+      });
+    return () => { mounted = false; };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -407,8 +429,34 @@ export default function AIAssistant({ onClose }: { onClose: () => void }) {
     setInputValue('');
     setIsLoading(true);
 
-    // Generate response with streaming effect
-    const { text, data } = generateResponse(inputValue.trim());
+    // Build recent history (last 8 messages excluding welcome)
+    const history = messages
+      .filter(m => m.id !== 'welcome')
+      .slice(-8)
+      .map(m => ({ role: m.role, content: m.content }));
+
+    // Try the AI route first
+    let text: string;
+    let data: any;
+    try {
+      const res = await fetch('/api/v1/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: userMessage.content, history }),
+      });
+      if (res.ok) {
+        const result = await res.json();
+        text = result.data?.text ?? '';
+      } else {
+        const fallback = generateResponse(userMessage.content);
+        text = fallback.text;
+        data = fallback.data;
+      }
+    } catch {
+      const fallback = generateResponse(userMessage.content);
+      text = fallback.text;
+      data = fallback.data;
+    }
 
     const words = text.split(' ');
     let current = '';
@@ -464,9 +512,26 @@ export default function AIAssistant({ onClose }: { onClose: () => void }) {
             <p className="text-xs opacity-80">{sampleAnimals.length} species · 4 sources · {animalLaws.length} laws</p>
           </div>
         </div>
-        <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-lg transition-colors">
-          <XIcon className="w-5 h-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          {aiMode === 'live' && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-success-500/20 text-success-300 font-medium">
+              ● Live (Gemini)
+            </span>
+          )}
+          {aiMode === 'offline' && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-secondary-500/20 text-secondary-300 font-medium">
+              ◌ Offline (rules)
+            </span>
+          )}
+          {aiMode === 'checking' && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-warning-500/20 text-warning-300 font-medium animate-pulse">
+              ⋯ Checking…
+            </span>
+          )}
+          <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-lg transition-colors">
+            <XIcon className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       {/* Messages */}

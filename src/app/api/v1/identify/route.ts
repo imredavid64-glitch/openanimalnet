@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { identifyFromImage } from '@/lib/speciesIdentification';
+import { identifyFromImage, isAIConfigured } from '@/lib/speciesIdentification';
 import { applyRateLimit } from '@/lib/apiRateLimit';
 import type { ApiResponse } from '@/types/animal/types';
 
@@ -25,7 +25,11 @@ export async function POST(request: Request) {
     }
 
     const results = await identifyFromImage(image, topK ?? 5);
-    const response: ApiResponse<typeof results> = { success: true, data: results };
+    const response: ApiResponse<typeof results> & { aiConfigured: boolean } = {
+      success: true,
+      data: results,
+      aiConfigured: isAIConfigured(),
+    };
     return NextResponse.json(response);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Identification failed';

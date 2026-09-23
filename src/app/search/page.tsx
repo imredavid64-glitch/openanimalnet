@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { SearchIcon, GlobeIcon, BookIcon, ShieldIcon, PinIcon } from '@/components/icons';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 interface SearchResult {
   source: string;
@@ -28,6 +29,7 @@ const sourceColors: Record<string, string> = {
 };
 
 export default function SearchPage() {
+  const { t } = useI18n();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [sources, setSources] = useState<Record<string, number>>({});
@@ -56,9 +58,9 @@ export default function SearchPage() {
       <main className="container mx-auto px-4 py-20">
         <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
           <SearchIcon className="w-14 h-14 text-primary-600 dark:text-primary-400 mx-auto mb-4" />
-          <h1 className="text-5xl font-bold text-secondary-900 dark:text-white mb-4">Universal Animal Search</h1>
+          <h1 className="text-5xl font-bold text-secondary-900 dark:text-white mb-4">{t('search.title', 'Universal Animal Search')}</h1>
           <p className="text-xl text-secondary-600 dark:text-secondary-400 max-w-2xl mx-auto">
-            Search any species across GBIF, Wikipedia, Wikidata, and iNaturalist simultaneously.
+            {t('search.subtitle', 'Search any species across GBIF, Wikipedia, Wikidata, and iNaturalist simultaneously.')}
           </p>
         </motion.div>
 
@@ -71,7 +73,7 @@ export default function SearchPage() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by common or scientific name (e.g., Panthera leo, humpback whale)..."
+                placeholder={t('search.placeholder', 'Search by common or scientific name (e.g., Panthera leo, humpback whale)...')}
                 className="w-full pl-12 pr-4 py-4 rounded-2xl border border-secondary-200 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-900 dark:text-white text-lg focus:ring-2 focus:ring-primary-500 focus:outline-none shadow-lg"
               />
             </div>
@@ -112,15 +114,15 @@ export default function SearchPage() {
           {loading && (
             <div className="text-center py-12">
               <GlobeIcon className="w-12 h-12 text-primary-600 animate-spin mx-auto" />
-              <p className="text-secondary-500 mt-4">Searching across 4 live sources...</p>
+              <p className="text-secondary-500 mt-4">{t('common.loading', 'Searching across 4 live sources...')}</p>
             </div>
           )}
 
           {!loading && searched && results.length === 0 && (
             <div className="text-center py-12">
               <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">No results found</h3>
-              <p className="text-secondary-500 dark:text-secondary-400">Try a different common or scientific name.</p>
+              <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">{t('search.noResults', 'No results found')}</h3>
+              <p className="text-secondary-500 dark:text-secondary-400">{t('search.tryDifferent', 'Try a different common or scientific name.')}</p>
             </div>
           )}
 
